@@ -224,6 +224,154 @@
                     </figcaption>
                 </figure>
             </section>
+
+            <section data-title="Anlage der Projektstruktur">
+                <!--
+                Leeres Verzeichnis
+                npm init → package.json
+                git init
+                Repository in GitHub anlegen
+                git set origin / git push -u origin master
+                Alle anderen git clone
+                -->
+            </section>
+
+            <section data-title="Installation von Parcel">
+                <!--
+                npm add --save-dev parcel
+                Was npm add und npm add --save-dev bewirken
+                Alle anderen npm install
+                npm add shelljs
+                scripts/clean.sh
+                Minimale src/index.html
+                npm run start und npm run build
+                -->
+            </section>
+
+            <section data-title="Wir müssen ein wenig umdenken">
+                <!--
+                JavaScript Module vs. globale DOM-Variablen
+                import und export
+                import aus einer anderen Codedatei
+                import aus einer fremden Bibliothek
+                import von Stylesheets (besser, da alle Stylesheets zu einer Datei zusammengefasst)
+                -->
+            </section>
+
+            <section data-title="Das Grundgerüst entsteht">
+                <!--
+                Index.html, app.js, app.css (noch ohne Navigation)
+                Instantiierung des App-Objekts im <script>-Block
+                Allgemeines Stylesheet (Copy und Paste)
+                -->
+            </section>
+
+            <section data-title="Navigation innerhalb der App">
+                <!--
+                Je Bildschirmseite eine eigene Klasse
+                constructor(), show() und hide()-Methoden
+                Wann werden die Methoden aufgerufen?
+                Methode 1: app.showPage("name")
+                Nachteile: Seiten besitzen keine URLs, Zurück-Button nicht unterstützt
+                Lösung: Single Page Router (könnte man selbst programmieren, vgl. History API)
+                Installation von Navigo
+                Definition einer einfachen URL-Struktur
+                Einbauen eines Links, um zwischen Übersicht und Songtext-Seite zu wechseln
+                -->
+            </section>
+
+            <section data-title="Dynamische Inhalte erzeugen">
+                <!--
+                Woher kommt der HTML-Code der Bildschirmseiten?
+                Möglichkeit 1: Elemente in der index.html sichtbar/unsichtbar schalten
+                Möglichkeit 2: Elemente durch DOM-Manipulation erzeugen
+                Möglichkeit 3: <template>-Elemente innerhalb von index.html
+                Fazit: Alle drei Möglichkeiten haben ihre Vor- und Nachteile.
+                Wann was nutzen?
+                -->
+            </section>
+
+            <section data-title="HTML und CSS nachladen">
+                <!--
+                Neue Hilfsmethode zum Aufruf durch den SPA-Router, Parameter: Zu ladendes Modul, neuer HTML-Inhalt des Hauptbereichs
+                Je Bildschirmseite ein Unterverzeichnis
+                import() der Hauptdatei in diesem Verzeichnis
+                Definition von Custom Tags: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+                Shadow DOM: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
+                Unsere beiden Seiten als Komponente
+                Hinweis auf komponentenbasierte Frameworks wie Knockout.js
+                -->
+            </section>
+
+            <section data-title="Lokale Datenhaltung im Browser">
+                <!--
+                Installation von PouchDB
+                Grundlagen der Nutzung (aus API-Dokumentation)
+                Definition einer Datenbank-Fassaden-Klasse
+                Vorläufige Dummy-Daten erzeugen, wenn die DB leer ist
+                Minimale Darstellung der vorhandenen Texte auf der Übersichtsseite als <ol> oder ähnlich
+                -->
+            </section>
+
+            <section data-title="Daten sortieren und filtern">
+                <!--
+                Ausprogrammieren der Übersichtsseite (CSS nur Copy & Paste)
+                Sortierung nach Titel oder nach Künstler
+                Live-Suche nach vorhandenen Songs
+                Absprung in die Detailseite eines Songs
+                -->
+            </section>
+
+            <section data-title="Songtexte anzeigen">
+                <!--
+                Ausprogrammieren der Detailseite zu einem Songtext
+                Bis hierhin nur im Anzeigemodus
+                Buttons zum Löschen und Bearbeiten bereits vorsehen
+                Bei Klick auf "Löschen" direkt löschen und zurück zur Übersicht
+                Navigation zurück zur Übersicht (wenn nicht bereits geklärt)
+                -->
+            </section>
+
+            <section data-title="Löschen erst nach Rückfrage">
+                <!--
+                CSS/JS-Code für einen modalen Dialog
+                Eigene Komponente <popup-ask-delete>
+                Aufruf des Dialogs an der richtigen Stelle
+                -->
+            </section>
+
+            <section data-title="Ein Editor für HTML-Inhalte">
+                <!--
+                Wechsel in den Änderungsmodus der Detailseite
+                contenteditable-Attribut für Titel und Interpret
+                Event Handler um ENTER abzufangen (keine neue Zeile bzw. <div> bei ENTER, dafür ins nächste Feld springen, event.preventDefaul())
+                <textarea> zum Bearbeiten des HTML-Codes des Textes
+                Installation von Qilk
+                WYSIWIG-Bearbeiten des Textes mit Quilk
+                Änderungen sichern bei Okay, Seite neuladen bei Abbrechen
+                -->
+            </section>
+
+            <section data-title="Onlinesuche und Anlage eines Songs">
+                <!--
+                Neue <popup-create-song>-Komponente ausprogrammieren (viel Copy & Paste)
+                Installation von lyric-get
+                Abruf eines Songs mit lyric-get
+                Bessere Alternative: Fetch API mit await
+                Abruf des Songs mit der Fetch API, Auswerten des JSON-Strings
+                Aufruf der Detailseite im Neuanlagemodus
+                Hierfür notwendige Anpassungen an der Detailseite
+                -->
+            </section>
+
+            <section data-title="Ausblick">
+                <!--
+                Zusammenfassung, was wir getan haben
+                Welche Teile sind allgemeingültig, wo kann man sich einen Weg aussuchen?
+                Welche Vorteile ein Framework bringen kann? (Data Binding, Weniger Arbeit, ...)
+                Warum eine kleine, selbstgebaute Lösung auch gut ist (mehr Kontrolle, weniger Bloat, einfachere Dependency Upgrades)
+                -->
+            </section>
         </main>
 
         <div id="bottom">
