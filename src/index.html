@@ -16,25 +16,213 @@
         </div>
 
         <!-- Inhaltsverzeichnis -->
-        <section id="toc" data-title="Inhaltsverzeichnis"></section>
+        <aside id="toc-left">
+            <section id="toc" data-title="Inhaltsverzeichnis"></section>
+        </aside>
 
         <!-- Dokumenteninhalt -->
         <main id="content">
             <!-- Kapitel -->
-            <section data-title="First Chapter">
-                This is chapter one.
+            <section data-title="Einleitung">
+                <h3>Herzlich Willkommen!</h3>
+                <p>
+                    Puh, das wäre geschafft. Das dritte Semester ist nun halb vorbei und du hast hoffentlich
+                    alle Selbstlerneinheiten erfolgreich hinter dir gelassen. Es war auch eine ganze Menge
+                    Zeugs, das du dir da angeeignet hast. Das ein oder andere haben wir schon in kleineren
+                    Übungen vertieft und praktisch angewendet. Jetzt wird es aber Zeit, die ganzen Puzzleteile
+                    zu einem Gesamtwerk zusammenzusetzen. Es wird Zeit, dass wir endlich einmal eine komplette
+                    Webanwendung programmieren, mit allem was dazu gehört. Diese Anleitung soll dir dabei helfen.
+                    Zwar werden wir die wesentlichen Teile daraus auch in der Vorlesung besprechen, hier kannst
+                    du aber nochmal jeden Schritt nachvollziehen und dir dabei auch die Dinge anschauen, die wir
+                    in der Vorlesung nicht so ausführlich erklären oder aus Zeitgründen überspringen müssen.
+                </p>
+
+                <h3>Was wir programmieren werden</h3>
+                <p>
+                    Die Anwendung, die wir gemeinsam entwickeln, nennt sich „My Songbook” und ist eine
+                    browserseitige Single Page App. Sie hat also keinen Serveranteil, da sich die gesamte
+                    Anwendungslogik innerhalb des Browsers abspielt. Lediglich einen Webserver, der die
+                    Anwendung über das Web aufrufbar macht, werden wir dabei verwenden. Der Server wird
+                    jedoch nur den statischen Quellcode der Anwendung zur Verfüfung stellen und selbst
+                    keinerlei Intelligenz besitzen.
+                </p>
+                <p>
+                    „My Songbook” soll eine einfache, musikerfreundliche App werden, die es ermöglicht,
+                    Songtexte im Internet zu suchen und diese in sein persönliches Songbuch aufzunehmen.
+                    Hierfür soll es eine Übersichtsseite mit allen bereites enthaltenen Songtexten geben,
+                    wobei die Liste entweder nach Songtitel oder nach Interpret sortiert werden kann.
+                    Auch soll es möglich sein, die Liste zu durchsuchen. Darüber hinaus können die
+                    vorhandenen Songtexte angezeigt, bearbeitet und gelöscht werden. Die nachfolgenden
+                    Skizzen zeigen, wie die Anwendung ungefähr aussehen soll. Wie du siehst, wollen wir
+                    die Anwendung nach dem „Mobile First”-Ansatz responsive gestalten, so dass sie auch
+                    auf Smartphones und Tablets genutzt werden kann:
+                </p>
+                <figure style="max-width: 15em;">
+                    <img src="einleitung/mobile.png" />
+                    <figcaption>Mobile Darstellung</figcaption>
+                </figure>
+                <p>
+                    Beim Start der Anwendung soll eine Übersicht mit allen Songtexten erscheinen.
+                    Der Anwender kann hier entscheiden, ob die Liste nach Titel oder nach Interpret
+                    sortiert sein soll und innerhalb der Liste suchen. Ebenso kann er von hier aus
+                    einen neuen Song anlegen oder einen vorhandenen Song aufrufen:
+                </p>
+                <figure>
+                    <img src="einleitung/uebersicht.png" />
+                    <figcaption>Übersicht der vorhandenen Songtexte</figcaption>
+                </figure>
+                <p>
+                    Zu jedem Songtext gibt es eine Detailseite zur Anzeige des Textes. Sie soll ungefähr
+                    wie folgt aussehen. Von hier aus kann der Text auch bearbeitet oder gelöscht werden:
+                </p>
+                <figure>
+                    <img src="einleitung/anzeige.png" />
+                    <figcaption>Anzeige eines Songtexts</figcaption>
+                </figure>
+                <p>
+                    Klickt der Anwender auf „Bearbeiten” soll sich die Seite wie folgt verändern:
+                    Titel und Interpret werden zu eingabebereiten Feldern und der Text kann innerhalb
+                    eines WYSIWYG-Editors verändert werden. Über zwei Buttons kann der Anwender dann
+                    entscheiden, ob er die Änderungen sichern oder wieder verwerfen will:
+                </p>
+                <figure>
+                    <img src="einleitung/bearbeiten.png" />
+                    <figcaption>Bearbeiten eines Songtexts</figcaption>
+                </figure>
+                <p>
+                    Bevor ein Text gelöscht wird, soll ein Popup mit einer Sicherheitsabfrage erscheinen:
+                </p>
+                <figure>
+                    <img src="einleitung/loeschen.png" />
+                    <figcaption>Löschen eines Songtexts</figcaption>
+                </figure>
+                <p>
+                    Will der Anwender einen neuen Songtext hinzufügen, soll ein Popup mit zwei
+                    Suchfeldern für Songtitel und Interpret hochkommen. Sobald der Anwender den Popup
+                    bestätigt, wirrd die Suche durchgeführt und der Text wird angelegt. Möglicherweise
+                    bleibt der Text dabei leer, wenn er nicht online gefunden wurde. In diesem Fall
+                    soll der Anwender ihn von Hand eingeben können:
+                </p>
+                <figure>
+                    <img src="einleitung/anlegen.png" />
+                    <figcaption>Anlegen eines Songtexts</figcaption>
+                </figure>
             </section>
 
-            <section data-title="Second Chapter">
-                This is chapter two.
-            </section>
+            <section data-title="Werkzeuge und Bibliotheken">
+                <p>
+                    So simpel die zu erstellende Anwendung ist, so kompliziert ist sie auch. Denn manche scheinbar
+                    triviale Dinge sind am Ende doch aufwändiger umzusetzen, als man zunächst denkt. Wann immer das
+                    passiert, werden wir nicht lange versuchen, das Rad neuzuerfinden. Denn Open Source und Free Software
+                    zum Dank müssen wir das auch gar nicht. Im Internet hat sich eine ausgeprägte Sharing-Kultur herausgebildet,
+                    so dass es für viele Probleme bereits fertige Werkzeuge und Bibliotheken gibt, die wir nur zu nutzen
+                    brauchen. Wäre doch schade, wenn wir das nicht nutzen würden. Wir müssen dabei auch gar kein
+                    schlechtes Gewissen haben, da heutzutage kaum ein echtes Projekt ohne diese Art der Hilfestellung auskommt.
+                    Im Gegenteil: Es gibt sogar eigene Werkzeuge, die die Nutzung fremder Werkzeuge und Bibliohekten so
+                    einfach machen, dass ihre Nutzung inzwischen zum guten Ton gehört.
+                </p>
 
-            <section data-title="Third Chapter">
-                This is chapter three.
-            </section>
+                <h3>Entwicklungswerkzeuge</h3>
+                <ul>
+                    <li>
+                        <b><a href="https://atom.io/" target="_blank">Atom:</a></b> Spezieller Texteditor für Webentwickler und Programmierer
+                    </li>
+                    <li>
+                        <b><a href="https://git-scm.com/" target="_blank">git:</a></b> Versionsverwaltung zur gemeinsamen Arbeit am Quellcode
+                    </li>
+                    <li>
+                        <b><a href="https://nodejs.org/" target="_blank">npm:</a></b> Paketverwaltung zum automatischen Download abhängiger Bibliotheken
+                    </li>
+                    <li>
+                        <b><a href="https://parceljs.org/" target="_blank">Parcel:</a></b> Web Application Bundler und Entwicklungsserver
+                    </li>
+                </ul>
+                <p>
+                    Parcel installieren wir ihm Rahmen dieser Anleitung als lokale Abhängigkeit für unser Projekt.
+                    In der <a href="https://www.wpvs.de/software/" target="_blank">Anleitung zur Installation der Software</a>
+                    ist es daher nicht aufgeführt und du musst hier noch nichts unternehmen.
+                </p>
 
-            <section data-title="Fourth Chapter">
-                This is chapter four.
+                <h3>Bibliotheken</h3>
+                <ul>
+                    <li>
+                        <b><a href="https://github.com/krasimir/navigo" target="_blank">Navigo:</a></b> Single Page Router zur Vereinfachung der Navigation innerhalb der App
+                    </li>
+                    <li>
+                        <b><a href="https://pouchdb.com/" target="_blank">PouchDB:</a></b> Clientseitige NoSQL-Datenbank zum Speichern der Songtexte
+                    </li>
+                    <li>
+                        <b><a href="https://github.com/rhnvrm/lyric-api" target="_blank">lyric-get:</a></b> Kleine Bibliothek zur Suche von Songtexten im Internet
+                    </li>
+                    <li>
+                        <b><a href="https://quilljs.com/" target="_blank">Quill:</a></b> WYSIWYG-Editor zum Nachbearbeiten der Songtexte
+                    </li>
+                </ul>
+
+                <p>
+                    Wenn du willst, kannst du dich auf den einzelnen Webseiten ein wenig umschauen und dir ein Bild davon
+                    verschaffen, was die Werkzeuge leisten und wie die Bibliotheken genutzt werden. Doch keine Angst, wenn
+                    das jetzt alles sehr kompliziert aussieht. Wir werden hier alles Schritt für Schritt durchgehen und
+                    alle wichtigsten Dinge erklären.
+                </p>
+                <p>
+                    Eventuell ist dir aber aufgefallen, dass wir kein bekanntes Framework wie
+                    <a href="https://angularjs.org/" target="_blank">Angular</a> oder
+                    <a href="https://reactjs.org/" target="_blank">React</a> nutzen.
+
+                    Der Grund hierfür ist, dass das für unsere kleine Anwendung gar nicht erforderlich ist. Diese
+                    Frameworks sind viel zu groß, als dass sich ihr Einsatz hier lohnen würde. Viel problematischer
+                    ist jedoch, dass sie jeweils eine ganz eigene Art der Entwicklung vorschreiben, die zwar zum
+                    jeweiligen Framework passt, aber nur schwer verallgemeinert werden kann. Auch nehmen Sie uns
+                    viele Aufgaben ab, auf die wir in dieser Anleitung bewusst eingehen wollen, um dir ihre
+                    Bedeutung vor Augen zu führen. Für unser Projekt haben wir uns deshalb entschieden, nur kleine
+                    Bibliotheken zu nutzen, die genau ein Problem lösen, sonst aber alles selbst zu programmieren.
+                    Auch das ist ein durchaus praxisrelevanter Weg, weil wir dadurch eine sehr schlanke, genau auf
+                    unsere Bedürfnisse zugeschnittene Codebasis mit geringer Codekomplexität erhalten.
+                </p>
+            </section>
+            <section data-title="Bevor es losgehen kann">
+                <h3>Folgende Dinge solltest du bereits erledigt haben</h3>
+                <p>
+                    Wenn du an dieser Stelle angekommen bist, gehen wir davon aus, dass du folgende Dinge bereits
+                    erledigt hast. Wenn nicht, hole sie jetzt schnell nach, damit wir loslegen können.
+                </p>
+                <ol>
+                    <li>
+                        Du hast alle <a href="https://www.wpvs.de/" target="_blank">Folienskripte</a> durchgearbeitet.
+                    </li>
+                    <li>
+                        Du hast die <a href="https://www.wpvs.de/software/" target="_blank">Anleitung zur Installation der Software</a> durchgearbeitet.
+                    </li>
+                    <li>
+                        Du hast dich mit <a href="https://www.wpvs.de/atom-git/" target="_blank">git, GitHub und Atom</a> vertraut gemacht.
+                    </li>
+                </ol>
+
+                <h3>Wie diese Anleitung zu bearbeiten ist</h3>
+                <p>
+                    Diese Anleitung führt dich Schritt für Schritt durch das Programmierprojekt.
+                    Du solltest sie deshalb nutzen, um die in der Vorlesung besprochenen Inhalte
+                    zu wiederholen und zu vertiefen. Es handelt sich allerdings nur bedingt um eine
+                    gute Bettlektüre. Stattdessen gehen wir davon aus, dass du alle Schritte
+                    genau wie beschrieben auf deinem eigenen Rechner nachvollziehst. Mitmachen ist
+                    strengstens erwünscht. 😎
+                </p>
+                <p>
+                    Solltest du an einer Stelle nicht weiter kommen oder noch eine Frage haben,
+                    nutze das Forum in Moodle, um Hilfe zu erhalten. Wir antworten auf jede Frage!
+                    Außerhalb des Semesters kannst du natürlich auch einfach eine E-Mail schreiben.
+                    Die Adresse findest du ganz unten am Ende der Seite.
+                </p>
+
+                <h3>Alles klar? Dann los!</h3>
+                <figure>
+                    <img src="voraussetzungen/space-1951858_1280.png" />
+                    <figcaption>
+                        Alles klar zum Abheben! <br />
+                        Bildnachweis: <a href="https://pixabay.com/de/raum-rakete-reisen-wissenschaft-1951858/" target="_blank">Pixabay: onuromeryavuz</a>
+                    </figcaption>
+                </figure>
             </section>
         </main>
 
