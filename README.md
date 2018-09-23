@@ -14,15 +14,14 @@ Stelle eingesehen werden kann:
 
 Bei der App handelt es sich um eine Single Page App. Es wird dabei der
 komplette Weg vom Anlegen des leeren Projektverzeichnisses bis zur
-lauffähigen App gezeigt, inklusiver aller auszuführender Werkzeugaufrufe
+lauffähigen App gezeigt, inklusive aller auszuführender Werkzeugaufrufe
 und der schrittweisen Entwicklung des Codes. Allerdings wird der Code nur
 in soweit erklärt, wie es für das Verständnis notwendig ist, um hinterher
-nach der gleichen Vorlage eine eigene App zu entwerfen. Ausgespart werden
-die funktionalen Details der Anwendung, die in einer eigenen Anwendung
-ohnehin anders wären.
+eine eigene App entwerfen zu können. Ausgespart werden die funktionalen
+Details der Anwendung, die in einer eigenen Anwendung ohnehin anders wären.
 
 Die App nutzt den Node Package Manager npm als Paketverwaltung. Auf diese
-Weise werden der Application Bundler ParcelJS sowie ein Hand voll externer
+Weise werden der Application Bundler ParcelJS sowie eine Hand voll externe
 Bibliotheken für die Anwendung installiert. Jedoch wird kein übergreifendes
 Framework wie Angular oder React verwendet, da diese für eine allgemeine
 Einführung zu speziell sind und viele wesentliche Details verbergen.
