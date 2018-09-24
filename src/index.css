@@ -44,9 +44,14 @@
     }
 
     /* Fine Tuning der Abstände */
-    #toc > h3,
-    #content h2 {
+    #toc > h3 {
         margin-top: 0;
+    }
+
+    #content h2,
+    #content h3 {
+        margin-top: 0;
+        margin-bottom: 0.5em;
     }
 
     #bottom > footer {
@@ -75,6 +80,10 @@ figure img {
 
 figcaption {
     font-size: 90%;
+}
+
+.border {
+    border: 1px solid #e0e0e0;
 }
 
 /* Automatische Nummerierung der Bilder */
@@ -121,4 +130,9 @@ kbd {
     padding: 0 0.2em 0 0.2em;
     border-radius: 0.2em;
     border: 1px solid black;
+}
+
+/* Optimierungen für Tabellen */
+td {
+    vertical-align: top;
 }

@@ -337,7 +337,7 @@
                         <span class="cmd">git init</span>
                     </li>
                     <li>
-                        <span class="cmd">git add .</span> (beachte den Punkt am Ende des Befehls)
+                        <span class="cmd">git add . </span> (beachte den Punkt am Ende des Befehls)
                     </li>
                     <li>
                         <span class="cmd">git commit</span>
@@ -429,7 +429,7 @@
                 </p>
                 <ol>
                     <li>
-                        <span class="cmd">git add .</span> (beachte den Punkt am Ende des Befehls)
+                        <span class="cmd">git add . </span> (beachte den Punkt am Ende des Befehls)
                     </li>
                     <li>
                         <span class="cmd">git commit</span>
@@ -443,19 +443,314 @@
                 </p>
             </section>
 
-            <section data-title="Installation von Parcel">
-                <!--
-                npm add --save-dev parcel
-                Was npm add und npm add --save-dev bewirken
-                Alle anderen npm install
-                npm add shelljs
-                scripts/clean.sh
-                Minimale src/index.html
-                npm run start und npm run build
-                -->
+            <section data-title="Alles schön verpackt mit Parcel">
+                <h3>Häufige Aufgaben automatisieren</h3>
+                <p>
+                    Wie wir bisher in der Vorlesung gesehen haben, braucht es im Grunde genommen keinerlei
+                    Werkzeuge, um mit der Entwicklung von Webanwendungen zu beginnen: Ein einfacher Texteditor
+                    und ein Verzeichnis zur Ablage der Quellcodes reichen für kleine Projekte bereits völlig aus.
+                    Je größer oder professioneller ein Projekt jedoch wird, desto mehr stößt dieser einfache
+                    Ansatz an seine Grenzen, da einfach viel zu viele Aufgaben immer wieder von Hand erledigt
+                    werden müssen:
+                </p>
+                <ul>
+                    <li>
+                        Externe Bibliotheken müssen bei jeder Aktualisierung manuell heruntergeladen und innerhalb
+                        des Projektverzeichnisses abgelegt werden.
+                    </li>
+                    <li>
+                        Prüfwerkzeuge, welche die Qualität des Codes überprüfen sollen, müssen in regelmäßigen Abständen
+                        ausgeführt werden, bevor eine neue Version der Anwendung online gestellt wird.
+                    </li>
+                    <li>
+                        Komplexe Stylesheets müssen erst durch so genannte CSS-Preprozessoren bearbeitet werden, um die
+                        tatsächlichen CSS-Dateien zu erzeugen.
+                    </li>
+                    <li>
+                        Falls eine Sprache wie TypeScript oder eine besonders neue JavaScript-Version, die noch
+                        nicht von allen Browsern unterstützt wird, zum Einsatz kommt, müssen die entsprechenden
+                        Quellcdes erst durch einen Transpiler in reguläres JavaScript übersetzt werden.
+                    </li>
+                    <li>
+                        HTML-, CSS- und JavaScript-Codes müssen durch Minifier unleserlich gemacht und um alle
+                        überflüssigen Bytes abgespeckt werden.
+                    </li>
+                    <li>
+                        Bilder müssen in ihrer Größe reduziert und für schnelle Ladezeiten optimiert werden.
+                    </li>
+                </ul>
+                <p>
+                    Seit geraumer Zeit hat sich daher die Verwendung so genannter „Task Runner” wie Grunt
+                    oder Gulp durchgesetzt, die all diese Schritte wie eine Fertigungsstraße automatisieren.
+                    Es handelt sich dabei im Grunde genommen um das JavaScript-Pendant zu den Build-Werkzeugen
+                    anderer Sprachen, wie zum Beispiel Ant und Maven für Java oder Make und Meson für C/C++.
+                    Denn sie ermöglichen es uns, ganz exakte Abläufe zu definieren und dabei festzulegen, bei
+                    Eintreten welcher Bedingung welche Aktion auszuführen ist. Leider sind sie deshalb aber
+                    auch nicht unbedingt einsteigerfreundlich, da sie erst relativ aufwendig konfiguriert werden
+                    müssen, bevor sie überhaupt etwas sinnvolles tun.
+                </p>
+
+                <h3>JavaScript gestern, heute, morgen</h3>
+                <p>
+                    Aufgrund seiner langen Historie als einfache Skriptsprache für das Web hat JavaScript einen
+                    entscheidenen Nachteil, der bei der Entwicklung großer Anwendungen wirklich ins Gewicht fällt:
+                    Es gibt keine saubere Trennung zwischen den Quellcodedateien. Oder anders ausgedrückt:
+                    JavaScript hat (oder besser gesagt hatte) kein Modulsystem, wodurch es möglich wäre, den
+                    Inhalt einer Quellcodedatei vor allen anderen zu verstecken. Häufig konnte es daher zu
+                    Namenskonflikten kommen, wenn in einem Projekt zwei externe Bibliotheken zum Einsatz
+                    kamen, die beide denselben Namen für eine globale Variable, eine Funktion oder eine Klasse
+                    verwendeten.
+                </p>
+                <p>
+                    Erst in jüngerer Zeit wurde dieses Problem durch die Einführung eines Modulsystems für
+                    JavaScript im Sprachstandard berücksichtigt. Dadurch ist gewährleistet, dass alle Inhalte
+                    einer Quellcodedatei nur innerhalb derselben Datei sichtbar sind und nicht aus anderen
+                    Dateien heraus aufgerufen werden können. Nur die mit der Anweisung <span class="cmd">export</span>
+                    gekennzeichneten Inhalte können in den anderen Dateien mit <span class="cmd">import</span>
+                    wieder eingelesen werden. Der Nachteil davon ist jedoch, dass dies Stand 09/2018 noch von
+                    keinem einzigen Browser unterstützt wird.
+                </p>
+                <p>
+                    „Web Application Bundler” bieten hier eine Lösung, da sie die fehlende Funktionalität
+                    im Browser nachrüsten und somit das JavaScript-Modulsystem nutzbar machen. Gleichzeitig
+                    erlauben sie es uns, mit npm nachinstallierte Bibliotheken direkt in unserem Quellcode
+                    zu verwenden, ohne hierfür irgendwelche Dateien umkopieren zu müssen. Und last but not
+                    least können sie alles, was „Task Runner” auch können, inklusive der Verzweiflung und
+                    dem Frust, der mit ihnen verbunden ist, da die meisten „Web Application Bundler” mindestens
+                    genauso umständlich eingerichtet werden müssen.
+                </p>
+
+                <h3>Bühne frei für Parcel</h3>
+                <p>
+                    An genau diesem Punkt setzt <a href="https://parceljs.org/" target="_blank">Parcel</a> an,
+                    da es sich dabei um einen ausgewachsenen „Web Application Bundler” handelt, der komplett
+                    ohne Konfiguration auskommt. Parcel setzt stattdessen einfach voraus, dass unser Projekt
+                    den gängigen Konventionen entsprechend strukturiert ist und dass wir genau das Gleiche
+                    wollen, wie die meisten Webentwickler vor und nach uns auch. Dadurch kann es vorkommen,
+                    dass die eingebauten Regeln von Parcel nicht immer genau das sind, was für ein Projekt
+                    benötigt wird. Können wir uns jedoch an die Vorgaben von Parcel anpassen, bietet es uns
+                    eine elegante und einfache Möglichkeit, all die genannten Vorteile in unseren Projekten
+                    auszukosten.
+                </p>
+                <p>
+                    Um unserem Projekt also gleich von Anfang an den nötigen, professionellen Anstrich zu
+                    verleihen, wollen wir Parcel sogleich in das Projekt integrieren. Du musst daher wieder
+                    eine Konsole öffnen und in darin in das Projektverzeichnis verzweigen. Anschließend
+                    führe den folgenden Befehl aus:
+                </p>
+                <p class="cmd">
+                    npm add --save-dev parcel-bundler
+                </p>
+                <p>
+                    Das Ergebnis sollte wie folgt aussehen:
+                </p>
+                <figure>
+                    <img src="parcel/npm-add.png" />
+                    <figcaption>Installation von Parcel</figcaption>
+                </figure>
+                <p>
+                    Dadurch wird folgende Maschinerie in Gang gesetzt:
+                </p>
+                <ol>
+                    <li>
+                        Das Paket <span class="scr">parcel-bundler</span> wird in der Datei <span class="fn">package.json</span>
+                        als Abhängigkeit für die Entwicklung¹ aufgenommen.
+                    </li>
+                    <li>
+                        Anschließend wird das Paket <span class="scr">parcel-bundler</span> zusammen mit all seinen eigenen
+                        Abhängigkeiten heruntergeladen und innerhalb des Unterverzeichnisses <span class="fn">node_modules</span>
+                        entpackt.
+                    </li>
+                </ol>
+                <p>
+                    ¹
+                    <small>
+                        npm unterscheidet zwei Arten von Abhängigkeiten: Eine normale Abhängigkeit besagt, dass ein bestimmtes
+                        Paket zur Laufzeit benötigt wird, damit unser Code ausgeführt werden kann. Eine Entwicklungsabhängigkeit
+                        besagt hingegen, dass das Paket nur während der Entwicklung, nicht aber später bei der Ausführung benötigt
+                        wird. Diese Unterscheidung macht allerdings nur dann Sinn, wenn du Serveranwendungen mit node.js entwickelst.
+                        In unserem Fall kannst du davon ausgehen, dass es nur Entwicklungsabhängigkeiten gibt, selbst dann, wenn du
+                        eine zur Laufzeit benötigte Bibliothek hinzufügen willst. Denn ohne einen Bundler, der die Bibliothek mit
+                        unserem Quellcode verknüpft, lässt sie sich nur sehr umständlich nutzen.
+                    </small>
+                </p>
+
+                <h3>Was die anderen Teammitglieder später tun müssen</h3>
+                <p>
+                    Im vorherigen Kapitel haben wir durch die <span class="fn">.gitignore</span>-Datei sichergestellt, dass
+                    der Inhalt von <span class="fn">node_modules</span> nicht mit git verwaltet wird. Dies ist auch richtig
+                    so, bedeutet aber auch, dass Parcel bei den anderen Teammitgliedern nicht automatisch installiert wird,
+                    sobald sie ihre lokalen Quellcodes mit git aktualisieren. Stattdessen müssen die anderen Teammitglieder
+                    folgenden Befehl ausführen, damit npm die Datei <span class="fn">package.json</span> nach neuen Abhängigkeiten
+                    untersucht und diese nachinstalliert:
+                </p>
+                <p class="cmd">
+                    npm install
+                </p>
+
+                <h3>Eine winzig kleine HTML-Datei hinzufügen</h3>
+                <p>
+                    Damit wir die Wirkungsweise von Parcel beobachten können, benötigen wir eine HTML-Datei in unserem
+                    Projekt, die gleichzeitig auch den Einstiegspunkt für unsere App darstellt. Hierfür benötigen wir
+                    ein Unterverzeichnis namens <span class="fn">src</span>, in dem wir eine neue Datei mit dem Namen
+                    <span class="fn">index.html</span> anlegen. Andernfalls kann Parcel die Datei später nicht finden.
+                    Die Verzeichnisstruktur muss also so aussehen:
+                </p>
+                <figure>
+                    <img src="parcel/src-index.png" />
+                    <figcaption>
+                        Alle Quellcodes müssen im Unterverzeichnis <span class="fn">src</span> abgelegt werden.
+                    </figcaption>
+                </figure>
+                <p>
+                    Für den Anfang genügt uns dabei eine einfache „Hallo, Welt”-Seite:
+                </p>
+                <pre data-gobble>
+                    <code class="html" data-gobble>
+                        &lt;!DOCTYPE html&gt;
+                        &lt;html&gt;
+                            &lt;head&gt;
+                                &lt;meta charset="utf-8" /&gt;
+                                &lt;title&gt;My Songbook&lt;/title&gt;
+                            &lt;/head&gt;
+                            &lt;body&gt;
+                                &lt;h1&gt;Hallo, Welt!&lt;/h1&gt;
+                            &lt;/body&gt;
+                        &lt;/html&gt;
+                    </code>
+                </pre>
+
+                <h3>npm-Skripte zum Aufruf von Parcel definieren</h3>
+                <p>
+                    Leider ist Parcel, wenn es auf diese Weise installiert wird, ein wenig umständlich aufzurufen,
+                    da seine Startdatei im Unterverzeichnis <span class="fn">node_modules/.bin</span> versteckt ist.
+                    npm bietet uns jedoch die Möglichkeit, in der Datei <span class="fn">package.json</span> so
+                    genannte Skripte zu definieren, die nicht nur den Aufruf vereinfachen, sondern uns auch gleich die
+                    Möglichkeit geben, mehrere Befehle hintereinander auszuführen. Öffne daher die
+                    <span class="fn">package.json</span> in Atom und entferne folgende Zeilen daraus:
+                </p>
+                <pre data-gobble>
+                    <code class="json" data-gobble>
+                        "scripts": {
+                          "test": "echo \"Error: no test specified\" && exit 1"
+                        },
+                    </code>
+                </pre>
+                <p>
+                    Stattdessen füge an der gleichen Stelle folgende, neue Zeilen ein:
+                </p>
+                <pre data-gobble>
+                    <code class="json" data-gobble>
+                        "scripts": {
+                          "clean": "node scripts/clean.js",
+                          "build": "npm run clean; parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+                          "watch": "npm run clean; parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+                          "start": "parcel src/index.html --open"
+                        },
+                    </code>
+                </pre>
+                <p>
+                    Anschließend lege ein neues Unterverzeichnis mit dem Namen <span class="fn">scripts</span>
+                    an und lege dort die Datei <span class="fn">clean.js</span> ab, die du dir aus dem
+                    <a href="https://raw.githubusercontent.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/master/scripts/clean.js" target="_blank">
+                        Vorlageprojekt auf GitHub
+                    </a>
+                    herunterladen kannst. Zusätzlich gib noch folgenden Befehl ein, um das von dieser Datei
+                    benötigte Paket <span class="cmd">shelljs</span> zu installieren:
+                </p>
+                <p class="cmd">
+                    npm add --save-dev shelljs
+                </p>
+                <p>
+                    Letztlich muss das Projektverzeichnis am Ende so aussehen:
+                </p>
+                <figure>
+                    <img src="parcel/scripts-clean.png" />
+                    <figcaption>
+                        Neue Projektstruktur nach dem Hinzufügen von <span class="fn">scripts/clean.js</span>
+                    </figcaption>
+                </figure>
+
+                <h3>Unsere erste Probefahrt mit Parcel</h3>
+                <p>
+                    Durch die eben ausgeführten Schritte stehen dir nun folgende, neue Kommandos zur Verfügung:
+                </p>
+                <table>
+                    <tr>
+                        <td class="cmd" style="width: 9em;">
+                            npm run start
+                        </td>
+                        <td>
+                            Startet einen lokalen Webserver und öffnet die App anschließend.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cmd">
+                            npm run build
+                        </td>
+                        <td>
+                            Baut eine fertige Version der App, die auf einem echten Webserver deployed werden kann.
+                            Die Dateien werden hierfür im Unterverzeichnis <span class="fn">dist</span> abgelegt.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cmd">
+                            npm run watch
+                        </td>
+                        <td>
+                            Aktualisiert die Dateien im Verzeichnis <span class="fn">dist</span> automatisch
+                            nach jeder Quellcodeänderung, ohne jedoch einen lokalen Webserver zu starten.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cmd">
+                            npm run clean
+                        </td>
+                        <td>
+                            Räumt das <span class="fn">dist</span>-Verzeichnis auf und löscht alle Inhalte darin.
+                        </td>
+                    </tr>
+                </table>
+                <p>
+                    Führst du an dieser Stelle nun den Befehl <span class="cmd">npm run build</span> aus,
+                    siehst du, dass Parcel ein neues Verzeichnis mit dem Namen <span class="fn">dist</span>
+                    anlegt und unsere <span class="fn">index.html</span>-Datei darin ablegt. Für den Anfang
+                    ist das noch wenig spektakulär. Es zeigt aber, dass Parcel richtig arbeitet und wir später
+                    in den Genuss aller oben genannter Vorteile kommen können.
+                </p>
+                <p>
+                    Als nächstes gib den Befehl <span class="cmd">npm run start</span> ein, um unsere
+                    Baby-App zu starten. Nach einer kurzen Zeit sollte sich ein neues Browserfenster
+                    mit dem guten alten „Hallo, Welt!” öffnen. Das ist jetzt schon interessanter. Richtig
+                    toll wird es aber erst, wenn du eine Änderung an der HTML-Datei vornimmst, ohne die
+                    App im Browser zu schließen. Du wirst sehen, dass sich die Seite nach jeder Änderung
+                    automatisch neulädt, so dass du beim Entwicken wirklich immer die aktuellste Version
+                    vor dir hast.
+                </p>
+                <figure>
+                    <img src="parcel/hallo-welt.png" class="border" />
+                    <figcaption>Schlicht und ergreifend. Die ersten Worte unsere neuen App.</figcaption>
+                </figure>
+                <p>
+                    Zum Schluss gib noch <span class="cmd">npm run clean</span> ein, um alle Inhalte
+                    aus dem <span class="fn">dist</span>-Verzeichnis wegzuputzen. Aber keine Sorge.
+                    Durch <span class="fn">.gitignore</span> haben wir ohnehin dafür gesorgt, dass sie
+                    nicht unnötigerweise im git-Repository landen.
+                </p>
+
+                <h3>À propos git</h3>
+                <p>
+                    An dieser Stelle wird es mal wieder Zeit, den aktuellen Stand in git einzuchecken
+                    und auf GitHub bereitzustellen. Der folgende Dreisatz erledigt das für dich:
+                </p>
+                <p>
+                    <span class="cmd">git add . </span> (wie immer achte auf den Punkt am Ende des Befehls) <br />
+                    <span class="cmd">git commit</span> <br />
+                    <span class="cmd">git push</span>
+                </p>
             </section>
 
-            <section data-title="Wir müssen ein wenig umdenken">
+            <section data-title="(Wir müssen ein wenig umdenken)">
                 <!--
                 JavaScript Module vs. globale DOM-Variablen
                 import und export
@@ -465,7 +760,7 @@
                 -->
             </section>
 
-            <section data-title="Das Grundgerüst entsteht">
+            <section data-title="(Das Grundgerüst entsteht)">
                 <!--
                 Index.html, app.js, app.css (noch ohne Navigation)
                 Instantiierung des App-Objekts im <script>-Block
@@ -473,7 +768,7 @@
                 -->
             </section>
 
-            <section data-title="Navigation innerhalb der App">
+            <section data-title="(Navigation innerhalb der App)">
                 <!--
                 Je Bildschirmseite eine eigene Klasse
                 constructor(), show() und hide()-Methoden
@@ -487,7 +782,7 @@
                 -->
             </section>
 
-            <section data-title="Dynamische Inhalte erzeugen">
+            <section data-title="(Dynamische Inhalte erzeugen)">
                 <!--
                 Woher kommt der HTML-Code der Bildschirmseiten?
                 Möglichkeit 1: Elemente in der index.html sichtbar/unsichtbar schalten
@@ -498,11 +793,11 @@
                 -->
             </section>
 
-            <section data-title="HTML und CSS nachladen">
+            <section data-title="(HTML und CSS nachladen)">
                 <!--
                 Neue Hilfsmethode zum Aufruf durch den SPA-Router, Parameter: Zu ladendes Modul, neuer HTML-Inhalt des Hauptbereichs
                 Je Bildschirmseite ein Unterverzeichnis
-                import() der Hauptdatei in diesem Verzeichnis
+                import() der Hauptdatei in diesem Verzeichnis -> Progressive Loading
                 Definition von Custom Tags: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
                 Shadow DOM: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
                 Unsere beiden Seiten als Komponente
@@ -510,7 +805,7 @@
                 -->
             </section>
 
-            <section data-title="Lokale Datenhaltung im Browser">
+            <section data-title="(Lokale Datenhaltung im Browser)">
                 <!--
                 Installation von PouchDB
                 Grundlagen der Nutzung (aus API-Dokumentation)
@@ -520,7 +815,7 @@
                 -->
             </section>
 
-            <section data-title="Daten sortieren und filtern">
+            <section data-title="(Daten sortieren und filtern)">
                 <!--
                 Ausprogrammieren der Übersichtsseite (CSS nur Copy & Paste)
                 Sortierung nach Titel oder nach Künstler
@@ -529,7 +824,7 @@
                 -->
             </section>
 
-            <section data-title="Songtexte anzeigen">
+            <section data-title="(Songtexte anzeigen)">
                 <!--
                 Ausprogrammieren der Detailseite zu einem Songtext
                 Bis hierhin nur im Anzeigemodus
@@ -539,7 +834,7 @@
                 -->
             </section>
 
-            <section data-title="Löschen erst nach Rückfrage">
+            <section data-title="(Löschen erst nach Rückfrage)">
                 <!--
                 CSS/JS-Code für einen modalen Dialog
                 Eigene Komponente <popup-ask-delete>
@@ -547,7 +842,7 @@
                 -->
             </section>
 
-            <section data-title="Ein Editor für HTML-Inhalte">
+            <section data-title="(Ein Editor für alle Fälle)">
                 <!--
                 Wechsel in den Änderungsmodus der Detailseite
                 contenteditable-Attribut für Titel und Interpret
@@ -559,7 +854,7 @@
                 -->
             </section>
 
-            <section data-title="Onlinesuche und Anlage eines Songs">
+            <section data-title="(Onlinesuche und Anlage eines Songs)">
                 <!--
                 Neue <popup-create-song>-Komponente ausprogrammieren (viel Copy & Paste)
                 Installation von lyric-get
@@ -571,7 +866,7 @@
                 -->
             </section>
 
-            <section data-title="Ausblick">
+            <section data-title="(Ausblick)">
                 <!--
                 Zusammenfassung, was wir getan haben
                 Welche Teile sind allgemeingültig, wo kann man sich einen Weg aussuchen?
