@@ -112,8 +112,8 @@
             <section data-title="Werkzeuge und Bibliotheken">
                 <p>
                     So simpel die zu erstellende Anwendung ist, so kompliziert ist sie auch. Denn manche scheinbar
-                    triviale Dinge sind am Ende doch aufwändiger umzusetzen, als man zunächst denkt. Wann immer das
-                    passiert, werden wir nicht lange versuchen, das Rad neuzuerfinden. Denn Open Source und Free Software
+                    triviale Dinge sind am Ende doch aufwändiger als man zunächst denkt. Wann immer das passiert,
+                    werden wir nicht lange versuchen, das Rad neuzuerfinden. Denn Open Source und Free Software
                     zum Dank müssen wir das auch gar nicht. Im Internet hat sich eine ausgeprägte Sharing-Kultur herausgebildet,
                     so dass es für viele Probleme bereits fertige Werkzeuge und Bibliotheken gibt, die wir nur zu nutzen
                     brauchen. Wäre doch schade, wenn wir das nicht nutzen würden. Wir müssen dabei auch gar kein
@@ -235,15 +235,212 @@
                 </figure>
             </section>
 
-            <section data-title="Anlage der Projektstruktur">
-                <!--
-                Leeres Verzeichnis
-                npm init → package.json
-                git init
-                Repository in GitHub anlegen
-                git set origin / git push -u origin master
-                Alle anderen git clone
-                -->
+            <section data-title="Eine neues Projekt wird geboren">
+                <h3>Hinweis zur Teamarbeit</h3>
+                <p>
+                    Wenn du mit mehreren Personen an dem Projekt arbeiten willst, muss nur einer
+                    von euch die nachfolgenden Schritte ausführen. Dabei solltet ihr aber
+                    jeden Fall wie beschrieben ein git-Repository anlegen, damit ihr den Quellcode
+                    untereinander teilen könnt.
+                </p>
+
+                <h3>Anlage des Projektverzeichnisses</h3>
+                <p>
+                    In dieser Anleitung fangen wir wirklich ganz von vorne an. Als erstes musst du daher erst ein
+                    neues Verzeichnis anlegen, in dem wir die Webanwendung entwickeln werden. Am Besten legst du
+                    dir hierfür ein allgemeines Verzeichnis für all deine Programmierprojekte an, wenn du noch
+                    keins hast, und erstellst darin ein Unterverzeichnis namens „My-Songbook”.¹ Dieses Unterverzeichnis
+                    wird später alle Dateien beinhalten, die während der Entwicklung der App entstehen.
+                </p>
+                <figure>
+                    <img src="projektstruktur/verzeichnis-leer.png" />
+                    <figcaption>Es beginnt alles mit einem leeren Projektverzeichnis</figcaption>
+                </figure>
+                <p>
+                    ¹
+                    <small>
+                        Achte darauf, dass das Projektverzeichnis kein Leerzeichen im Namen hat. Zwar darf
+                        das Verzeichnis, in dem es liegt, Leerzeichen beinhalten, das Projektverzeichnis
+                        selbst jedoch nicht. Andernfalls lässt sicher weiter unten node.js nicht richtig
+                        initialisieren.
+                    </small>
+                </p>
+                <p>
+                    Damit fremde Entwickler, die auf den Quellcode stoßen, wissen um was für eine Anwendung es sich
+                    handelt und was sie mit dem Quellcode tun dürfen, ist es üblich, dass das Projektverzeichnis
+                    zwei Textdateien mit den Namen <span class="fn">README</span> und <span class="fn">LICENSE</span>
+                    beinhaltet. Sie enthalten eine allgemeine Beschreibung der Anwendung, wichtige Hinweise sowie die
+                    Lizenz, unter welcher die Anwendung veröffentlicht wird. Diese beiden Dateien sind so wichtig,
+                    dass Code-Plattformen wie GitHub ihren Inhalt auf der Projektseite direkt anzeigen.
+                </p>
+                <p>
+                    Bei einer echten Anwendung, kann man bei der Auswahl der Lizenz und beim Schreiben der
+                    <span class="fn">README</span>-Datei gar nicht gewissenhaft genug sein. An dieser Stelle
+                    genügt es aber, wenn du dir von
+                    <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook" target="_blank">GitHub</a>
+                    folgende Dateien herunterlädst und im Projektverzeichnis ablegst. Klicke hierfür einfach
+                    auf die Dateinamen in der Aufzählung.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/raw/master/LICENSE" target="_blank"><tt>LICENSE</tt></a>:
+                        Lizenzbeschreibung unserer Anwendung, hier CC-BY-4.0.
+                    </li>
+                    <li>
+                        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/raw/master/README.md" target="_blank"><tt>README.md</tt></a>:
+                        Textdatei im
+                        <a href="http://markdown.de/" target="_blank">Markdown-Format</a> mit wichtigen Hinweisen
+                    </li>
+                    <li>
+                        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/raw/master/mockup1.png" target="_blank"><tt>mockup1.png</tt></a>:
+                        Skizze der Anwendung für die <span class="fn">README</span>-Datei
+                    </li>
+                    <li>
+                        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/raw/master/mockup2.png" target="_blank"><tt>mockup2.png</tt></a>:
+                        Skizze der Anwendung für die <span class="fn">README</span>-Datei
+                    </li>
+                    <li>
+                        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/raw/master/mockup3.png" target="_blank"><tt>mockup3.png</tt></a>:
+                        Skizze der Anwendung für die <span class="fn">README</span>-Datei
+                    </li>
+                </ul>
+                <p>
+                    Dein Projektverzeichnis sollte hinterher so aussehen:
+                </p>
+                <figure>
+                    <img src="projektstruktur/license-und-readme.png" />
+                    <figcaption>
+                        Projektverzeichnis mit <span class="fn">README</span> und <span class="fn">LICENSE</span>-Datei
+                    </figcaption>
+                </figure>
+
+                <h3>Initialisierung des git-Repositories</h3>
+                <p>
+                    Kaum ein Programmierprojekt kommt heute noch ohne eine gute Versionsverwaltung aus, wobei
+                    <a href="https://git-scm.com/" target="_blank">git</a> hier der absolute Spitzenreiter ist.
+                    Allein schon die Möglichkeit, später noch ganz genau nachvollziehen zu können, was wann
+                    warum und wie geändert wurde, spricht dafür, deinen Quellcode mit git zu verwalten, selbst
+                    wenn du nur ganz alleine daran arbeiten willst. Für die Vorlesung haben wir darum extra
+                    eine eigene <a href="https://www.wpvs.de/atom-git/" target="_blank">Anleitung für den
+                    Umgang mit git, GitHub und Atom</a> zur Verfügung gestellt.
+                </p>
+                <p>
+                    Auch an dieser Stelle wollen wir auf unser eigenes git-Repository nicht verzichten.
+                    Im Gegensatz zur Anleitung wollen wir die notwendigen Schritte jedoch auf der Konsole
+                    ausführen. Als nächstes musst du deshalb ein Konsolenfenster öffnen und darin mit
+                    <span class="cmd">cd Verzeichnisname</span> in das Projektverzeichnis wechseln. Ob es
+                    geklappt hat, siehst du am Verzeichnisnamen, der als Teil des Befehlsprompt angezeigt
+                    wird. Anschließend führe folgende Befehle aus:
+                </p>
+                <ol>
+                    <li>
+                        <span class="cmd">git init</span>
+                    </li>
+                    <li>
+                        <span class="cmd">git add .</span> (beachte den Punkt am Ende des Befehls)
+                    </li>
+                    <li>
+                        <span class="cmd">git commit</span>
+                    </li>
+                </ol>
+                <p>
+                    Dadurch sollte sich ein Texteditor öffnen und dich zur Eingabe einer Commit-Nachricht auffordern.
+                    Hier kannst du dann einfach „Initialer Commit” reinschreiben und den Editor wieder schließen.
+                    Das Ganze sollte in etwa so aussehen:
+                </p>
+                <figure>
+                    <img src="projektstruktur/git-init.png" />
+                    <figcaption>Initialisierung des git-Repositories</figcaption>
+                </figure>
+
+                <p>
+                    Dadurch kannst du jetzt aber nur lokal arbeiten. Dein Quellcode wird noch nicht mit anderen
+                    Entwicklern geteilt. Hierfür musst du das Repository auf einen speziellen git-Server schieben,
+                    auf den alle Projektmitglieder Zugriff haben. Üblicherweise wird hierfür einfach
+                    <a href="https://github.com/" target="_blank">GitHub</a> genutzt,
+                    obwohl es auch eine ganze Reihe genauso leistungsfähiger Webanwendungen zum selbst hosten gibt.
+                    Melde dich daher nun auf GitHub an und lege dort ebenfalls ein neues Repository an. Achte dabei
+                    aber unbedingt darauf, dass das Repository wirklich leer ist und noch keine Dateien beinhalten darf.
+                    Wenn folgende Ansicht erscheint, hast du alles richtig gemacht:
+                </p>
+                <figure>
+                    <img src="projektstruktur/github-leer.png" />
+                    <figcaption>Alles in Ordnung. Das Repository auf GitHub ist komplett leer.</figcaption>
+                </figure>
+                <p>
+                    Die Befehle, die du nun im Konsolenfenster eingeben musst (du hast es hoffentlich noch nicht geschlossen),
+                    stehen unter der Überschrift <span class="scr">… or push an existing repository from the command line</span>.
+                    Kopiere sie in die Zwischenablage und führe sie in der Konsole aus. Anschließend sollten deine Dateien
+                    auch auf GitHub sichtbar sein.
+                </p>
+                <figure>
+                    <img src="projektstruktur/git-push.png" />
+                    <figcaption>Bildschirmausgabe beim Verbinden des lokalen git-Repositories mit GitHub</figcaption>
+                </figure>
+                <figure>
+                    <img src="projektstruktur/github-voll.png" />
+                    <figcaption>Hurra! Alle Dateien werden angezeigt.</figcaption>
+                </figure>
+
+                <h3>Konfiguration von node.js</h3>
+                <p>
+                    Da du das Konsolenfenster ohnehin schon offen hast, wollen wir an dieser Stelle gleich noch
+                    <a href="https://nodejs.org/" target="_blank">node.js</a> bzw. den darin enthaltenen
+                    <a href="https://www.npmjs.com/" target="_blank">Node Package Manager</a>
+                    npm in Betrieb nehmen. Zwar ist node.js vielen nur als „JavaScript für den Server” ein Begriff,
+                    in Wirklichkeit kann es aber auch ganz hervorragend in der Frontendentwicklung eingesetzt werden.
+                    Denn der Node Package Manager macht es geradezu zum Kinderspiel, externe Bibliotheken und zusätzliche
+                    Werkzeuge in unser Projekt einzubinden, weshalb sich npm inzwischen auch gegenüber allen anderen,
+                    ähnlichen Werkzeugen als Standard durchsetzen konnte.
+                </p>
+                <p>
+                    Die Einrichtung von npm ist zum Glück genauso einfach wie seine Benutzung. Du musst lediglich den Befehl
+                    <span class="cmd">npm init</span> in die Konsole eingeben und ein paar grundlegende Fragen beantworten.
+                    Die meisten Vorschlagswerte kannst du dabei auch einfach übernehmen. Der gesamte Ablauf sollte ungefähr
+                    so aussehen:
+                </p>
+                <figure>
+                    <img src="projektstruktur/npm-init.png" />
+                    <figcaption>Initialisierung von node.js und npm</figcaption>
+                </figure>
+                <p>
+                    Wie das Kommando bereits ankündigt, wird dadurch eine neue Datei namens <span class="fn">package.json</span>
+                    angelegt. Technisch gesehen macht sie unser Projekt zu einem node.js-Paket, das sogar auf
+                    <a href="https://www.npmjs.com/" target="_blank">npmjs.com</a> hochgeladen werden könnte. Für reine
+                    Browser-Anwendungen ist dies jedoch vollkommen unerheblich. Alles was hier zählt ist, dass wir dadurch
+                    npm zur Verwaltung aller externen Abhängigkeiten nutzen können.
+                </p>
+                <p>
+                    Im Zusammenhang mit git besitzt npm jedoch auch einen kleinen Nachteil: Es legt sehr viele aus dem Internet
+                    heruntergeladene Dateien im Projektverzeichnis ab, die wertvollen Platz innerhalb des git-Repositories belegen.
+                    Da diese Dateien aber jederzeit wieder mit npm nachgeladen werden können, ist es weder erforderlich noch wirklich
+                    sinnvoll, diese Dateien mit git zu verwalten. Bevor du also irgendetwas weiteres mit npm und git unternimmst,
+                    lege erst eine Datei namens <span class="fn">.gitignore</span> mit folgendem Inhalt im Projektverzeichnis an:
+                </p>
+                <pre data-gobble>
+                    <code data-gobble class="html">
+                        .cache/**
+                        /dist/**
+                        /node_modules/**
+                    </code>
+                </pre>
+                <p>
+                    Anschließend führe einen neuen Add-Commit-Push-Zyklus aus, um deine Änderungen zu versionieren:
+                </p>
+                <ol>
+                    <li>
+                        <span class="cmd">git add .</span> (beachte den Punkt am Ende des Befehls)
+                    </li>
+                    <li>
+                        <span class="cmd">git commit</span>
+                    </li>
+                    <li>
+                        <span class="cmd">git push</span>
+                    </li>
+                </ol>
+                <p>
+                    Das Projektverzeichnis steht nun bereit und wartet darauf, von uns mit Quellcode gefüllt zu werden.
+                </p>
             </section>
 
             <section data-title="Installation von Parcel">
