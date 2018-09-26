@@ -64,79 +64,9 @@
         background-color: #f9f9f9;
         padding: 0.5em;
     }
-
-    #toc {
-        position: fixed;
-    }
 }
 
-/* Daratellung der Bilder */
-figure {
-    margin: 0 auto;
-    margin-bottom: 1em;
-}
-
-figure img {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5em;
-}
-
-figcaption {
-    font-size: 90%;
-}
-
-.border {
-    border: 1px solid #e0e0e0;
-}
-
-/* Automatische Nummerierung der Bilder */
-body {
-    counter-reset: abb;
-}
-
-figcaption {
-    counter-increment: abb;
-}
-
-figcaption:before {
-    content: 'Abb. ' counter(abb) ': ';
-}
-
-/** Großer Abstand zwischen zwei Schritten **/
-.skip {
-    margin-bottom: 2em;
-}
-
-/** Filename **/
-.fn {
-    font-family: 'Roboto Mono', monospace;
-    color: darkgreen;
-}
-
-/** Command **/
-.cmd {
-    font-family: 'Roboto Mono', monospace;
-    color: darkblue;
-}
-
-/** Screen text **/
-.scr {
-    font-family: 'Roboto Mono', monospace;
-    color: darkred;
-}
-
-/** Keyboard Command **/
-kbd {
-    font-family: 'Roboto Mono', monospace;
-    background-color: rgb(240, 240, 240);
-    color: rgb(47, 47, 47);
-    padding: 0 0.2em 0 0.2em;
-    border-radius: 0.2em;
-    border: 1px solid black;
-}
-
-/* Optimierungen für Tabellen */
-td {
-    vertical-align: top;
+/* Deutsche Nummerierung für Abbildungen */
+:root {
+    --figure-short-code: 'Abb. ';
 }

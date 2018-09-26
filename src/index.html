@@ -17,11 +17,16 @@
 
         <!-- Inhaltsverzeichnis -->
         <aside id="toc-left">
-            <section id="toc" data-title="Inhaltsverzeichnis"></section>
+            <section id="toc"></section>
         </aside>
 
         <!-- Dokumenteninhalt -->
         <main id="content">
+            <!-- ============== -->
+            <!-- VORBEREITUNGEN -->
+            <!-- ============== -->
+            <section data-chapter data-title="Vorbereitungen"></section>
+
             <!-- Kapitel -->
             <section data-title="Einleitung">
                 <h3>Herzlich Willkommen!</h3>
@@ -35,6 +40,16 @@
                     Zwar werden wir die wesentlichen Teile daraus auch in der Vorlesung besprechen, hier kannst
                     du aber nochmal jeden Schritt nachvollziehen und dir dabei auch die Dinge anschauen, die wir
                     in der Vorlesung nicht so ausführlich erklären oder aus Zeitgründen überspringen müssen.
+                </p>
+                <p>
+                    Falls du über Google auf diese Seite gelangt bist und dich nun fragst, was mit alle dem
+                    hier gemeint ist, mach dir keine weiteren Gedanken darüber. Diese Anleitung ist Bestandteil
+                    der Vorlesung „Webprogrammierung” im Bachelor-Studiengang „Wirtschaftsinformatik” an der
+                    <a href="https://karlsruhe.dhbw.de" target="_blank">DHBW Karlsruhe</a>. Dort lernen wir
+                    erst gemeinsam die grundlegenden Konzepte der Webentwicklung wie HTML, CSS und JavaScript
+                    und gehen dann in einen praktischen Teil zur Entwicklung einer Browser App über. Ganz
+                    ohne Vorwissen wird dir diese Anleitung daher nicht viel nutzen. Sämtliche Selbstlerneinheiten
+                    aus der Vorlesung sind jedoch auf <a href="https://www.wpvs.de" target="_blank">wpvs.de</a> verfügbar.
                 </p>
 
                 <h3>Was wir programmieren werden</h3>
@@ -750,7 +765,7 @@
                 </p>
             </section>
 
-            <section data-title="(Wir müssen ein wenig umdenken)">
+            <section data-title="Wir müssen ein wenig umdenken">
                 <!--
                 JavaScript Module vs. globale DOM-Variablen
                 import und export
@@ -760,7 +775,12 @@
                 -->
             </section>
 
-            <section data-title="(Das Grundgerüst entsteht)">
+            <!-- =========================== -->
+            <!-- VERSION MIT STATISCHEM HTML -->
+            <!-- =========================== -->
+            <section data-chapter data-title="Version mit statischem HTML"></section>
+
+            <section data-title="Das Grundgerüst entsteht">
                 <!--
                 Index.html, app.js, app.css (noch ohne Navigation)
                 Instantiierung des App-Objekts im <script>-Block
@@ -768,63 +788,49 @@
                 -->
             </section>
 
-            <section data-title="(Navigation innerhalb der App)">
+            <section data-title="Navigation innerhalb der App">
                 <!--
                 Je Bildschirmseite eine eigene Klasse
                 constructor(), show() und hide()-Methoden
                 Wann werden die Methoden aufgerufen?
-                Methode 1: app.showPage("name")
-                Nachteile: Seiten besitzen keine URLs, Zurück-Button nicht unterstützt
-                Lösung: Single Page Router (könnte man selbst programmieren, vgl. History API)
+                app.showPage("name"), schaltet <main>-Elemtene anhand ID (un)sichtbar
+                -->
+            </section>
+
+            <section data-title="Integration des Single Page Routers">
+                <!--
+                Nachteile der bisherigen Lösung:
+                  * JavaScript zum Wechsel der Seiten benötigt, keine <a>
+                  * Seiten besitzen keine URLs
+                  * Zurück-Button nicht unterstützt
+
+                Lösung:
+                 * Selbstbau: Klick auf Links abfangen, popstate-Event ausprogrammieren
+                 * Einfacher: Single Page Router nutzen
+
                 Installation von Navigo
                 Definition einer einfachen URL-Struktur
-                Einbauen eines Links, um zwischen Übersicht und Songtext-Seite zu wechseln
+                Einbauen eines Links, um zwischen Übersicht und Songtext-Seite zu wechseln (noch ihne Inhalt)
                 -->
             </section>
 
-            <section data-title="(Dynamische Inhalte erzeugen)">
+            <section data-title="Die Übersichtsseite entsteht">
                 <!--
-                Woher kommt der HTML-Code der Bildschirmseiten?
-                Möglichkeit 1: Elemente in der index.html sichtbar/unsichtbar schalten
-                Möglichkeit 2: Elemente durch DOM-Manipulation erzeugen
-                Möglichkeit 3: <template>-Elemente innerhalb von index.html
-                Fazit: Alle drei Möglichkeiten haben ihre Vor- und Nachteile.
-                Wann was nutzen?
+                Ausprogrammieren der Übersichtsseite mit Dummy-Daten im HTML
                 -->
             </section>
 
-            <section data-title="(HTML und CSS nachladen)">
-                <!--
-                Neue Hilfsmethode zum Aufruf durch den SPA-Router, Parameter: Zu ladendes Modul, neuer HTML-Inhalt des Hauptbereichs
-                Je Bildschirmseite ein Unterverzeichnis
-                import() der Hauptdatei in diesem Verzeichnis -> Progressive Loading
-                Definition von Custom Tags: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
-                Shadow DOM: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
-                Unsere beiden Seiten als Komponente
-                Hinweis auf komponentenbasierte Frameworks wie Knockout.js
-                -->
-            </section>
-
-            <section data-title="(Lokale Datenhaltung im Browser)">
+            <section data-title="Lokale Datenhaltung im Browser">
                 <!--
                 Installation von PouchDB
                 Grundlagen der Nutzung (aus API-Dokumentation)
                 Definition einer Datenbank-Fassaden-Klasse
                 Vorläufige Dummy-Daten erzeugen, wenn die DB leer ist
-                Minimale Darstellung der vorhandenen Texte auf der Übersichtsseite als <ol> oder ähnlich
+                Anpassung der Übersichtsseite (direkte DOM-Manipulation)
                 -->
             </section>
 
-            <section data-title="(Daten sortieren und filtern)">
-                <!--
-                Ausprogrammieren der Übersichtsseite (CSS nur Copy & Paste)
-                Sortierung nach Titel oder nach Künstler
-                Live-Suche nach vorhandenen Songs
-                Absprung in die Detailseite eines Songs
-                -->
-            </section>
-
-            <section data-title="(Songtexte anzeigen)">
+            <section data-title="Songtexte anzeigen">
                 <!--
                 Ausprogrammieren der Detailseite zu einem Songtext
                 Bis hierhin nur im Anzeigemodus
@@ -834,7 +840,7 @@
                 -->
             </section>
 
-            <section data-title="(Löschen erst nach Rückfrage)">
+            <section data-title="Modales Popup vor dem Löschen">
                 <!--
                 CSS/JS-Code für einen modalen Dialog
                 Eigene Komponente <popup-ask-delete>
@@ -842,7 +848,7 @@
                 -->
             </section>
 
-            <section data-title="(Ein Editor für alle Fälle)">
+            <section data-title="Ein Editor für alle Fälle">
                 <!--
                 Wechsel in den Änderungsmodus der Detailseite
                 contenteditable-Attribut für Titel und Interpret
@@ -854,7 +860,7 @@
                 -->
             </section>
 
-            <section data-title="(Onlinesuche und Anlage eines Songs)">
+            <section data-title="Onlinesuche und Anlage eines Songs">
                 <!--
                 Neue <popup-create-song>-Komponente ausprogrammieren (viel Copy & Paste)
                 Installation von lyric-get
@@ -866,12 +872,134 @@
                 -->
             </section>
 
-            <section data-title="(Ausblick)">
+            <!-- ========================== -->
+            <!-- VERSION MIT HTML-TEMPLATES -->
+            <!-- ========================== -->
+            <section data-chapter data-title="Version mit HTML-Templates"></section>
+
+            <section data-title="Funktionsweise von Templates">
+                <!--
+                Nachteile des bisherigen Ansatzes
+                    * HTML hart-codiert in der index.html, schwer zu ändern
+                    * Viel Code zur DOM-Manipulation, um dynamische Inhalte einzubeziehen
+
+                Vorteile von Templates
+                Wann Templates nutzen und wann nichts
+                Funktionsweise von Templates
+                Template-Sprachen vs. JavaScript Template-Strings
+                Nutzung des <template>-Elements
+                Wie die Seiten angepasst werden müssen
+                -->
+            </section>
+
+            <section data-title="Anpassungen an der Übersichtsseite">
+            </section>
+
+            <section data-title="Anpassungen an der Songansicht">
+            </section>
+
+            <!-- ============================ -->
+            <!-- PROGRESSIVE HTML-KOMPONENTEN -->
+            <!-- ============================ -->
+            <section data-chapter data-title="Progressive HTML-Komponenten"></section>
+
+            <section data-title="Funktionsweise progressiver Web Apps">
+                <!--
+                Nachladen von Teilen der Seite beim ersten Zugriff
+                Statt einer großen, monolithischen App mit langer Ladezeit
+                import()-Funktion als zentrales Werkzeug, bereitgestellt durch den Bundler
+                -->
+            </section>
+
+            <section data-title="Eigene HTML-Elemente definieren">
+                <!--
+                Definition von Custom Tags: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+                Shadow DOM: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
+                Ausblick auf Web Components?
+                Hinweis auf komponentenbasierte Frameworks wie knockout.js
+                -->
+            </section>
+
+            <section data-title="Der SPA-Router neu definiert">
+                <!--
+                Neue Hilfsmethode zum Aufruf durch den SPA-Router, Parameter: Zu ladendes Modul, neuer HTML-Inhalt des Hauptbereichs
+                Je Bildschirmseite ein Unterverzeichnis
+                import() der Hauptdatei in diesem Verzeichnis -> Progressive Loading
+                -->
+            </section>
+
+            <section data-title="Eine Komponente für die gesamte App">
+            </section>
+
+            <section data-title="Wir zersägen die Übersichtsseite">
+            </section>
+
+            <section data-title="Popup zur Onlinesuche eines Songtexts">
+            </section>
+
+            <section data-title="Zum Schluss noch die Detailseite">
+            </section>
+
+            <!-- ====== -->
+            <!-- EPILOG -->
+            <!-- ====== -->
+            <section data-chapter data-title="Epilog"></section>
+
+            <section data-title="Zusammenfassung und Ausblick">
                 <!--
                 Zusammenfassung, was wir getan haben
                 Welche Teile sind allgemeingültig, wo kann man sich einen Weg aussuchen?
                 Welche Vorteile ein Framework bringen kann? (Data Binding, Weniger Arbeit, ...)
                 Warum eine kleine, selbstgebaute Lösung auch gut ist (mehr Kontrolle, weniger Bloat, einfachere Dependency Upgrades)
+                -->
+            </section>
+
+            <section data-title="Data Binding selbstgebaut">
+                <!--
+                Vorteile von Data Binding, Funktionsweise
+                Umsetzung in bekannten Frameworks
+                One-Way vs. Two-Way, Binding innerhalb JS vs. DOM
+                Data-Binding-Klasse aus lecture-slides.js
+                -->
+            </section>
+
+            <section data-title="Und wenn ich nun doch ein Framework will?">
+                <!--
+                Kein Problem. Aber jetzt weißt du wenigstens, wie sie funktionieren
+                und welche Arbeit sie dir abnehmen.
+
+                Angular, knockout.js, vue.js, weitere?
+                Vergleich zu Nicht-Komponentenbasierten-Frameworks, z.B. klassisches MVC?
+                -->
+            </section>
+
+            <section data-title="Wir bauen eine Desktop App mit Electron">
+                <!--
+                Funktionsweise und Geschichte und Electron
+                Beispiele: Atom, Visual Studio Code, GitHub Client, ...
+                Vor- und Nachteile gegenüber nativen Desktop Apps
+                Schritte, um „My Songbook” mit Electron zu verpacken
+                -->
+            </section>
+
+            <section data-title="Das Songbuch auf Reisen dank Cordova">
+                <!--
+                Funktionsweise und Geschichte von Phonegap/Cordova
+                Android und iOS mit einer Code-Basis
+                Beispiele: Meteor Fraemwork, weitere? Bekannte Apps?
+                Selbe Vor- und Nachteile wie bei Electron vs. native Desktop Apps
+                Schritte, um „My Songbook” mit Cordova zu verpacken
+                -->
+            </section>
+
+            <section data-title="Mit Ubuntu Core auf die große Bühne">
+                <!--
+                Embedded Devices sind ein weitere, moderner Anwendungsfall für Web Apps
+                Traditionell andere, hardwärenähere UI-Technologien
+                Dank IoT und leistungsfähiger Hardware aber immer mehr HTML-Apps u.a. in Smart TVs
+                Viele Möglichkeiten, ein eingebettetes Linux-System zu bauen
+                Einfachste Möglichkeit: Ubuntu Core und Snaps
+                Schritte, um „My Songbook” auf einem Pi im Kiosk-Modus zu starten
                 -->
             </section>
         </main>
