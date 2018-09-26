@@ -1,7 +1,8 @@
 import MiniTutorial from "mini-tutorial.js";
-import mtTheme from "mini-tutorial.js/themes/white.css";
-import mtCommonCSS from "mini-tutorial.js/themes/common.css";
-import stylesheet from "./index.css";
+import mtThemeWhite from "mini-tutorial.js/themes/white.css";
+import mtThemeBook from "mini-tutorial.js/themes/book.css";
+import mtThemeCommon from "mini-tutorial.js/themes/common.css";
+import myStylesheet from "./style.css";
 
 import hljs from 'highlight.js/lib/highlight';
 import hljsLangXML from 'highlight.js/lib/languages/xml';

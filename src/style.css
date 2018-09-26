@@ -1,0 +1,4 @@
+/* Deutsche Nummerierung für Abbildungen */
+:root {
+    --figure-short-code: 'Abb. ';
+}
