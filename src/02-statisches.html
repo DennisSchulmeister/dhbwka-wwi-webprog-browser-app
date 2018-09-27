@@ -1,0 +1,96 @@
+<!-- =========================== -->
+<!-- VERSION MIT STATISCHEM HTML -->
+<!-- =========================== -->
+<section data-chapter data-title="Version mit statischem HTML"></section>
+
+<section data-title="Das Grundgerüst entsteht">
+    <!--
+    Index.html, app.js, app.css (noch ohne Navigation)
+    Instantiierung des App-Objekts im <script>-Block
+    Allgemeines Stylesheet (Copy und Paste)
+    -->
+</section>
+
+<section data-title="Navigation innerhalb der App">
+    <!--
+    Je Bildschirmseite eine eigene Klasse
+    constructor(), show() und hide()-Methoden
+    Wann werden die Methoden aufgerufen?
+    app.showPage("name"), schaltet <main>-Elemtene anhand ID (un)sichtbar
+    -->
+</section>
+
+<section data-title="Integration des Single Page Routers">
+    <!--
+    Nachteile der bisherigen Lösung:
+      * JavaScript zum Wechsel der Seiten benötigt, keine <a>
+      * Seiten besitzen keine URLs
+      * Zurück-Button nicht unterstützt
+
+    Lösung:
+     * Selbstbau: Klick auf Links abfangen, popstate-Event ausprogrammieren
+     * Einfacher: Single Page Router nutzen
+
+    Installation von Navigo
+    Definition einer einfachen URL-Struktur
+    Einbauen eines Links, um zwischen Übersicht und Songtext-Seite zu wechseln (noch ihne Inhalt)
+    -->
+</section>
+
+<section data-title="Die Übersichtsseite entsteht">
+    <!--
+    Ausprogrammieren der Übersichtsseite mit Dummy-Daten im HTML
+    -->
+</section>
+
+<section data-title="Lokale Datenhaltung im Browser">
+    <!--
+    Installation von PouchDB
+    Grundlagen der Nutzung (aus API-Dokumentation)
+    Definition einer Datenbank-Fassaden-Klasse
+    Vorläufige Dummy-Daten erzeugen, wenn die DB leer ist
+    Anpassung der Übersichtsseite (direkte DOM-Manipulation)
+    -->
+</section>
+
+<section data-title="Songtexte anzeigen">
+    <!--
+    Ausprogrammieren der Detailseite zu einem Songtext
+    Bis hierhin nur im Anzeigemodus
+    Buttons zum Löschen und Bearbeiten bereits vorsehen
+    Bei Klick auf "Löschen" direkt löschen und zurück zur Übersicht
+    Navigation zurück zur Übersicht (wenn nicht bereits geklärt)
+    -->
+</section>
+
+<section data-title="Modales Popup vor dem Löschen">
+    <!--
+    CSS/JS-Code für einen modalen Dialog
+    Eigene Komponente <popup-ask-delete>
+    Aufruf des Dialogs an der richtigen Stelle
+    -->
+</section>
+
+<section data-title="Ein Editor für alle Fälle">
+    <!--
+    Wechsel in den Änderungsmodus der Detailseite
+    contenteditable-Attribut für Titel und Interpret
+    Event Handler um ENTER abzufangen (keine neue Zeile bzw. <div> bei ENTER, dafür ins nächste Feld springen, event.preventDefaul())
+    <textarea> zum Bearbeiten des HTML-Codes des Textes
+    Installation von Qilk
+    WYSIWIG-Bearbeiten des Textes mit Quilk
+    Änderungen sichern bei Okay, Seite neuladen bei Abbrechen
+    -->
+</section>
+
+<section data-title="Onlinesuche und Anlage eines Songs">
+    <!--
+    Neue <popup-create-song>-Komponente ausprogrammieren (viel Copy & Paste)
+    Installation von lyric-get
+    Abruf eines Songs mit lyric-get
+    Bessere Alternative: Fetch API mit await
+    Abruf des Songs mit der Fetch API, Auswerten des JSON-Strings
+    Aufruf der Detailseite im Neuanlagemodus
+    Hierfür notwendige Anpassungen an der Detailseite
+    -->
+</section>
