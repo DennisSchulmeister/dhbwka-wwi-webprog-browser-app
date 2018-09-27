@@ -28,8 +28,10 @@ async function fetchChapters(chapters, callback) {
 }
 
 function startApplication(html) {
-    let main = document.querySelector("main");
-    main.innerHTML = html;
+    if (html) {
+        let main = document.querySelector("main");
+        main.innerHTML = html;
+    }
 
     hljs.registerLanguage("html", hljsLangXML);
     hljs.registerLanguage("css", hljsLangCSS);

@@ -318,9 +318,11 @@
         Auch an dieser Stelle wollen wir auf unser eigenes git-Repository nicht verzichten.
         Im Gegensatz zur Anleitung wollen wir die notwendigen Schritte jedoch auf der Konsole
         ausführen. Als nächstes musst du deshalb ein Konsolenfenster öffnen und darin mit
-        <span class="cmd">cd Verzeichnisname</span> in das Projektverzeichnis wechseln. Ob es
-        geklappt hat, siehst du am Verzeichnisnamen, der als Teil des Befehlsprompt angezeigt
-        wird. Anschließend führe folgende Befehle aus:
+        <span class="cmd">cd Verzeichnisname</span> in das Projektverzeichnis wechseln.
+        Falls der Verzeichnispfad Leerzeichen enthält, musst du ihn in Anführungszeichen setzen.
+        Ob es geklappt hat, siehst du in der Regel am Verzeichnisnamen, der als Teil des
+        Befehlsprompt angezeigt wird. Außer unter macOS, wo du das aktuelle Verzeichnis mit
+        <span class="cmd">pwd</span> überprüfen kannst. Anschließend führe folgende Befehle aus:
     </p>
     <ol>
         <li>
@@ -335,8 +337,36 @@
     </ol>
     <p>
         Dadurch sollte sich ein Texteditor öffnen und dich zur Eingabe einer Commit-Nachricht auffordern.
-        Hier kannst du dann einfach „Initialer Commit” reinschreiben und den Editor wieder schließen.
-        Das Ganze sollte in etwa so aussehen:
+        Hier kannst du dann einfach „Initialer Commit” oder „Projekt angelegt” reinschreiben und den Editor
+        wieder schließen. Wie du das anstellst, siehst du anhand der folgenden Screenshots:
+    </p>
+    <figure>
+        <img src="projektstruktur/commit-gui-editor.jpg" />
+        <figcaption>
+            Wenn sich ein normaler Editor öffnet, gibt die Commit-Nachricht ein, speichere und schließe den Editor.
+        </figcaption>
+    </figure>
+    <figure>
+        <img src="projektstruktur/commit-nano.jpg" />
+        <figcaption>
+            Wenn in der Konsole folgendes erscheint, ist das der Editor
+            <a href="https://de.wikipedia.org/wiki/Nano_(Texteditor)" target="_blank">nano</a>.
+            Gib deine Meldung ein und drücke <kbd>Strg</kbd>+<kbd>O</kbd> zum Sichern und dann
+            <kbd>Strg</kbd>+<kbd>X</kbd> zum Beenden.
+        </figcaption>
+    </figure>
+    <figure>
+        <img src="projektstruktur/commit-vi.jpg" />
+        <figcaption>
+            Das ist <a href="https://de.wikipedia.org/wiki/Vi" target="_blank">Vi</a>.
+            Drücke erst <kbd>i</kbd>, um den <span class="scr">Insert Mode</span> zu gelangen,
+            und gib dann deine Commit-Nachricht ein. Anschließend wechsle mit <kbd>ESC</kbd>,
+            <kbd>:</kbd> wieder zurück in den Befehlsmodus und beende den
+            Editor mit dem Befehl <span class="cmd">wq</span>.
+        </figcaption>
+    </figure>
+    <p>
+        Am Ende sollte <span class="cmd">git</span> folgende Zeilen ausgeben:
     </p>
     <figure>
         <img src="projektstruktur/git-init.png" />
