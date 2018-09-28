@@ -7,11 +7,467 @@
 <!-- Das Grundgerüst entsteht -->
 <!-- –––––––––––––––––––––––– -->
 <section data-title="Das Grundgerüst entsteht">
-    <!--
-    Index.html, app.js, app.css (noch ohne Navigation)
-    Instantiierung des App-Objekts im <script>-Block
-    Allgemeines Stylesheet (Copy und Paste)
-    -->
+    <p>
+        Bis hierhin sieht unsere App irgendwie noch so gar nicht wie eine App
+        aus. Sondern mehr wie eine normale Webseite. Schlimmer noch: Wie ein
+        ganz banales „Hallo, Welt!”. An dieser Stelle wollen wir daher das
+        Grundlayout der App erstellen, so dass das wir hinterher folgendes
+        Ergebnis sehen:
+    </p>
+    <figure>
+        <img src="02/grundstruktur/layout-fertig.jpg" class="border" />
+        <figcaption>Das Layout der App, wenn wir hier fertig sind</figcaption>
+    </figure>
+    <p>
+        Der angezeigte Inhalt ist natürlich nur ein Platzhalter und wird überhaupt
+        noch nicht in irgend einer Weise dynamisch erzeugt. Wir können ihn deshalb
+        einfach direkt in die HTML-Seite schreiben, damit wir beim Erstellen der
+        Stylesheets auch etwas sehen.
+        Entferne nun also das <span class="cmd">&lt;h1&gt;</span> aus der
+        <span class="fn">src/index.html</span> und ersetze es durch folgenden
+        Code. Alle anderen Zeilen bleiben unverändert.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;section id="app"&gt;
+                &lt;header&gt;
+                    &lt;!-- Topbar-Inhalte immer sichtbar --&gt;
+                    &lt;div class="top left"&gt;
+                        &lt;div class="item inactive"&gt;
+                            &lt;b&gt;
+                                Beispiel einer Browser App: My Songbook
+                            &lt;/b&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="top right"&gt;
+                        &lt;div class="item"&gt;
+                            &lt;a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook" target="_blank"&gt;GitHub&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div class="item"&gt;
+                            &lt;a href="https://www.wpvs.de/browser-app/" target="_blank"&gt;Programmieranleitung&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Topbar-Inhalte der Seite --&gt;
+                    &lt;div class="bottom left"&gt;
+                        &lt;div class="item"&gt;
+                            Seite anlegen
+                        &lt;/div&gt;
+                        &lt;div class="item"&gt;
+                            Sortierung nach Titel
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="bottom right"&gt;
+                        &lt;input placeholder="Suchen" /&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+
+                &lt;!-- Inhalt der Seite --&gt;
+                &lt;main&gt;
+                    &lt;div class="padding"&gt;
+                        Under Construction
+                    &lt;/div&gt;
+                &lt;/main&gt;
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        Denkt man sich den Dummy-Inhalt weg, lässt sich daran nun endlich der Aufbau
+        der Seite erkennen:
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;section id="app"&gt;
+                &lt;header&gt;
+                    &lt;!-- Topbar-Inhalte immer sichtbar --&gt;
+                    &lt;div class="top left"&gt;
+                        …
+                    &lt;/div&gt;
+                    &lt;div class="top right"&gt;
+                        …
+                    &lt;/div&gt;
+
+                    &lt;!-- Topbar-Inhalte der Seite --&gt;
+                    &lt;div class="bottom left"&gt;
+                        …
+                    &lt;/div&gt;
+                    &lt;div class="bottom right"&gt;
+                        …
+                    &lt;/div&gt;
+                &lt;/header&gt;
+
+                &lt;!-- Inhalt der Seite --&gt;
+                &lt;main&gt;
+                    …
+                &lt;/main&gt;
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        Diese Inhalte müssen wir nun mit den Stylesheets in Form bringen, da die
+        eingebauten Layoutregeln des Browsers nicht einmal ansatzweise wie die
+        Abbildung oben aussehen. Hierfür musst du dir zunächt von GitHub folgende
+        drei Bilder besorgen:
+    </p>
+    <ul>
+        <li>
+            <a href="https://raw.githubusercontent.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/master/src/favicon.svg" target="_blank">src/favicon.svg</a>: Icon der App
+        </li>
+        <li>
+            <a href="https://raw.githubusercontent.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/master/src/background.jpg" target="_blank">src/background.jpg</a>: Hintergrundbild auf großen Bildschirmen
+        </li>
+        <li>
+            <a href="https://raw.githubusercontent.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/master/src/construction.jpg" target="_blank">src/construction.jpg</a>: Platzhalter im Hauptbereich der App
+        </li>
+    </ul>
+    <p>
+        Anschließend lege eine neue Datei namens <span class="fn">src/theme.css</span> und
+        folgendem Inhalt an. Sie enthält häufig benötigte
+        <a href="https://www.w3schools.com/css/css3_variables.asp" target="_blank">CSS-Variablen</a>,
+        die wir an anderer Stelle immer wieder benötigen werden:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            html {
+                --font-color:                     black;
+                --highlight-background-color:     rgab(235, 235, 235, 1.0);
+
+                --header-normal-background-color: rgba(017,111,159, 1.0);
+                --header-normal-font-color:       rgba(255,255,255, 0.8);
+                --header-active-background-color: rgba(255,255,255, 0.2);
+                --header-active-font-color:       rgba(255,255,255, 0.9);
+            }
+        </code>
+    </pre>
+    <p>
+        Damit haben wir erst einmal alle Dateien beisammen. Die Verzeichnisstruktur sollte jetzt
+        wie in der nächsten Abbildung bei dir aussehen:
+    </p>
+    <figure>
+        <img src="02/grundstruktur/alle-dateien.png" />
+        <figcaption>Verzeichnisstruktur der Webanwendung an dieser Stelle</figcaption>
+    </figure>
+    <p>
+        Damit das neue Stylesheet nun aber auch wirken kann, muss es erst noch importiert werden.
+        Ändere deshalb den Import des alten Stylesheets in der <spann class="fn">src/index.js</spann>
+        zu folgenden zwei Zeilen ab. Achte dabei aber darauf, wirklich erst die Datei
+        <span class="fn">./index.css</span> und dann die Datei <span class="fn">./theme.css</span>
+        zu importieren:
+    </p>
+    <pre data-gobble>
+        <code class="js" data-gobble>
+            import stylesheet from "./index.css";
+            import theme from "./theme.css";
+        </code>
+    </pre>
+    <p>
+        Der Inhalt der Datei <span class="fn">src/index.css</span> ändert sich nun komplett
+        zu folgenden Zeilen. Zunächst ein paar allgemeine Definitionen:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Dieses Stylesheet enthält nur allgemeine Anweisungen, die sich auf die
+             * gesamte App auswirken. Hier dürfen keine Änderungen vorgenommen werden,
+             * die sich nur auf bestimmte Bereiche der Anwendung auswirken sollen.
+             *
+             * Damit @import funktioniert, muss die Anweisung vor allen anderen
+             * CSS-Anweisungen stehen. Dieses Stylesheet muss daher auch vor allen
+             * anderen importiert werden.
+             */
+            @import url('https://fonts.googleapis.com/css?family=Roboto');
+
+            html, body {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+            }
+
+            body {
+                font-family: 'Roboto', sans-serif;
+                font-size: 11pt;
+                line-height: 1.6;
+                color: var(--font-color);
+            }
+        </code>
+    </pre>
+
+    <p>
+        Dann ein paar Anpassungen der Schriftgröße je nach Bildschirmauflösung:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Größere Schrift auf größeren Bildschirmen
+             * Vgl. https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints
+             */
+            @media screen and (min-width: 768px) {
+                body,
+                input {
+                    font-size: 12pt;
+                }
+            }
+
+            @media screen and (min-width: 992px) {
+                body,
+                input {
+                    font-size: 13pt;
+                }
+            }
+
+            @media screen and (min-width: 1200px) {
+                body,
+                input {
+                    font-size: 14pt;
+                }
+            }
+        </code>
+    </pre>
+
+    <p>
+        Und zum Schluss wie immer ein Media Query, um auf großen Bildschirmen
+        die Darstellung zu optimieren, sowie ein paar nützliche Helferlein:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Flächendeckender Seitenhintergrund auf großen Bildschirmen
+             */
+            @media (min-width: 80em) {
+                /* Hintergrundbild hinter dem Hauptbereich der App */
+                html {
+                    /* https://pixabay.com/de/computer-notebook-kaffee-820281/ */
+                    background-image: url(background.jpg);
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-position: center;
+                }
+
+                /* Hauptbereich der App vergrößern */
+                body {
+                    display: flex;
+                    align-items: stretch;
+                    justify-content: center;
+                }
+
+                body > * {
+                    flex: 1;
+                }
+            }
+
+            /*
+             * Häufig benötigte Hilfsklassen
+             */
+            .hidden {
+                display: none;
+            }
+
+            .padding {
+                padding: 0.5rem;
+            }
+        </code>
+    </pre>
+
+    <p>
+        Wie du (hoffentlich) siehst, werden hier wirklich nur ganz allgemeine Dinge
+        geregelt, die sich auf die gesamte App auswirken. Spezifische Anpassungen
+        für einen einzelnen Bereich werden stattdessen in getrennten Stylesheets
+        vorgenommen, wobei es um Grunde genommen fast je JavaScript-Datei auch
+        eine gleichnamige CSS-Datei geben muss. Die Datei
+        <span class="fn">src/app.css</span> beginnt daher wie immer mit ein paar
+        allgemeinen Definitionen:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Dieses Stylesheet darf nur Selektoren beinhalten, die mit #app beginnen.
+             * Denn wir wollen nicht, dass hier Eigenschaften aus anderen Bereichen der
+             * Anwendung überschrieben werden.
+             */
+            #app {
+                background-color: white;
+                flex: 1;
+            }
+        </code>
+    </pre>
+    <p>
+        Daraufhin folgt eine große Zahl an Regeln zur Gestaltung des Kopfbereichs.
+        Auch sie fangen alle mit <span class="cmd">#app</span> an, um ihre Gültigkeit
+        zu begrenzen:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Kopfbereich über dem Inhalt
+             */
+            #app header {
+                background-color: var(--header-normal-background-color);
+                color: var(--header-normal-font-color);
+            }
+
+            #app header > *,
+            #app header input,
+            #app header .item {
+                display: block;
+                box-sizing: border-box;
+                width: 100%;
+            }
+
+            #app header > .top {
+                font-size: 80%;
+
+                border: 0px solid var(--header-active-background-color);
+                border-bottom-width: 1px;
+            }
+
+            #app header > .top .item,
+            #app header > .top input {
+                padding: 0.5rem;
+            }
+
+            #app header > .bottom {
+                border: 0px solid var(--header-active-background-color);
+                border-bottom-width: 1px;
+            }
+
+            #app header > .bottom .item,
+            #app header > .bottom input {
+                padding: 1rem 0.5rem 1rem 0.5rem;
+            }
+
+            #app header .active,
+            #app header .item:not(.inactive):hover {
+                background-color: var(--header-active-background-color);
+                color: var(--header-active-font-color);
+            }
+
+            #app header .item:not(.inactive) {
+                cursor: pointer;
+            }
+
+            #app header a,
+            #app header a:visited {
+                color: var(--header-normal-font-color);
+                text-decoration: none;
+            }
+
+            #app header a:hover {
+                color: var(--header-active-font-color);
+                text-decoration: underline;
+            }
+
+            #app header input {
+                background: none;
+                color: var(--header-normal-font-color);
+                border: 0;
+            }
+        </code>
+    </pre>
+
+    <p>
+        Dann wieder etwas temporärer Inhalt, so dass unser schönes Baustellenbild
+        beim Aufruf der App sichtbar ist. Durch die folgenden Zeilen wird das
+        Bild in der App eingeblendet 🚧 und ein kleiner Hinwestext in der Mitte
+        angezeigt:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Hauptinhalt
+             */
+            #app main {
+                /*
+                 * Temporärer Inhalt, solange es noch keinen richtigen Inhalt gibt
+                 * Bild: https://pixabay.com/de/handwerker-baustelle-arbeiter-3094035/
+                 */
+                background-image: url(construction.jpg);2
+                background-size: 100% auto;
+                background-position: bottom center;
+                background-repeat: no-repeat;
+
+                color: rgb(255, 246, 23);
+                text-shadow: 1px 1px 2px black;
+                font-size: 300%;
+                font-weight: bold;
+                text-align: center;
+            }
+        </code>
+    </pre>
+    <p>
+        Und zum Schluß wie immer eine Anpassung an große Bildschirme. Die Angabe
+        <span class="cmd">(min-width: 80em)</span> in der fünften Zeile muss daher
+        exakt mit dem Media Query in der <span class="fn">src/index.css</span>
+        stehen, damit die Darstellung in jedem Fall passt:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Anpassung an große Bildschirme, sobald in der index.css das große
+             * Hintergrundbild eingeschaltet wird
+             */
+            @media screen and (min-width: 80em) {
+                /* Rahmen um den Hauptbereich zeichnen */
+                #app {
+                    max-width: 80em;
+                    margin-top: 2em;
+                    margin-bottom: 2em;
+
+                    border: 1px solid rgba(32,32,32, 0.2);
+                    box-shadow: 1px 1px 3px rgba(0,0,0, 0.1);
+                }
+
+                /* Topbar- und Toolbar-Inhalte nebeneinander */
+                #app header {
+                    display: grid;
+                    grid-template-columns: auto 20em;
+                }
+
+                #app header .top {
+                    grid-row: 1;
+                }
+
+                #app header .bottom {
+                    grid-row: 2;
+                }
+
+                #app header .left {
+                    grid-column: 1;
+
+                    display: flex;
+                    justify-content: flex-start;
+                }
+
+                #app header .right{
+                    grid-column: 2;
+
+                    display: flex;
+                    justify-content: flex-start;
+
+                    background-color: var(--header-active-background-color);
+                    color: var(--header-active-font-color);
+                }
+
+                #app header .item {
+                    width: auto;
+                }
+
+                /* Nur den Bereich unterhalb der Toolbar scrollen */
+                #app {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                #app > main {
+                    flex: 1;
+                    overflow: auto;
+                }
+            }
+        </code>
+    </pre>
+    <p>
+        Und das war es dann auch schon. Zugegeben war das jetzt zwar extrem viel Copy &amp; Paste.
+        Auf dieser Grundlage können wir der App im nächsten Schritt nun aber ein wenig Leben einhauchen.
+    </p>
 </section>
 
 <!-- –––––––––––––––––––––––––––– -->
