@@ -22,7 +22,7 @@
         Der angezeigte Inhalt ist natürlich nur ein Platzhalter und wird überhaupt
         noch nicht in irgend einer Weise dynamisch erzeugt. Wir können ihn deshalb
         einfach direkt in die HTML-Seite schreiben, damit wir beim Erstellen der
-        Stylesheets auch etwas sehen.
+        Stylesheets schon etwas sehen.
         Entferne nun also das <span class="cmd">&lt;h1&gt;</span> aus der
         <span class="fn">src/index.html</span> und ersetze es durch folgenden
         Code. Alle anderen Zeilen bleiben unverändert.
@@ -72,7 +72,7 @@
         </code>
     </pre>
     <p>
-        Denkt man sich den Dummy-Inhalt weg, lässt sich daran nun endlich der Aufbau
+        Denkt man sich den Dummy-Inhalt weg, lässt sich auch schon der Aufbau
         der Seite erkennen:
     </p>
     <pre data-gobble>
@@ -104,10 +104,10 @@
         </code>
     </pre>
     <p>
-        Diese Inhalte müssen wir nun mit den Stylesheets in Form bringen, da die
-        eingebauten Layoutregeln des Browsers nicht einmal ansatzweise wie die
-        Abbildung oben aussehen. Hierfür musst du dir zunächt von GitHub folgende
-        drei Bilder besorgen:
+        Diese Inhalte müssen wir nun mit den zuvor angelegten Stylesheets in Form bringen,
+        da die eingebauten Layoutregeln des Browsers natürlich nicht wie von Zauberhand
+        einfach das obigen Layout erzeugen werden. Doch zuvor musst du dir von GitHub
+        folgende drei Bilder herunterladen:
     </p>
     <ul>
         <li>
@@ -272,8 +272,8 @@
         Wie du (hoffentlich) siehst, werden hier wirklich nur ganz allgemeine Dinge
         geregelt, die sich auf die gesamte App auswirken. Spezifische Anpassungen
         für einen einzelnen Bereich werden stattdessen in getrennten Stylesheets
-        vorgenommen, wobei es um Grunde genommen fast je JavaScript-Datei auch
-        eine gleichnamige CSS-Datei geben muss. Die Datei
+        vorgenommen, wobei es im Grunde genommen je JavaScript-Datei eine gleichnamige
+        CSS-Datei gibt. Die Datei
         <span class="fn">src/app.css</span> beginnt daher wie immer mit ein paar
         allgemeinen Definitionen:
     </p>
@@ -365,10 +365,9 @@
     </pre>
 
     <p>
-        Dann wieder etwas temporärer Inhalt, so dass unser schönes Baustellenbild
-        beim Aufruf der App sichtbar ist. Durch die folgenden Zeilen wird das
-        Bild in der App eingeblendet 🚧 und ein kleiner Hinwestext in der Mitte
-        angezeigt:
+        Dann wieder etwas temporärer Inhalt, um das Baustellenbild beim Aufruf
+        der App anzuzeigen 🚧 und einen kleinen Hinwestext in der Mitte zu
+        platzieren:
     </p>
     <pre data-gobble>
         <code class="css" data-gobble>
@@ -394,8 +393,8 @@
         </code>
     </pre>
     <p>
-        Und zum Schluß wie immer eine Anpassung an große Bildschirme. Die Angabe
-        <span class="cmd">(min-width: 80em)</span> in der fünften Zeile muss daher
+        Und zum Schluß wie immer die Anpassung an große Bildschirme. Die Angabe
+        <span class="cmd">(min-width: 80em)</span> in der fünften Zeile muss
         exakt mit dem Media Query in der <span class="fn">src/index.css</span>
         stehen, damit die Darstellung in jedem Fall passt:
     </p>
