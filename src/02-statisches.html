@@ -34,10 +34,13 @@
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
+            &lt;!-- ========================= --&gt;
             &lt;!-- Grundgerüst der Anwendung --&gt;
+            &lt;!-- ========================= --&gt;
             &lt;section id="app"&gt;
+                &lt;!-- Topbar --&gt;
                 &lt;header&gt;
-                    &lt;!-- Topbar-Inhalte immer sichtbar --&gt;
+                    &lt;!-- Obere Zeile (fester Inhalt) --&gt;
                     &lt;div class="top left"&gt;
                         &lt;div class="item inactive"&gt;
                             &lt;b&gt;
@@ -54,7 +57,7 @@
                         &lt;/div&gt;
                     &lt;/div&gt;
 
-                    &lt;!-- Topbar-Inhalte der Seite --&gt;
+                    &lt;!-- Untere Zeile (dynamisch je nach View) --&gt;
                     &lt;div class="bottom left"&gt;
                         &lt;div class="item"&gt;
                             Seite anlegen
@@ -68,7 +71,7 @@
                     &lt;/div&gt;
                 &lt;/header&gt;
 
-                &lt;!-- Inhalt der Seite --&gt;
+                &lt;!-- Hauptbereich (dynamisch je nach View) --&gt;
                 &lt;main&gt;
                     &lt;div class="padding"&gt;
                         Under Construction
@@ -85,15 +88,15 @@
         <code class="html" data-gobble>
             &lt;section id="app"&gt;
                 &lt;header&gt;
-                    &lt;!-- Topbar-Inhalte immer sichtbar --&gt;
+                    &lt;!-- Obere Zeile (fester Inhalt) --&gt;
                     &lt;div class="top left"&gt;
-                        …
+                        … Inhalt in allen Views identisch …
                     &lt;/div&gt;
                     &lt;div class="top right"&gt;
-                        …
+                        … Inhalt in allen Views identisch …
                     &lt;/div&gt;
 
-                    &lt;!-- Topbar-Inhalte der Seite --&gt;
+                    &lt;!-- Untere Zeile (dynamisch je nach View) --&gt;
                     &lt;div class="bottom left"&gt;
                         …
                     &lt;/div&gt;
@@ -102,7 +105,7 @@
                     &lt;/div&gt;
                 &lt;/header&gt;
 
-                &lt;!-- Inhalt der Seite --&gt;
+                &lt;!-- Hauptbereich (dynamisch je nach View) --&gt;
                 &lt;main&gt;
                     …
                 &lt;/main&gt;
