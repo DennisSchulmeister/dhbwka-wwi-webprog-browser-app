@@ -2,3 +2,8 @@
 :root {
     --figure-short-code: 'Abb. ';
 }
+
+/* Git Commit ID zu der einzelnen Kapitel */
+.git-commit {
+    font-size: 85%;
+}
