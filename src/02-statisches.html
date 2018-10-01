@@ -60,7 +60,7 @@
                     &lt;!-- Untere Zeile (dynamisch je nach View) --&gt;
                     &lt;div class="bottom left"&gt;
                         &lt;div class="item"&gt;
-                            Seite anlegen
+                            Song hinzufügen
                         &lt;/div&gt;
                         &lt;div class="item"&gt;
                             Sortierung nach Titel
@@ -484,15 +484,764 @@
 <section data-title="Navigation innerhalb der App">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/XXX" target="_blank">XXX</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/1451b1db51fce4657c253f3d3b1fe733139edcd7" target="_blank">1451b1d</a>
     </p>
 
-    <!--
-    Je Bildschirmseite eine eigene Klasse
-    constructor(), show() und hide()-Methoden
-    Wann werden die Methoden aufgerufen?
-    app.showPage("name"), schaltet <main>-Elemtene anhand ID (un)sichtbar
-    -->
+    <p>
+        Rein visuell sieht unsere Seite jetzt schon viel mehr wie eine App aus. Man kann aber noch
+        nichts anklicken, weshalb es sich im Grunde genommen immer noch um eine statische HTML-Seite
+        handelt. An dieser Stelle wollen wir daher das Grundgerüst etwas erweitern und eine einfache
+        Navigation ermöglichen. Dadurch soll es möglich sein, zwischen der Übersichtsseite (die wir
+        an dieser Stelle immer noch nicht mit Inhalt füllen werden) und der späteren Detailseite
+        umzuschalten, so dass wir dann endgültig von einer echten Browser App sprechen können. Denn
+        im Gegensatz zu einer serverseitigen Webanwendung soll das Hin- und Herschalten zwischen den
+        Seiten komplett im Browser geschehen, ohne hierfür eine neue Seite vom Server anzufordern.
+    </p>
+
+    <h3>Umstrukturierung des HTML-Codes</h3>
+    <p>
+        Im ersten Schritt müssen wir die Datei <span class="fn">src/index.html</span> so umbauen,
+        dass jeder Bereich der App eine eigene <span class="cmd">&lt;section&gt;</span> bekommt,
+        die wir über eine eindeutige Id adressieren können. Allerdings sollen diese neuen Bereiche
+        nicht sichtbar sein, da wir sonst ja nicht zwischen den einzelnen Bereichen umherschalten
+        könnten. Die CSS-Klasse <span class="cmd">hidden</span> stellt deshalb sicher, dass wirklich
+        nur die erste <span class="cmd">&lt;section id="app"&gt;</span> mit dem Anwendungsrahmen
+        und sonst nichts angezeigt wird.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+                &lt;head&gt;
+                    &lt;meta charset="utf-8" /&gt;
+                    &lt;title>My Songbook&lt;/title&gt;
+                    &lt;link rel="shortcut icon" href="favicon.svg"&gt;
+
+                    &lt;script src="index.js"&gt;&lt;/script&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+                    &lt;!-- ========================= --&gt;
+                    &lt;!-- Grundgerüst der Anwendung --&gt;
+                    &lt;!-- ========================= --&gt;
+                    &lt;section id="app"&gt;
+                        …
+                    &lt;/section&gt;
+
+                    &lt;!-- ====================== --&gt;
+                    &lt;!-- View: Vorhandene Songs --&gt;
+                    &lt;!-- ====================== --&gt;
+                    &lt;section id="song-overview" class="hidden"&gt;
+                        …
+                    &lt;/section&gt;
+
+                    &lt;!-- ================================== --&gt;
+                    &lt;!-- View: Song anzeigen und bearbeiten --&gt;
+                    &lt;!-- ================================== --&gt;
+                    &lt;section id="song-display-edit" class="hidden"&gt;
+                        …
+                    &lt;/section&gt;
+                &lt;/body&gt;
+            &lt;/html&gt;
+        </code>
+    </pre>
+    <p>
+        Anschließend können wir den Dummy-Inhalt aus dem Grundgerüst wieder entfernen, so dass
+        davon nur folgende Zeile übrig bleiben. Den festen Inhalt der Topbar, der wirklich immer zu
+        sehen sein woll, behalten wir hier natürlich bei.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;!-- ========================= --&gt;
+            &lt;!-- Grundgerüst der Anwendung --&gt;
+            &lt;!-- ========================= --&gt;
+            &lt;section id="app"&gt;
+                &lt;!-- Topbar --&gt;
+                &lt;header&gt;
+                    &lt;!-- Obere Zeile (fester Inhalt) --&gt;
+                    &lt;div class="top left"&gt;
+                        &lt;div class="item inactive"&gt;
+                            &lt;b&gt;
+                                Beispiel einer Browser App: My Songbook
+                            &lt;/b&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="top right"&gt;
+                        &lt;div class="item"&gt;
+                            &lt;a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook" target="_blank"&gt;GitHub&lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div class="item"&gt;
+                            &lt;a href="https://www.wpvs.de/browser-app/" target="_blank"&gt;Programmieranleitung&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;!-- Untere Zeile (dynamisch je nach View) --&gt;
+                &lt;/header&gt;
+
+                &lt;!-- Hauptbereich (dynamisch je nach View) --&gt;
+                &lt;main&gt;
+                &lt;/main&gt;
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        Den eben entfernten HTML-Code bauen wir stattdessen weiter unten in die <span class="cmd">&lt;section&gt;</span>
+        für die Übersichtsseite wieder ein.¹
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;!-- ====================== --&gt;
+            &lt;!-- View: Vorhandene Songs --&gt;
+            &lt;!-- ====================== --&gt;
+            &lt;section id="song-overview" class="hidden"&gt;
+                &lt;!-- Topbar --&gt;
+                &lt;header&gt;
+                    &lt;div class="left"&gt;
+                        &lt;div class="item new-song"&gt;
+                            Song hinzufügen
+                        &lt;/div&gt;
+                        &lt;div class="item"&gt;
+                            Sortierung nach Titel
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="right"&gt;
+                        &lt;input placeholder="Suchen" /&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+
+                &lt;!-- Hauptbereich --&gt;
+                &lt;main&gt;
+                    &lt;div class="padding"&gt;
+                        Übersicht
+                    &lt;/div&gt;
+                &lt;/main&gt;
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        ¹
+        <small>
+            Die CSS-Klasse <span class="cmd">bottom</span> für die beiden <span class="cmd">&lt;div&gt;</span>
+            in der Topbar haben wir hier absicshtlich weggelassen. Doch dazu später mehr.
+        </small>
+    </p>
+    <p>
+        Und auch die Detailseite gestalten wir ähnlich, da sie zur diesem Zeitpunkt natürlich auch noch keinen
+        wirklichen Inhalt besitzt. Immerhin bekommt sie in der Topbar jedoch bereits einen Eintrag, mit dem der
+        Anwender zurück auf die Übersichtsseite gelangen soll.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;!-- ================================== --&gt;
+            &lt;!-- View: Song anzeigen und bearbeiten --&gt;
+            &lt;!-- ================================== --&gt;
+            &lt;section id="song-display-edit" class="hidden"&gt;
+                &lt;!-- Topbar --&gt;
+                &lt;header&gt;
+                    &lt;div class="left"&gt;
+                        &lt;!-- Leer --&gt;
+                    &lt;/div&gt;
+                    &lt;div class="right"&gt;
+                        &lt;div class="item overview"&gt;
+                            Zurück zur Übersicht
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+
+                &lt;!-- Hauptbereich --&gt;
+                &lt;main&gt;
+                    &lt;div class="padding"&gt;
+                        Song anzeigen/bearbeiten
+                    &lt;/div&gt;
+                &lt;/main&gt;
+            &lt;/section&gt;
+        </code>
+    </pre>
+
+    <h3>Austausch der sichtbaren Inhalte mit JavaScript</h3>
+    <p>
+        Mit diesen Änderungen nun an Ort und Stelle können wir uns an die Ausprogrammierung der
+        <span class="cmd">App</span>-Klasse innerhalb der Datei <span class="fn">src/app.js</span>
+        machen. Denn sie soll für die Navigation innerhalb der App zuständig sein und zwischen den
+        verschiedenen Ansichten umschalten. Die eigentliche Arbeit macht dabei die folgende, neue
+        Methode, wobei der Unterstrich am Anfang des Namens ausdrückt, dass sie nur innerhalb der
+        Klasse selbst aufgerufen werden sollte. Erzwungen wird das von JavaScript allerdings nicht.
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Auswechseln des sichtbaren Inhalts der App. Hierfür muss der Methode
+             * ein Objekt mit folgendem Aufbau übergeben werden:
+             *
+             *   {
+                    className: "CSS-Klassenname",
+             *      topbar: [DOM Element, DOM Element, DOM Element, ...],
+             *      main: [DOM Element, DOM Element, DOM Element, ...],
+             *   }
+             *
+             * Beide Attribute (topbar und main) sind optional, was dazu führt, dass
+             * im jeweiligen Bereich einfach nichts angezeigt wird. Werden sie jedoch
+             * mitgegeben, müssen sie mit forEach(element =&gt; { … }) iteriert werden
+             * können, um ihren Inhalt in den DOM-Baum zu integrieren.
+             *
+             * Wichtig ist, dass die übergebenen Elemente noch an keiner Stelle im
+             * DOM vorhanden sein dürfen. Werden die Elemente in der index.html
+             * als Vorlage definiert, muss hier deshalb eine Kopie anstelle der
+             * Elemente selbst übergeben werden!
+             *
+             * @param {Object} content Objekt mit den anzuzeigenden DOM-Elementen
+             */
+            _switchVisibleContent(content) {
+                // &lt;header&gt; und &lt;main&gt; des HTML-Grundgerüsts ermitteln
+                let app = document.querySelector("#app");
+                let header = document.querySelector("#app &gt; header");
+                let main = document.querySelector("#app &gt; main");
+
+                // Zuvor angezeigte Inhalte entfernen
+                // Bei der Topbar nur die untere Zeile, im Hauptbereich alles!
+                app.className = "";
+                header.querySelectorAll(".bottom").forEach(e =&gt; e.parentNode.removeChild(e));
+                main.innerHTML = "";
+
+                // CSS-Klasse übernehmen, um die viewspezifischen CSS-Regeln zu aktivieren
+                if (content && content.className) {
+                    app.className = content.className;
+                }
+
+                // Neue Inhalte der Topbar einfügen
+                if (content && content.topbar) {
+                    content.topbar.forEach(element =&gt; {
+                        element.classList.add("bottom");
+                        header.appendChild(element);
+                    });
+                }
+
+                // Neue Inhalte des Hauptbereichs einfügen
+                if (content && content.main) {
+                    content.main.forEach(element =&gt; {
+                        main.appendChild(element);
+                    });
+                }
+            }
+        </code>
+    </pre>
+    <p>
+        Der Quellcode ist im Grunde genommen nicht sehr kompliziert. Dennoch sollten wir ihn an dieser
+        Stelle kurz durchgehen, um sicherzustellen, dass du ihn wirklich verstehst:
+    </p>
+    <ol>
+        <li>
+            Zunächst greift die Methode auf das DOM zu, um sich die
+            <span class="cmd">&lt;section id="app"&gt;</span> sowie die darin enthaltenen
+            <span class="cmd">&lt;header&gt;</span>- und
+            <span class="cmd">&lt;main&gt;</span>-Elemente zu besorgen.
+        </li>
+        <li>
+            Anschließend werden die zuvor sichtbaren Inhalte verworfen. Im Falle der
+            Topbar mit einer <span class="cmd">forEach()</span>-Schleife, die nur
+            die Elemente der unteren Zeile erwischt. Und im Hauptbereich durch
+            Überschreiben des <spann class="cmd">innerHTML</spann>-Attributs,
+            was de facto seinen kompletten Inhalt löscht.
+        </li>
+        <li>
+            Dann wird mit einer <span class="cmd">if</span>-Abfrage gebprüft, ob
+            ob das <span class="cmd">content</span>-Objekt ein Attribut mit dem
+            Namen <span class="cmd">classList</span> enthält. Falls ja wird die
+            CSS-Klasse des <span class="cmd">&lt;section id="app"&gt;</span>
+            entsprechend abgeändert, damit etwaige CSS-Regeln, die sich auf
+            diese Klasse beziehen, wirksam werden können.
+        </li>
+        <li>
+            Danach wird geprüft, ob ein neuer Inhalt für die Topbar übergeben wurde.
+            Falls ja, wird in einer Schleife über die neuen Topbar-Elemente jedem
+            Element die CSS-Klasse <span class="cmd">bottom</span> hinzugefügt
+            und die Elemente an den <span class="code">&lt;header&gt;</span>
+            angehängt.
+        </li>
+        <li>
+            Dann erfolgt mit einer ähnlichen Abfrage eine Prüfung für den Hauptbereich
+            der App, nur dass den Elementen hier keine zusätzliche CSS-Klasse mitgegeben
+            werden muss.
+        </li>
+    </ol>
+
+    <p>
+        Auf diese Weise können wir nun den angezeigten Inhalt der App variieren. Wirklich
+        anwenderfreundlich ist die neue Methode aber noch nicht, da wir ihr, um eine neue
+        Seite anzuzeigen, genau die hierfür notwendigen DOM-Elemente mitgegeben müssen.
+        Besser wäre es jedoch, wenn wir eine bestimmte Seite einfach aufrufen könnten,
+        ohne genau zu wissen, wie die Seite eigentlich aufgebaut ist. Wir benötigen daher
+        für jede Seite eine weitere Methode, die genau diesen Zweck erfüllt. Doch hierfür
+        müssen wir uns erst noch überlegen, wie wir den Quellcode der App weiter strukturieren
+        wollen.
+    </p>
+
+    <h3>Eine Klasse je Bildschirmseite</h3>
+    <p>
+        Natürlich könnten wir die komplette Anwendungslogik einfach in der Datei <span class="fn">src/app.js</span>
+        oder sogar nur in der Klasse <span class="fn">App</span> ausprogrammieren. Dem Computer wäre das
+        ziemlich gleich. Allerdings wissen wir, dass die beiden Seiten mit der Übersicht und zur Anzeige
+        eines Songtextes nicht wirklich viel gemeinsam haben. Alles in eine Klasse zu packen wäre daher
+        ziemlich unübersichtlich. Das alte Sprichwort „teile und herrsche” liefert stattdessen viel bessere
+        Ergebnisse, da es uns an die
+        <a href="https://t3n.de/news/prinzipien-software-entwicklung-solid-615556/" target="_blank">SOLID-Kriterien</a>
+        und hier insbesondere an das Single-Responsibility-Prinzip erinnert. Es liegt deshalb nahe, für
+        jede Bildschirmseite eine eigene Klasse vorzusehen. Und für jede Klasse dementsprechend eine
+        eigene JavaScript-Datei und ein eigenes Stylesheet, die wir um die Übersichtlichkeit noch
+        weiter zu erhöhen, jeweils in ein eigenes Verzeichnis packen.
+    </p>
+    <p>
+        Bevor wir also weiter programmieren, lege zunächst folgende Dateistruktur an. Die Dateien
+        können dabei an dieser Stelle noch leer bleiben:
+    </p>
+    <ul>
+        <li>
+            <span class="fn">src/song-overview/song-overview.js:</span> Klasse <span class="cmd">SongOverview</span> für die Übersichtsseite
+        </li>
+        <li>
+            <span class="fn">src/song-overview/song-overview.css:</span> Stylesheet für die Übersichtsseite
+        </li>
+        <li>
+            <span class="fn">src/song-display-edit/song-display-edit.js:</span> Klasse <span class="cmd">SongDisplayEdit</span> für die Detailseite
+        </li>
+        <li>
+            <span class="fn">src/song-display-edit/song-display-edit.css:</span> Stylesheet für die Detailseite
+        </li>
+    </ul>
+    <p>
+        Das Ergebnis sollte dementsprechend so aussehen:
+    </p>
+    <figure>
+        <img src="02/navigation/neue-dateien.png" />
+        <figcaption>Erweiterte Verzeichnisstruktur für die Übersichts- und die Detailseite</figcaption>
+    </figure>
+    <p>
+        Die beiden Stylesheets sind am einfachsten. Hier wollen wir zunächst nur etwas Dummy-Inhalt
+        einbauen, damit wir später sehen, ob sie auch wirklich ausgewertet werden. Füge daher in die
+        Datei <span class="fn">src/song-overview/song-overview.css</span> folgende Zeile ein:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Dieses Stylesheet darf nur Selektoren beinhalten, die mit .song-overview
+             * beginnen. Denn wir wollen nicht, dass hier Eigenschaften aus anderen Bereichen
+             * der Anwendung überschrieben werden.
+             */
+            .song-overview main {
+                color: orangered !important;
+            }
+        </code>
+    </pre>
+    <p>
+        Und in die <span class="fn">src/song-display-edit/song-display-edit.css</span> folgende Zeilen:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Dieses Stylesheet darf nur Selektoren beinhalten, die mit .song-display-edit
+             * beginnen. Denn wir wollen nicht, dass hier Eigenschaften aus anderen Bereichen
+             * der Anwendung überschrieben werden.
+             */
+            .song-display-edit main {
+                color: orchid !important;
+            }
+        </code>
+    </pre>
+    <p>
+        Bei den beiden Klassen wird es hingegen schon interessanter, da wir uns noch gar
+        keine Gedanken darüber gemacht haben, welche Methoden sie besitzen sollen und zu
+        welchem sie aufgerufen werden. Letztlich gibt es auch gar keine universelle Lösung
+        hierfür, in der Praxis hat sich aber ganz unabhängig von der Art der Anwendung oder
+        der verwendeten UI-Technologie folgende, einfache Struktur bewährt:
+    </p>
+    <ol>
+        <li>
+            Jedes Mal, wenn eine Seite aufgerufen wird, wird ein neues Objekt der dazugehörigen
+            Klasse erzeugt. Das Objekt bleibt dabei so lange aktiv, wie die Seite sichtbar ist.
+        </li>
+        <li>
+            Wird von einer Seite auf dieselbe Seite nur mit anderen Daten gewechselt (zum Beispiel
+            von der Detailseite eines Songs zur Detailseite eines anderen Songs), wird hierfür
+            ebenfalls ein neues Objekt erzeugt.
+        </li>
+        <li>
+            Denn dies ermöglicht es, die Klassen einfach zu halten und für die Anzeige benötigte
+            Informationen wie die Song-ID einfach dem Konstruktor zu übergeben.
+        </li>
+        <li>
+            Bevor eine neue Seite aufgerufen wird, wird die Methode <span class="cmd">onShow()</span>
+            des jeweiligen Objekts aufgerufen.
+        </li>
+        <li>
+            Davor wird jedoch erst die Methode <span class="cmd">onLeave()</span> der aktuell sichtbaren
+            Seite aufgerufen, um ihr die Möglichkeit zu geben, Aufräumarbeiten durchzuführen oder den
+            Seitenwechsel zu unterbinden.
+        </li>
+        <li>
+            Eine Methode mit dem Namen <span class="cmd">getTitle()</span> gibt den Titel der aktuellen
+            Seite zurück, um ihn in der Titelzeile des Browserfensters anzuzeigen.
+        </li>
+        <li>
+            Sobald eine Seite verlassen wurde, kann das dazugehörige Objekt abgeräumt werden.
+        </li>
+    </ol>
+    <p>
+        Damit haben wir einen klaren Lebenszyklus definiert, der genau vorschreibt, zu welchem Zeitpunkt
+        neue Objekte entstehen, welche Methoden dementsprechend aufgerufen werden und wann die Objekte
+        wieder verschwinden. Außerdem haben wir eine Möglichkeit geschaffen, besondere Fälle wie das
+        Vorliegen nicht gespeicherter Daten abzufangen, bei denen wir den Anwender erst fragen müssen,
+        ob er seine Änderungen sichern will, oder wir den Aufruf der Folgeseite ganz einfach unterbinden.
+    </p>
+    <p>
+        Die Datei <span class="fn">src/song-overview/song-overview.js</span> soll dementsprechend
+        folgenden Inhalt besitzen.
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            "use strict";
+
+            import stylesheet from "./song-overview.css";
+
+            /**
+             * View mit der Übersicht der vorhandenen Songs.
+             */
+            class SongOverview {
+                /**
+                 * Konstruktor.
+                 * @param {Objekt} app Zentrales App-Objekt der Anwendung
+                 */
+                constructor(app) {
+                    this._app = app;
+                }
+
+                /**
+                 * Von der Klasse App aufgerufene Methode, um die Seite anzuzeigen. Die
+                 * Methode gibt daher ein passendes Objekt zurück, das an die Methode
+                 * _switchVisibleContent() der Klasse App übergeben werden kann, um ihr
+                 * die darzustellenden DOM-Elemente mitzuteilen.
+                 *
+                 * @return {Object} Darzustellende DOM-Elemente gemäß Beschreibung der
+                 * Methode App._switchVisibleContent()
+                 */
+                onShow() {
+                    // Machen wir gleich
+                }
+
+                /**
+                 * Von der Klasse App aufgerufene Methode, um festzustellen, ob der Wechsel
+                 * auf eine neue Seite erlaubt ist. Wird hier true zurückgegeben, wird der
+                 * Seitenwechsel ausgeführt.
+                 *
+                 * @param  {Function} goon Callback, um den Seitenwechsel zu einem späteren
+                 * Zeitpunkt fortzuführen, falls wir hier false zurückgeben
+                 * @return {Boolean} true, wenn der Seitenwechsel erlaubt ist, sonst false
+                 */
+                onLeave(goon) {
+                    return true;
+                }
+
+                /**
+                 * @return {String} Titel für die Titelzeile des Browsers
+                 */
+                get title() {
+                    return "Übersicht";
+                }
+            }
+
+            export default SongOverview;
+        </code>
+    </pre>
+    <p>
+        Die Datei <span class="fn">src/song-display-edit/song-display-edit.js</span> soll hingegen
+        folgenden Inhalt besitzen:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            "use strict";
+
+            import stylesheet from "./song-display-edit.css";
+
+            /**
+             * View zur Anzeige oder zum Bearbeiten eines Songs.
+             */
+            class SongDisplayEdit {
+                /**
+                 * Konstruktor.
+                 *
+                 * @param {Objekt} app Zentrales App-Objekt der Anwendung
+                 * @param {String} id   ID des darzustellenden Songs
+                 * @param {String} mode "new", "display" oder "edit"
+                 */
+                constructor(app, id, mode) {
+                    this._app = app;
+                    this._id = id;
+                    this._mode = mode;
+                }
+
+                /**
+                 * Von der Klasse App aufgerufene Methode, um die Seite anzuzeigen. Die
+                 * Methode gibt daher ein passendes Objekt zurück, das an die Methode
+                 * _switchVisibleContent() der Klasse App übergeben werden kann, um ihr
+                 * die darzustellenden DOM-Elemente mitzuteilen.
+                 *
+                 * @return {Object} Darzustellende DOM-Elemente gemäß Beschreibung der
+                 * Methode App._switchVisibleContent()
+                 */
+                onShow() {
+                    // Machen wir gleich
+                }
+
+                /**
+                 * Von der Klasse App aufgerufene Methode, um festzustellen, ob der Wechsel
+                 * auf eine neue Seite erlaubt ist. Wird hier true zurückgegeben, wird der
+                 * Seitenwechsel ausgeführt.
+                 *
+                 * @param  {Function} goon Callback, um den Seitenwechsel zu einem späteren
+                 * Zeitpunkt fortzuführen, falls wir hier false zurückgeben
+                 * @return {Boolean} true, wenn der Seitenwechsel erlaubt ist, sonst false
+                 */
+                onLeave(goon) {
+                    return true;
+                }
+
+                /**
+                 * @return {String} Titel für die Titelzeile des Browsers
+                 */
+                get title() {
+                    switch (this._mode) {
+                        case "new":
+                            return "Song hinzufügen";
+                        case "edit":
+                            return "Song bearbeiten";
+                        default:
+                            return "Song anzeigen";
+                    }
+                }
+            }
+
+            export default SongDisplayEdit;
+        </code>
+    </pre>
+
+    <h3>Weitere Methoden für die Klasse App</h3>
+    <p>
+        Da der Vertrag mit dem View-Klassen nun klar ist, besitzen wir alle Informationen, um die
+        Klasse <span class="cmd">App</span> nun zu Ende zu programmieren. Füge deshalb über der
+        Methode <span class="cmd">_switchVisibleContent()</span> eine neue Methode mit dem Namen
+        <span class="cmd">_switchVisibleView()</span> ein, die sie aufruft und hierfür ein
+        View-Objekt entgegen nimmt:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Hilfsklasse zum Umschalten auf eine neue Seite. Sie ruft zunächst die
+             * Methode onLeave() der gerade sichtbaren View auf und prüft damit, ob
+             * die View verlassen werden kann. Falls ja ruft sie die Methode onShow()
+             * der neuen View auf und übergibt das Ergebnis an die eigene Methode
+             * _switchVisibleContent(), um den sichtbaren Inhalt der Seite auszutauschen.
+             *
+             * @param  {Object} view View-Objekt mit einer onShow()-Methode
+             * @return {Boolean} Flag, ob die neue Seite aufgerufen werden konnte
+             */
+            _switchVisibleView(view) {
+                // Callback, mit dem die noch sichtbare View den Seitenwechsel zu einem
+                // späteren Zeitpunkt fortführen kann, wenn sie in der Methode onLeave()
+                // false zurückliefert. Dadurch erhält sie die Möglichkeit, den Anwender
+                // zum Beispiel zu fragen, ob er ungesicherte Daten speichern will,
+                // bevor er die Seite verlässt.
+                let goon = () =&gt; this._switchVisibleView(view);
+
+                // Aktuelle View fragen, ob eine neue View aufgerufen werden darf
+                if (this._currentView && !this._currentView.onLeave(goon)) {
+                    return false;
+                }
+
+                // Alles klar, aktuelle View nun wechseln
+                document.title = `${this._title} – ${view.title}`;
+
+                this._currentView = view;
+                this._switchVisibleContent(view.onShow());
+                return true;
+            }
+
+            /**
+             * …
+             */
+            _switchVisibleContent(content) {
+                …
+            }
+        </code>
+    </pre>
+    <p>
+        Die zwei Instanzattribute <span class="cmd">this._currentView</span> und
+        <span class="cmd">this._title</span> müssen hierfür im Konstruktor definiert
+        werden:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Konstruktor.
+             */
+            constructor() {
+                this._title = "My Songbook";
+                this._currentView = null;
+            }
+        </code>
+    </pre>
+    <p>
+        Und damit das Ganze einfach zu verwenden ist, legen wir nun für jede Seite eine
+        eigene, für die öffentliche Verwendung freigebene Methode an, mit der sie überall
+        in der App aufgerufen werden kann. Die Methode <span class="cmd">start()</span>
+        passen bei der Gelegenheit dann auch gleich noch an, damit beim Aufruf der App
+        immer die Überssichtsseite geladen wird:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            …
+            import SongDisplayEdit from "./song-display-edit/song-display-edit.js";
+            import SongOverview from "./song-overview/song-overview.js";
+
+            /**
+             * …
+             */
+            class App {
+                …
+
+                /**
+                 * Ab hier beginnt die Anwendung zu laufen.
+                 */
+                start() {
+                    this.showSongOverview();
+                }
+
+                /**
+                 * Aufruf der Übersichtsseite der vorhandenen Songs.
+                 * @return {Boolean} Flag, ob die neue Seite aufgerufen werden konnte
+                 */
+                showSongOverview() {
+                    let view = new SongOverview(this);
+                    this._switchVisibleView(view);
+                }
+
+                /**
+                 * Aufruf der Detailseite zur Anzeige oder zum Bearbeiten eines Songs.
+                 *
+                 * @param  {String} id Song-ID
+                 * @param  {String} mode "new", "display" oder "edit"
+                 * @return {Boolean} Flag, ob die neue Seite aufgerufen werden konnte
+                 */
+                showSongDisplayEdit(id, mode) {
+                    let view = new SongDisplayEdit(this, id, mode);
+                    this._switchVisibleView(view);
+                }
+
+                /**
+                 * …
+                 */
+                _switchVisibleView(view) {
+                    …
+                }
+            }
+        </code>
+    </pre>
+
+    <h3>Ausprogrammieren der onShow()-Methoden</h3>
+    <p>
+        Damit das Ganze nun auch wirklich funktioniert, müssen wir noch die Methode
+        <span class="cmd">onShow()</span> unserer beiden View-Klassen ausprogrammieren.
+        Denn noch übergeben wir dem <span class="cmd">App</span>-Objekt keine DOM-Elemente
+        zum Anzeigen und wir registrieren auch noch keine Event Handler, mit denen der
+        Anwender zwischen den Seiten umherschalten könnte.
+    </p>
+    <p>
+        Öffne daher noch einmal die Datei <span class="fn">src/song-overview/song-overview.js</span>
+        und ersetze die <span class="cmd">onShow()</span>-Methode durch die nun folgende Version:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            onShow() {
+                // Anzuzeigende HTML-Elemente ermitteln
+                let section = document.querySelector("#song-overview").cloneNode(true);
+
+                let content = {
+                    className: "song-overview",
+                    topbar: section.querySelectorAll("header &gt; *"),
+                    main: section.querySelectorAll("main &gt; *"),
+                };
+
+                // Event Handler registrieren
+                let newSongItem = section.querySelector("header .item.new-song");
+
+                newSongItem.addEventListener("click", () =&gt; {
+                    this._app.showSongDisplayEdit("", "new");
+                })
+
+                // Ergebnis zurückliefern
+                return content;
+            }
+        </code>
+    </pre>
+    <p>
+        In der Datei <span class="fn">src/song-display-edit/song-display-edit.js</span> ersetze
+        die <span class="cmd">onShow()</span>-Methode durch folgende Version:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            onShow() {
+                // Anzuzeigende HTML-Elemente ermitteln
+                let section = document.querySelector("#song-display-edit").cloneNode(true);
+
+                let content = {
+                    className: "song-display-edit",
+                    topbar: section.querySelectorAll("header &gt; *"),
+                    main: section.querySelectorAll("main &gt; *"),
+                };
+
+                // Event Handler registrieren
+                let overviewItem = section.querySelector("header .item.overview");
+
+                overviewItem.addEventListener("click", () =&gt; {
+                    this._app.showSongOverview();
+                })
+
+                // Ergebnis zurückliefern
+                return content;
+            }
+        </code>
+    </pre>
+    <p>
+        Beide Methoden sind prinzipiell gleich aufgebaut. Um sie zu verstehen müssen wir allerdings
+        erst einen Bogen zurück zum Anfang des Kapitels machen. Dort haben wir nämlich den HTML-Code
+        der Datei <span class="fn">src/index.html</span> etwas umgeräumt und zwei
+        <span class="cmd">&lt;section&gt;</span>-Elemente für die beiden Unterseiten angelegt.
+        Auf diese Elemente greifen wir nun zu, um die anzuzeigenden HTML-Elemente aus dem Document
+        Object Model auszulesen. Allerdings erzeugen wir durch Aufruf der Methode
+        <span class="fn">cloneNode(true)</span> eine tiefe Kopie der ausgelesenen Elemente, da der
+        Kommentar vor der Methode <span class="fn">App._switchVisibleContent()</span> eindeutig
+        besagt, dass ihr keine Elemente übergeben werden dürfen, die sich bereits im DOM-Baum der
+        HTML-Seite befinden.
+    </p>
+    <p>
+        Mit diesen Elementen bauen wir dann das <span class="fn">content</span>-Objekt auf, welches
+        die Methode <span class="fn">App._switchVisibleContent()</span> von uns erwartet. Daraufhin
+        suchen wir uns in der Topbar jeweils ein Element, mit dem der Anwender zwischen den Seiten
+        umschalten kann und registrieren einen Click Event Handler darauf. In der entsprechenden
+        Handler-Funktion rufen wir daher die jeweils richtige <span class="cmd">show…()</span>-Methode
+        des <span class="fn">App</span>-Objekts auf, um die Seite tatsächlich zu wechseln.
+    </p>
+    <p>
+        Und am Ende geben wir die <span class="fn">content</span>-Struktur zurück, damit die Methode
+        <span class="fn">App._switchVisibleView()</span>, von der wir aufgerufen werden, sie an die
+        Methode <span class="fn">App._switchVisibleContent()</span> übergeben kann.
+    </p>
+    <p>
+        Wenn du alles richtig gemacht hast, solltest du daher nun zwischen den beiden Seiten umherschalten
+        können. Dabei sollte dann auch aufgrund der unterschiedlichen Stylesheets die Schriftfarbe von
+        orange auf lila wechseln, wie in der folgenden Animation dargestellt.
+    </p>
+    <figure>
+        <img src="02/navigation/seiten-wechseln.gif" class="border"/>
+        <figcaption>All der Mühen Lohn: Eine funktionierende Navigation innerhalb der App</figcaption>
+    </figure>
 </section>
 
 <!-- ––––––––––––––––––––––––––––––––––– -->
