@@ -494,7 +494,7 @@
         Navigation ermöglichen. Dadurch soll es möglich sein, zwischen der Übersichtsseite (die wir
         an dieser Stelle immer noch nicht mit Inhalt füllen werden) und der späteren Detailseite
         umzuschalten, so dass wir dann endgültig von einer echten Browser App sprechen können. Denn
-        im Gegensatz zu einer serverseitigen Webanwendung soll das Hin- und Herschalten zwischen den
+        im Gegensatz zu einer serverseitigen Webanwendung soll das hin und her Schalten zwischen den
         Seiten komplett im Browser geschehen, ohne hierfür eine neue Seite vom Server anzufordern.
     </p>
 
@@ -1250,23 +1250,288 @@
 <section data-title="Integration des Single Page Routers">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/XXX" target="_blank">XXX</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/afd89090abf9e432dc6fd9d80b48a8205de387be" target="_blank">afd8909</a>
     </p>
 
-    <!--
-    Nachteile der bisherigen Lösung:
-      * JavaScript zum Wechsel der Seiten benötigt, keine <a>
-      * Seiten besitzen keine URLs
-      * Zurück-Button nicht unterstützt
+    <p>
+        Zugegeben, das war schon eine ganze Menge Code, der da eben zusammenpassen musste, bevor wir
+        wirklich zwischen den beiden Seiten hin und her schalten konnten. Doch damit hast du nun eine
+        vollständige Grundstruktur zur Verfügung, die im Grunde genommen auf jede Art von Anwendung
+        ausgerollt werden kann. Du musst nur die beiden Klassen für die Songübersicht und die Details
+        zu einem Song durch eigene Klassen ersetzen. Ein paar Nachteile hat die bisherige Lösung aber
+        noch, weshalb wir sie an dieser Stelle noch etwas verfeinern wollen:
+    </p>
+    <ul>
+        <li>
+            Die Views unserer App besitzen keine eindeutigen URLs und können daher nur per JavaScript
+            aufgerufen werden. Dadurch kann eine View (zum Beispiel für einen bestimmten Song) nicht
+            durch Eingabe der richtigen Adresse im Browser direkt aufgerufen werden.
+        </li>
+        <li>
+            Auch können wir keine einfachen <span class="cmd">&lt;a&gt;</span>-Elemente innerhalb des
+            HTML-Codes verwenden, um einen Link auf eine andere View zu platzieren. Wir müssen immer
+            zusätzliche Event Handler schreiben und den Seitenwechsel mit JavaScript durchführen.
+        </li>
+        <li>
+            Der Zurück-Button des Browsers sowie ganz allgemein ein Aufruf über den Browserverlauf
+            wird nicht unterstützt.
+        </li>
+    </ul>
+    <p>
+        Die Lösung all dieser Probleme hört auf den Namen
+        <a href="https://css-tricks.com/using-the-html5-history-api/" target="_blank">HTML5 History API</a>.
+        Doch anstatt jetzt uns jetzt selbst damit herumzuschalgen (die Details richtig hinzubekommen ist
+        tatsächlich nicht ganz einfach), wollen wir auf eine Library zurückgreifen, die das alles viel
+        besser kann. Wir wollen einen „Single Page Router” verwenden, der es uns ganz einfach ermöglicht,
+        eine URL-Struktur für unsere App zu definieren und dabei festzulegen, was beim Aufruf welcher URL
+        passieren soll. Den Grundstock dafür haben wir bereits im letzten Teilkapitel gelegt. Jetzt geht
+        es nur noch darum, die ganze Sache ein wenig zu optimieren.
+    </p>
 
-    Lösung:
-     * Selbstbau: Klick auf Links abfangen, popstate-Event ausprogrammieren
-     * Einfacher: Single Page Router nutzen
+    <h3>Installation von Navigo</h3>
+    <p>
+        Die Library, die wir hier verwenden wollen, heißt <a href="https://github.com/krasimir/navigo" target="_blank">navigo</a>.
+        Sie implementiert einen einfachen Single Page Router, der im Gegensatz zu vielen ähnlichen
+        Bibliotheken ganz ohne fremde Abhängigkeiten auskommt und daher in nahezu jede beliebige
+        Webanwendung integriert werden kann. Und wie das
+        <a href="https://github.com/krasimir/navigo/blob/master/README.md" target="_blank">README auf GitHub</a>
+        andeutet, scheint sie relativ einfach nutzbar zu sein. Grund genug also mal wieder das gute alte
+        Terminal anzuschmeißen, mit <span class="cmd">cd</span> in unser Projektverzeichnis zu wechseln
+        die Library mit folgendem Befehl zu installieren:
+    </p>
+    <p class="cmd">
+        npm add --save-dev navigo
+    </p>
+    <p>
+        Die installation sollte dabei in gewohnter node.js-Manier schnell und geräuschlos über die Bühne gehen.
+    </p>
+    <figure>
+        <img src="02/spa-router/installation-navigo.jpg" />
+        <figcaption>Installation des <span class="scr">navigo</span> Single Page Routers</figcaption>
+    </figure>
 
-    Installation von Navigo
-    Definition einer einfachen URL-Struktur
-    Einbauen eines Links, um zwischen Übersicht und Songtext-Seite zu wechseln (noch ihne Inhalt)
-    -->
+    <h3>Anpassungen an der App-Klasse</h3>
+    <p>
+        Um den Single Page Router zu initialisieren müssen wir ein paar kleinere Umbauten der
+        <span class="cmd">App</span>-Klasse vornehmen. Allerdings nichts allzu dramatisches.
+        Zunächst müssen wir die Klasse <span class="fn">Navigo</span> aus dem Modul
+        <span class="fn">navigo/lib/navigo.js</span> importieren, was wir dank Parcel einfach
+        tun können, ohne hierfür auch nur eine Datei umkopieren zu müssen:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            …
+            import Navigo from "navigo/lib/navigo.js";
+            import SongDisplayEdit from "./song-display-edit/song-display-edit.js";
+            import SongOverview from "./song-overview/song-overview.js";
+            …
+
+            class App { … }
+        </code>
+    </pre>
+    <p>
+        Danach können wir den Konstruktor von <span class="cmd">App</span> wie folgt erweitern:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            constructor() {
+                this._title = "My Songbook";
+                this._currentView = null;
+
+                // Single Page Router aufsetzen
+                this._router = new Navigo();
+                this._currentUrl = "";
+                this._navAborted = false;
+
+                this._router.on({
+                    "*":                       () =&gt; this.showSongOverview(),
+                    "/song/new/":              () =&gt; this.showSongDisplayEdit("", "new"),
+                    "/song/display/:id/":  params =&gt; this.showSongDisplayEdit(params.id, "display"),
+                    "/song/edit/:id":      params =&gt; this.showSongDisplayEdit(params.id, "edit"),
+                });
+
+                this._router.hooks({
+                    after: (params) =&gt; {
+                        if (!this._navAborted) {
+                            // Navigation durchführen, daher die neue URL merken
+                            this._currentUrl = this._router.lastRouteResolved().url;
+                        } else {
+                            // Navigation abbrechen, daher die URL in der Adresszeile
+                            // auf den alten Wert der bisherigen View zurücksetzen
+                            this._router.pause(true);
+                            this._router.navigate(this._currentUrl);
+                            this._router.pause(false);
+
+                            this._navAborted = false;
+                        }
+                    }
+                });
+            }
+        </code>
+    </pre>
+    <p>
+        Das sieht jetzt erst einmal sehr komplex aus. Wichtig aber nur der Aufruf von
+        <span class="cmd">this._router.on({…})</span> als Herzstück dieser Anpassung.
+        Alle anderen Zeilen, bis auf die Erzeugung des Router-Objekts selbst könnte man
+        auch weglassen. Sie werden nur benötigt, weil wir die Navigation in bestimmten
+        Fällen unterbrechen wollen und den Navigo hierfür ein wenig zum Mitspielen
+        überreden müssen.
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            this._router.on({
+                "*":                       () =&gt; this.showSongOverview(),
+                "/song/new/":              () =&gt; this.showSongDisplayEdit("", "new"),
+                "/song/display/:id/":  params =&gt; this.showSongDisplayEdit(params.id, "display"),
+                "/song/edit/:id":      params =&gt; this.showSongDisplayEdit(params.id, "edit"),
+            });
+        </code>
+    </pre>
+    <p>
+        Hier wird die URL-Struktur der Seite definiert, wobei jedes URL-Pattern mit einer
+        anonymen Lambda-Funktion (zu erkennen an <span class="cmd">() => &gt; …</span>)
+        verknüpft ist. Es liegt nahe, dass der Router die entsprechende Lambda-Funktionen
+        aufruft, wenn eine URL erkannt wurde, um dadurch den sichtbaren Inhalt zu wechseln.
+        Praktischerweise können wir hier unsere Methoden von vorhin direkt weiterverwenden.
+    </p>
+    <p>
+        In der <span class="cmd">start()</span>-Methode müssen wir nun nicht mehr explizit
+        die Übersichtsseite aufrufen. Stattdessen sagen wir dem Router hier, dass er die
+        URL, mit der die gesamte App gestartet wurde, auswerten und die anzuzeigende View
+        automatisch erkennen soll:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            start() {
+                this._router.resolve();
+            }
+        </code>
+    </pre>
+    <p>
+        Das sind eigentlich schon alle Änderungen an der Klasse <span class="cmd">App</span>.
+        Damit aber das Unterbrechen der Navigation richtig funktioniert, müssen wir die
+        Methode <span class="cmd">_switchVisibleView()</span> noch ein klein wenig modifizieren.
+        Die neue Version lautet wie folgt:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            _switchVisibleView(view) {
+                // Callback, mit dem die noch sichtbare View den Seitenwechsel zu einem
+                // späteren Zeitpunkt fortführen kann, wenn sie in der Methode onLeave()
+                // false zurückliefert. Dadurch erhält sie die Möglichkeit, den Anwender
+                // zum Beispiel zu fragen, ob er ungesicherte Daten speichern will,
+                // bevor er die Seite verlässt.
+                let newUrl = this._router.lastRouteResolved().url;
+                let goon = () =&gt; {
+                    // ?goon an die URL hängen, weil der Router sonst nicht weiternavigiert
+                    this._router.navigate(newUrl + "?goon");
+                }
+
+                // Aktuelle View fragen, ob eine neue View aufgerufen werden darf
+                if (this._currentView && !this._currentView.onLeave(goon)) {
+                    this._navAborted = true;
+                    return false;
+                }
+
+                // Alles klar, aktuelle View nun wechseln
+                document.title = `${this._title} – ${view.title}`;
+
+                this._currentView = view;
+        </code>
+    </pre>
+    <p>
+        Im Vergleich zur alten Version setzen wir hier noch ein Kennzeichen, wenn die
+        Navigation durch die aktuell sichtbare View unterbunden wird, damit wir im weiter
+        oben definieren „After Hook” von Navigo die Adresszeile des Browsers wieder auf
+        die alte URL setzen könne. Außerdem müssen wir hier die URL der nächsten Seite
+        innerhalb des <span class="cmd">goon</span>-Callbacks etwas anders ermitteln.
+    </p>
+
+    <h3>Vereinfachung der restlichen Quellcodes</h3>
+    <p>
+        Undank sei der Welten Lohn, sagt man. Nicht jedoch an dieser Stelle. Zwar ist
+        die Klasse durch die neuerlichen Änderungen nochmal ein klein wenig komplizierter
+        geworden, dafür vereinfachen sich aber alle anderen Quellcodes. Und wir haben eine
+        ordentliche URL-Struktur, mit der wir jede View der App über eine eigene URL direkt
+        aufrufen oder als Lesezeichen im Browser speichern können. Und der Zurück-Button
+        des Browsers tut nun auch das, was er soll.
+    </p>
+    <p>
+        Zunächst einmal wollen wir die <span class="cmd">onShow()</span>-Methoden der beiden
+        View-Klassen etwas aufräumen. Hier fallen die Event Handler komplett weg, so dass die
+        Methoden nun nur noch so aussehen:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            // src/song-overview/song-overview.js:
+            onShow() {
+                let section = document.querySelector("#song-overview").cloneNode(true);
+
+                return content = {
+                    className: "song-overview",
+                    topbar: section.querySelectorAll("header > *"),
+                    main: section.querySelectorAll("main > *"),
+                };
+            }
+        </code>
+    </pre>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            // src/song-display-edit/song-display-edit.js:
+            onShow() {
+                let section = document.querySelector("#song-display-edit").cloneNode(true);
+
+                return {
+                    className: "song-display-edit",
+                    topbar: section.querySelectorAll("header > *"),
+                    main: section.querySelectorAll("main > *"),
+                };
+            }
+        </code>
+    </pre>
+    <p>
+        Wir konnten tatsächlich die Hälfte des Quellcodes einfach wegschmeißen. Und da wir zum
+        Umschalten zwischen den Views nun kein explizites JavaScript mehr benötigen, können wir
+        die <span class="fn">src/index.html</span> nun so anpassen, dass hierfür einfache Links
+        verwendet werden. Die Definitionen innerhalb der Topbar ändern sich dadurch wie folgt:
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;div class="item"&gt;
+                &lt;a href="/song/new/" data-navigo&gt;
+                    Song hinzufügen
+                &lt;/a&gt;
+            &lt;/div&gt;
+
+            …
+
+            &lt;div class="item"&gt;
+                &lt;a href="/" data-navigo&gt;
+                    Zurück zur Übersicht
+                &lt;/a&gt;
+            &lt;/div&gt;
+        </code>
+    </pre>
+    <p>
+        Wenn es gut läuft, sollte das Ergebnis nun wie folgt aussehen. Beachte dabei, wie sic
+        die URL in der Adresszeile des Browsers beim Wechseln der Seite ebenfalls ändert:
+    </p>
+    <figure>
+        <img src="02/spa-router/seiten-wechseln.gif" class="border"/>
+        <figcaption>Navigation innerhalb der App mit Hilfe des Single Page Routers</figcaption>
+    </figure>
+
+    <h3>Hinweis zum Parcel-Entwicklungsserver</h3>
+    <p>
+        Leider verträgt sich das Prinzip eines Single Page Routers nicht immer 100%ig mit dem
+        Hot Module Replacement (automatisches Nachladen der Seite bei einer Quellcodeänderung)
+        des Parcel-Entwicklungsservers. Deshalb kann es nach einer Änderung am Quellcode passieren,
+        dass die Seite zwar neulädt, in der Adresszeile des Browsers aber noch eine alte URL steht.
+        In diesem Fall entferne am Besten alle Bestandteile nach der Port-Nummer der URL und lade
+        die Seite erneut. Dadurch kannst du Navigo und Parcel wieder in Einklang bringen. In der
+        Produktivversion der App kann das nicht passieren, da es hier das automatische Neuladen
+        der Seite ja nicht gibt.
+    </p>
 </section>
 
 <!-- –––––––––––––––––––––––––––– -->
