@@ -692,8 +692,8 @@
         <code class="json" data-gobble>
             "scripts": {
               "clean": "node scripts/clean.js",
-              "build": "npm run clean; parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
-              "watch": "npm run clean; parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+              "build": "npm run clean && parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+              "watch": "npm run clean && parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
               "start": "parcel src/index.html --open"
             },
         </code>
