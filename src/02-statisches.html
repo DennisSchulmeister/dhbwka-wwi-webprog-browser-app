@@ -546,7 +546,7 @@
     </pre>
     <p>
         Anschließend können wir den Dummy-Inhalt aus dem Grundgerüst wieder entfernen, so dass
-        davon nur folgende Zeile übrig bleiben. Den festen Inhalt der Topbar, der wirklich immer zu
+        davon nur folgende Zeilen übrig bleiben. Den festen Inhalt der Topbar, der wirklich immer zu
         sehen sein woll, behalten wir hier natürlich bei.
     </p>
     <pre data-gobble>
@@ -625,7 +625,7 @@
         </small>
     </p>
     <p>
-        Und auch die Detailseite gestalten wir ähnlich, da sie zur diesem Zeitpunkt natürlich auch noch keinen
+        Und auch die Detailseite gestalten wir ähnlich, da sie zu diesem Zeitpunkt natürlich auch noch keinen
         wirklichen Inhalt besitzt. Immerhin bekommt sie in der Topbar jedoch bereits einen Eintrag, mit dem der
         Anwender zurück auf die Übersichtsseite gelangen soll.
     </p>
@@ -738,7 +738,7 @@
         <li>
             Anschließend werden die zuvor sichtbaren Inhalte verworfen. Im Falle der
             Topbar mit einer <span class="cmd">forEach()</span>-Schleife, die nur
-            die Elemente der unteren Zeile erwischt. Und im Hauptbereich durch
+            die Elemente der unteren Zeile erwischt, und im Hauptbereich durch
             Überschreiben des <spann class="cmd">innerHTML</spann>-Attributs,
             was de facto seinen kompletten Inhalt löscht.
         </li>
@@ -753,9 +753,10 @@
         <li>
             Danach wird geprüft, ob ein neuer Inhalt für die Topbar übergeben wurde.
             Falls ja, wird in einer Schleife über die neuen Topbar-Elemente jedem
-            Element die CSS-Klasse <span class="cmd">bottom</span> hinzugefügt
-            und die Elemente an den <span class="code">&lt;header&gt;</span>
-            angehängt.
+            Element die CSS-Klasse <span class="cmd">bottom</span> hinzugefügt,
+            um sie in die untere Zeile der Topbar zu verfrachten. Gleichzeitig werden
+            die Elemente an den <span class="cmd">&lt;header&gt;</span> der
+            <span class="cmd">&lt;section id="app"&gt;</span> angehängt.
         </li>
         <li>
             Dann erfolgt mit einer ähnlichen Abfrage eine Prüfung für den Hauptbereich
@@ -769,7 +770,7 @@
         anwenderfreundlich ist die neue Methode aber noch nicht, da wir ihr, um eine neue
         Seite anzuzeigen, genau die hierfür notwendigen DOM-Elemente mitgegeben müssen.
         Besser wäre es jedoch, wenn wir eine bestimmte Seite einfach aufrufen könnten,
-        ohne genau zu wissen, wie die Seite eigentlich aufgebaut ist. Wir benötigen daher
+        ohne genau zu wissen, wie die Seite letztlich aufgebaut ist. Wir benötigen daher
         für jede Seite eine weitere Methode, die genau diesen Zweck erfüllt. Doch hierfür
         müssen wir uns erst noch überlegen, wie wir den Quellcode der App weiter strukturieren
         wollen.
@@ -778,20 +779,19 @@
     <h3>Eine Klasse je Bildschirmseite</h3>
     <p>
         Natürlich könnten wir die komplette Anwendungslogik einfach in der Datei <span class="fn">src/app.js</span>
-        oder sogar nur in der Klasse <span class="fn">App</span> ausprogrammieren. Dem Computer wäre das
-        ziemlich gleich. Allerdings wissen wir, dass die beiden Seiten mit der Übersicht und zur Anzeige
-        eines Songtextes nicht wirklich viel gemeinsam haben. Alles in eine Klasse zu packen wäre daher
-        ziemlich unübersichtlich. Das alte Sprichwort „teile und herrsche” liefert stattdessen viel bessere
-        Ergebnisse, da es uns an die
+        und der Klasse <span class="cmd">App</span> ausprogrammieren. Dem Computer wäre das ziemlich gleich.
+        Allerdings wissen wir, dass die beiden Seiten mit der Übersicht und zur Anzeige eines Songtexts nicht
+        wirklich viel gemeinsam haben. Alles in eine Klasse zu packen wäre daher ziemlich unübersichtlich.
+        Das alte Sprichwort „teile und herrsche” liefert stattdessen viel bessere Ergebnisse, da es uns an die
         <a href="https://t3n.de/news/prinzipien-software-entwicklung-solid-615556/" target="_blank">SOLID-Kriterien</a>
         und hier insbesondere an das Single-Responsibility-Prinzip erinnert. Es liegt deshalb nahe, für
         jede Bildschirmseite eine eigene Klasse vorzusehen. Und für jede Klasse dementsprechend eine
-        eigene JavaScript-Datei und ein eigenes Stylesheet, die wir um die Übersichtlichkeit noch
+        eigene JavaScript-Datei und ein eigenes Stylesheet, die wir, um die Übersichtlichkeit noch
         weiter zu erhöhen, jeweils in ein eigenes Verzeichnis packen.
     </p>
     <p>
         Bevor wir also weiter programmieren, lege zunächst folgende Dateistruktur an. Die Dateien
-        können dabei an dieser Stelle noch leer bleiben:
+        können dabei zunächst noch leer bleiben:
     </p>
     <ul>
         <li>
@@ -849,9 +849,9 @@
     <p>
         Bei den beiden Klassen wird es hingegen schon interessanter, da wir uns noch gar
         keine Gedanken darüber gemacht haben, welche Methoden sie besitzen sollen und zu
-        welchem sie aufgerufen werden. Letztlich gibt es auch gar keine universelle Lösung
+        wann sie aufgerufen werden. Letztlich gibt es auch gar keine universelle Lösung
         hierfür, in der Praxis hat sich aber ganz unabhängig von der Art der Anwendung oder
-        der verwendeten UI-Technologie folgende, einfache Struktur bewährt:
+        der verwendeten UI-Technologie folgende, grundlegende Struktur bewährt:
     </p>
     <ol>
         <li>
@@ -892,8 +892,7 @@
         ob er seine Änderungen sichern will, oder wir den Aufruf der Folgeseite ganz einfach unterbinden.
     </p>
     <p>
-        Die Datei <span class="fn">src/song-overview/song-overview.js</span> soll dementsprechend
-        folgenden Inhalt besitzen.
+        Die Datei <span class="fn">src/song-overview/song-overview.js</span> soll somit folgenden Inhalt besitzen:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -967,7 +966,7 @@
                 /**
                  * Konstruktor.
                  *
-                 * @param {Objekt} app Zentrales App-Objekt der Anwendung
+                 * @param {Objekt} app  Zentrales App-Objekt der Anwendung
                  * @param {String} id   ID des darzustellenden Songs
                  * @param {String} mode "new", "display" oder "edit"
                  */
@@ -1025,8 +1024,8 @@
     <h3>Weitere Methoden für die Klasse App</h3>
     <p>
         Da der Vertrag mit dem View-Klassen nun klar ist, besitzen wir alle Informationen, um die
-        Klasse <span class="cmd">App</span> nun zu Ende zu programmieren. Füge deshalb über der
-        Methode <span class="cmd">_switchVisibleContent()</span> eine neue Methode mit dem Namen
+        Klasse <span class="cmd">App</span> zu Ende zu programmieren. Füge deshalb über der Methode
+        <span class="cmd">_switchVisibleContent()</span> eine neue Methode mit dem Namen
         <span class="cmd">_switchVisibleView()</span> ein, die sie aufruft und hierfür ein
         View-Objekt entgegen nimmt:
     </p>
@@ -1073,8 +1072,8 @@
     </pre>
     <p>
         Die zwei Instanzattribute <span class="cmd">this._currentView</span> und
-        <span class="cmd">this._title</span> müssen hierfür im Konstruktor definiert
-        werden:
+        <span class="cmd">this._title</span> müssen hierfür noch im Konstruktor
+        definiert werden:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -1091,7 +1090,7 @@
         Und damit das Ganze einfach zu verwenden ist, legen wir nun für jede Seite eine
         eigene, für die öffentliche Verwendung freigebene Methode an, mit der sie überall
         in der App aufgerufen werden kann. Die Methode <span class="cmd">start()</span>
-        passen bei der Gelegenheit dann auch gleich noch an, damit beim Aufruf der App
+        passen wir bei der Gelegenheit dann auch gleich noch an, damit beim Aufruf der App
         immer die Überssichtsseite geladen wird:
     </p>
     <pre data-gobble>
@@ -1215,26 +1214,26 @@
         <span class="cmd">&lt;section&gt;</span>-Elemente für die beiden Unterseiten angelegt.
         Auf diese Elemente greifen wir nun zu, um die anzuzeigenden HTML-Elemente aus dem Document
         Object Model auszulesen. Allerdings erzeugen wir durch Aufruf der Methode
-        <span class="fn">cloneNode(true)</span> eine tiefe Kopie der ausgelesenen Elemente, da der
-        Kommentar vor der Methode <span class="fn">App._switchVisibleContent()</span> eindeutig
+        <span class="cmd">cloneNode(true)</span> eine tiefe Kopie der ausgelesenen Elemente, da der
+        Kommentar vor der Methode <span class="cmd">App._switchVisibleContent()</span> eindeutig
         besagt, dass ihr keine Elemente übergeben werden dürfen, die sich bereits im DOM-Baum der
         HTML-Seite befinden.
     </p>
     <p>
-        Mit diesen Elementen bauen wir dann das <span class="fn">content</span>-Objekt auf, welches
-        die Methode <span class="fn">App._switchVisibleContent()</span> von uns erwartet. Daraufhin
+        Mit diesen Elementen bauen wir dann das <span class="cmd">content</span>-Objekt auf, welches
+        die Methode <span class="cmd">App._switchVisibleContent()</span> von uns erwartet. Daraufhin
         suchen wir uns in der Topbar jeweils ein Element, mit dem der Anwender zwischen den Seiten
-        umschalten kann und registrieren einen Click Event Handler darauf. In der entsprechenden
+        umschalten kann und registrieren einen Click-Event-Handler darauf. In der entsprechenden
         Handler-Funktion rufen wir daher die jeweils richtige <span class="cmd">show…()</span>-Methode
-        des <span class="fn">App</span>-Objekts auf, um die Seite tatsächlich zu wechseln.
+        des <span class="cmd">App</span>-Objekts auf, um die Seite tatsächlich zu wechseln.
     </p>
     <p>
-        Und am Ende geben wir die <span class="fn">content</span>-Struktur zurück, damit die Methode
-        <span class="fn">App._switchVisibleView()</span>, von der wir aufgerufen werden, sie an die
-        Methode <span class="fn">App._switchVisibleContent()</span> übergeben kann.
+        Und am Ende geben wir die <span class="cmd">content</span>-Struktur zurück, damit die Methode
+        <span class="cmd">App._switchVisibleView()</span>, von der wir aufgerufen werden, sie an die
+        Methode <span class="cmd">App._switchVisibleContent()</span> übergeben kann.
     </p>
     <p>
-        Wenn du alles richtig gemacht hast, solltest du daher nun zwischen den beiden Seiten umherschalten
+        Wenn du alles richtig gemacht hast, solltest du nun zwischen den beiden Seiten umherschalten
         können. Dabei sollte dann auch aufgrund der unterschiedlichen Stylesheets die Schriftfarbe von
         orange auf lila wechseln, wie in der folgenden Animation dargestellt.
     </p>
@@ -1257,9 +1256,9 @@
         Zugegeben, das war schon eine ganze Menge Code, der da eben zusammenpassen musste, bevor wir
         wirklich zwischen den beiden Seiten hin und her schalten konnten. Doch damit hast du nun eine
         vollständige Grundstruktur zur Verfügung, die im Grunde genommen auf jede Art von Anwendung
-        ausgerollt werden kann. Du musst nur die beiden Klassen für die Songübersicht und die Details
-        zu einem Song durch eigene Klassen ersetzen. Ein paar Nachteile hat die bisherige Lösung aber
-        noch, weshalb wir sie an dieser Stelle noch etwas verfeinern wollen:
+        ausgerollt werden kann. Du musst nur die beiden Klassen für die Songübersicht und die Songdetails
+        durch eigene Klassen ersetzen. Ein paar Nachteile hat die bisherige Lösung aber noch, weshalb
+        wir sie an dieser Stelle noch etwas verfeinern wollen:
     </p>
     <ul>
         <li>
@@ -1270,10 +1269,10 @@
         <li>
             Auch können wir keine einfachen <span class="cmd">&lt;a&gt;</span>-Elemente innerhalb des
             HTML-Codes verwenden, um einen Link auf eine andere View zu platzieren. Wir müssen immer
-            zusätzliche Event Handler schreiben und den Seitenwechsel mit JavaScript durchführen.
+            Event-Handler-Funktionen schreiben und den Seitenwechsel mit JavaScript durchführen.
         </li>
         <li>
-            Der Zurück-Button des Browsers sowie ganz allgemein ein Aufruf über den Browserverlauf
+            Der Zurück-Button des Browsers sowie ganz allgemein die Nutzung des Browserverlaufs
             wird nicht unterstützt.
         </li>
     </ul>
@@ -1290,14 +1289,14 @@
 
     <h3>Installation von Navigo</h3>
     <p>
-        Die Library, die wir hier verwenden wollen, heißt <a href="https://github.com/krasimir/navigo" target="_blank">navigo</a>.
+        Die Library, die wir hier verwenden wollen, heißt <a href="https://github.com/krasimir/navigo" target="_blank">Navigo</a>.
         Sie implementiert einen einfachen Single Page Router, der im Gegensatz zu vielen ähnlichen
         Bibliotheken ganz ohne fremde Abhängigkeiten auskommt und daher in nahezu jede beliebige
         Webanwendung integriert werden kann. Und wie das
         <a href="https://github.com/krasimir/navigo/blob/master/README.md" target="_blank">README auf GitHub</a>
         andeutet, scheint sie relativ einfach nutzbar zu sein. Grund genug also mal wieder das gute alte
-        Terminal anzuschmeißen, mit <span class="cmd">cd</span> in unser Projektverzeichnis zu wechseln
-        die Library mit folgendem Befehl zu installieren:
+        Terminal anzuschmeißen, mit einem beherzten <span class="cmd">cd "Verzeichnisname"</span> in unser
+        Projektverzeichnis zu wechseln und die Library mit folgendem Befehl zu installieren:
     </p>
     <p class="cmd">
         npm add --save-dev navigo
@@ -1314,9 +1313,11 @@
     <p>
         Um den Single Page Router zu initialisieren müssen wir ein paar kleinere Umbauten der
         <span class="cmd">App</span>-Klasse vornehmen. Allerdings nichts allzu dramatisches.
-        Zunächst müssen wir die Klasse <span class="fn">Navigo</span> aus dem Modul
+        Zunächst müssen wir die Klasse <span class="cmd">Navigo</span> aus dem Modul
         <span class="fn">navigo/lib/navigo.js</span> importieren, was wir dank Parcel einfach
-        tun können, ohne hierfür auch nur eine Datei umkopieren zu müssen:
+        tun können, ohne hierfür auch nur eine Datei umkopieren zu müssen. Beachte, dass der
+        Pfad in der <span class="cmd">import</span>-Anweisung hierfür <u>nicht</u> mit
+        <span class="cmd">./</span> anfangen darf.
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -1370,11 +1371,11 @@
         </code>
     </pre>
     <p>
-        Das sieht jetzt erst einmal sehr komplex aus. Wichtig aber nur der Aufruf von
-        <span class="cmd">this._router.on({…})</span> als Herzstück dieser Anpassung.
-        Alle anderen Zeilen, bis auf die Erzeugung des Router-Objekts selbst könnte man
-        auch weglassen. Sie werden nur benötigt, weil wir die Navigation in bestimmten
-        Fällen unterbrechen wollen und den Navigo hierfür ein wenig zum Mitspielen
+        Das sieht jetzt erst einmal sehr komplex aus. Wichtig ist aber nur der Aufruf von
+        <span class="cmd">this._router.on({…})</span>, der das Herzstück dieser Anpassung
+        darstellt. Alle anderen Zeilen, bis auf die Erzeugung des Router-Objekts selbst
+        könnte man auch weglassen. Sie werden nur benötigt, weil wir die Navigation in
+        bestimmten Fällen unterbrechen wollen und Navigo hierfür ein wenig zum Mitspielen
         überreden müssen.
     </p>
     <pre data-gobble>
@@ -1388,17 +1389,17 @@
         </code>
     </pre>
     <p>
-        Hier wird die URL-Struktur der Seite definiert, wobei jedes URL-Pattern mit einer
-        anonymen Lambda-Funktion (zu erkennen an <span class="cmd">() => &gt; …</span>)
+        Diese Zeilen definieren die URL-Struktur der App, wobei jedes URL-Pattern mit einer
+        anonymen Lambda-Funktion (zu erkennen am <span class="cmd">()=&gt;…</span>)
         verknüpft ist. Es liegt nahe, dass der Router die entsprechende Lambda-Funktionen
         aufruft, wenn eine URL erkannt wurde, um dadurch den sichtbaren Inhalt zu wechseln.
         Praktischerweise können wir hier unsere Methoden von vorhin direkt weiterverwenden.
     </p>
     <p>
         In der <span class="cmd">start()</span>-Methode müssen wir nun nicht mehr explizit
-        die Übersichtsseite aufrufen. Stattdessen sagen wir dem Router hier, dass er die
-        URL, mit der die gesamte App gestartet wurde, auswerten und die anzuzeigende View
-        automatisch erkennen soll:
+        die Übersichtsseite aufrufen. Stattdessen sagen wir dem Router, dass er nun dafür
+        verantwortlich ist, die URL, mit der die gesamte App gestartet wurde, auszuwerten,
+        um somit die erste View zu ermitteln:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -1443,21 +1444,37 @@
         Im Vergleich zur alten Version setzen wir hier noch ein Kennzeichen, wenn die
         Navigation durch die aktuell sichtbare View unterbunden wird, damit wir im weiter
         oben definieren „After Hook” von Navigo die Adresszeile des Browsers wieder auf
-        die alte URL setzen könne. Außerdem müssen wir hier die URL der nächsten Seite
-        innerhalb des <span class="cmd">goon</span>-Callbacks etwas anders ermitteln.
+        die alte URL zurücksetzen können. Außerdem müssen den <span class="cmd">goon</span>-Callback
+        jetzt ein wenig anders implementieren.
     </p>
+    <p>
+        Zu guter Letzt kommen noch zwei weitere Zeilen ganz am Ende der
+        <span class="cmd">_switchVisibleContent</span>-Methode hinzu, um
+        die in einer View enthaltenen Links auf andere App-Seiten zu aktiveren.
+        Die Links werden hierfür am zusätzlichen HTML-Attribut <span class="cmd">data-navigo</span>
+        erkannt (siehe in der <span class="fn">src/index.html</span> weiter unten):
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            _switchVisibleContent(content) {
+                …
+                // Navigo an die Links in der View binden
+                this._router.updatePageLinks();
+            }
+        </code>
+    </pre>
 
     <h3>Vereinfachung der restlichen Quellcodes</h3>
     <p>
         Undank sei der Welten Lohn, sagt man. Nicht jedoch an dieser Stelle. Zwar ist
-        die Klasse durch die neuerlichen Änderungen nochmal ein klein wenig komplizierter
-        geworden, dafür vereinfachen sich aber alle anderen Quellcodes. Und wir haben eine
-        ordentliche URL-Struktur, mit der wir jede View der App über eine eigene URL direkt
-        aufrufen oder als Lesezeichen im Browser speichern können. Und der Zurück-Button
-        des Browsers tut nun auch das, was er soll.
+        die Klasse <span class="cmd">App</span> durch die neuerlichen Änderungen nochmal
+        ein klein wenig komplexer geworden, dafür vereinfachen sich aber alle anderen
+        Quellcodes. Und wir haben eine ordentliche URL-Struktur, mit der wir jede View der
+        App über eine eigene URL direkt aufrufen oder als Lesezeichen im Browser speichern
+        können. Und der Zurück-Button des Browsers tut nun auch das, was er soll.
     </p>
     <p>
-        Zunächst einmal wollen wir die <span class="cmd">onShow()</span>-Methoden der beiden
+        Zunächst einmal wollen wir die <span class="cmd">onShow()</span>-Methode der beiden
         View-Klassen etwas aufräumen. Hier fallen die Event Handler komplett weg, so dass die
         Methoden nun nur noch so aussehen:
     </p>
@@ -1490,10 +1507,10 @@
         </code>
     </pre>
     <p>
-        Wir konnten tatsächlich die Hälfte des Quellcodes einfach wegschmeißen. Und da wir zum
+        Wir können tatsächlich die Hälfte des Quellcodes einfach wegschmeißen. Und da wir zum
         Umschalten zwischen den Views nun kein explizites JavaScript mehr benötigen, können wir
-        die <span class="fn">src/index.html</span> nun so anpassen, dass hierfür einfache Links
-        verwendet werden. Die Definitionen innerhalb der Topbar ändern sich dadurch wie folgt:
+        die <span class="fn">src/index.html</span> jetzt auch so anpassen, dass hierfür einfache
+        Links verwendet werden. Die Definitionen innerhalb der Topbar ändern sich dadurch wie folgt:
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -1513,7 +1530,7 @@
         </code>
     </pre>
     <p>
-        Wenn es gut läuft, sollte das Ergebnis nun wie folgt aussehen. Beachte dabei, wie sic
+        Wenn es gut läuft, sollte das Ergebnis nun wie folgt aussehen. Beachte dabei, wie sich
         die URL in der Adresszeile des Browsers beim Wechseln der Seite ebenfalls ändert:
     </p>
     <figure>
@@ -1529,7 +1546,7 @@
         dass die Seite zwar neulädt, in der Adresszeile des Browsers aber noch eine alte URL steht.
         In diesem Fall entferne am Besten alle Bestandteile nach der Port-Nummer der URL und lade
         die Seite erneut. Dadurch kannst du Navigo und Parcel wieder in Einklang bringen. In der
-        Produktivversion der App kann das nicht passieren, da es hier das automatische Neuladen
+        Produktivversion der App kann das nicht passieren, da es hier ein automatisches Neuladen
         der Seite ja nicht gibt.
     </p>
 </section>
