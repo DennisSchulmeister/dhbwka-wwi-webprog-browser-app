@@ -9,7 +9,7 @@
 <section data-title="Das Grundgerüst entsteht">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/abc1fc83de19c5d9f8b666cc4980515335e425be" target="_blank">abc1fc8</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/5b40260b1c7855ec8ec12d97666b4837f004927d" target="_blank">5b40260</a>
     </p>
 
     <p>
@@ -81,7 +81,7 @@
         </code>
     </pre>
     <p>
-        Denkt man sich den Dummy-Inhalt weg, lässt sich auch schon der Aufbau
+        Denkt man sich den Dummy-Inhalt weg, lässt sich daran auch schon folgender Aufbau
         der Seite erkennen:
     </p>
     <pre data-gobble>
@@ -98,25 +98,25 @@
 
                     &lt;!-- Untere Zeile (dynamisch je nach View) --&gt;
                     &lt;div class="bottom left"&gt;
-                        …
+                        … Inhalt je nach View …
                     &lt;/div&gt;
                     &lt;div class="bottom right"&gt;
-                        …
+                        … Inhalt je nach View …
                     &lt;/div&gt;
                 &lt;/header&gt;
 
                 &lt;!-- Hauptbereich (dynamisch je nach View) --&gt;
                 &lt;main&gt;
-                    …
+                    … Inhalt je nach View …
                 &lt;/main&gt;
             &lt;/section&gt;
         </code>
     </pre>
     <p>
         Diese Inhalte müssen wir nun mit den zuvor angelegten Stylesheets in Form bringen,
-        da die eingebauten Layoutregeln des Browsers natürlich nicht wie von Zauberhand
-        einfach das obigen Layout erzeugen werden. Doch zuvor musst du dir von GitHub
-        folgende drei Bilder herunterladen:
+        da die eingebauten Layoutregeln des Browsers natürlich nicht wie von Geisterhand
+        das obige Bild herbeizaubern werden. Doch zuvor musst du dir von GitHub folgende
+        drei Bilder herunterladen:
     </p>
     <ul>
         <li>
@@ -150,14 +150,14 @@
     </pre>
     <p>
         Damit haben wir erst einmal alle Dateien beisammen. Die Verzeichnisstruktur sollte jetzt
-        wie in der nächsten Abbildung bei dir aussehen:
+        wie in der nächsten Abbildung aussehen:
     </p>
     <figure>
         <img src="02/grundstruktur/alle-dateien.png" />
         <figcaption>Verzeichnisstruktur der Webanwendung an dieser Stelle</figcaption>
     </figure>
     <p>
-        Damit das neue Stylesheet nun aber auch wirken kann, muss es erst noch importiert werden.
+        Damit das neue Stylesheet wirksam wird, muss es erst noch importiert werden.
         Ändere deshalb den Import des alten Stylesheets in der <spann class="fn">src/index.js</spann>
         zu folgenden zwei Zeilen ab. Achte dabei aber darauf, wirklich erst die Datei
         <span class="fn">./index.css</span> und dann die Datei <span class="fn">./theme.css</span>
@@ -242,7 +242,7 @@
             /*
              * Flächendeckender Seitenhintergrund auf großen Bildschirmen
              */
-            @media (min-width: 80em) {
+            @media (min-width: 85em) {
                 /* Hintergrundbild hinter dem Hauptbereich der App */
                 html {
                     /* https://pixabay.com/de/computer-notebook-kaffee-820281/ */
@@ -300,7 +300,7 @@
         </code>
     </pre>
     <p>
-        Daraufhin folgt eine große Zahl an Regeln zur Gestaltung des Kopfbereichs.
+        Darauf folgt eine große Zahl an Regeln zur Gestaltung des Kopfbereichs.
         Auch sie fangen alle mit <span class="cmd">#app</span> an, um ihre Gültigkeit
         zu begrenzen:
     </p>
@@ -403,9 +403,9 @@
     </pre>
     <p>
         Und zum Schluß wie immer die Anpassung an große Bildschirme. Die Angabe
-        <span class="cmd">(min-width: 80em)</span> in der fünften Zeile muss
-        exakt mit dem Media Query in der <span class="fn">src/index.css</span>
-        stehen, damit die Darstellung in jedem Fall passt:
+        <span class="cmd">(min-width: 85em)</span> in der fünften Zeile muss
+        dabei in Einklang mit dem Media Query in der <span class="fn">src/index.css</span>
+        stehen, damit die Darstellung passt:
     </p>
     <pre data-gobble>
         <code class="css" data-gobble>
@@ -413,7 +413,7 @@
              * Anpassung an große Bildschirme, sobald in der index.css das große
              * Hintergrundbild eingeschaltet wird
              */
-            @media screen and (min-width: 80em) {
+            @media screen and (min-width: 85em) {
                 /* Rahmen um den Hauptbereich zeichnen */
                 #app {
                     max-width: 80em;
@@ -473,7 +473,7 @@
         </code>
     </pre>
     <p>
-        Und das war es dann auch schon. Zugegeben war das jetzt zwar extrem viel Copy &amp; Paste.
+        Und das war es dann auch schon. Zugegeben war das jetzt zwar viel Copy &amp; Paste.
         Auf dieser Grundlage können wir der App im nächsten Schritt nun aber ein wenig Leben einhauchen.
     </p>
 </section>
@@ -484,7 +484,7 @@
 <section data-title="Navigation innerhalb der App">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/1451b1db51fce4657c253f3d3b1fe733139edcd7" target="_blank">1451b1d</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/11f39e316a354d0be004929e2db621a68fe69527" target="_blank">11f39e3</a>
     </p>
 
     <p>
@@ -503,10 +503,9 @@
         Im ersten Schritt müssen wir die Datei <span class="fn">src/index.html</span> so umbauen,
         dass jeder Bereich der App eine eigene <span class="cmd">&lt;section&gt;</span> bekommt,
         die wir über eine eindeutige Id adressieren können. Allerdings sollen diese neuen Bereiche
-        nicht sichtbar sein, da wir sonst ja nicht zwischen den einzelnen Bereichen umherschalten
-        könnten. Die CSS-Klasse <span class="cmd">hidden</span> stellt deshalb sicher, dass wirklich
-        nur die erste <span class="cmd">&lt;section id="app"&gt;</span> mit dem Anwendungsrahmen
-        und sonst nichts angezeigt wird.
+        nicht sichtbar sein. Die CSS-Klasse <span class="cmd">hidden</span> stellt deshalb sicher,
+        dass wirklich nur die erste <span class="cmd">&lt;section id="app"&gt;</span> mit dem
+        Anwendungsrahmen und sonst nichts angezeigt wird.
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -547,7 +546,7 @@
     <p>
         Anschließend können wir den Dummy-Inhalt aus dem Grundgerüst wieder entfernen, so dass
         davon nur folgende Zeilen übrig bleiben. Den festen Inhalt der Topbar, der wirklich immer zu
-        sehen sein woll, behalten wir hier natürlich bei.
+        sehen sein woll, behalten wir hier natürlich bei. Ebenso alle anderen Zeilen der HTML-Datei.
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -725,8 +724,8 @@
         </code>
     </pre>
     <p>
-        Der Quellcode ist im Grunde genommen nicht sehr kompliziert. Dennoch sollten wir ihn an dieser
-        Stelle kurz durchgehen, um sicherzustellen, dass du ihn wirklich verstehst:
+        Der Quellcode ist im Grunde genommen nicht sehr kompliziert. Dennoch gehen wir ihn an dieser
+        Stelle kurz durch, um sicherzustellen, dass du ihn auch wirklich verstehst:
     </p>
     <ol>
         <li>
@@ -738,9 +737,9 @@
         <li>
             Anschließend werden die zuvor sichtbaren Inhalte verworfen. Im Falle der
             Topbar mit einer <span class="cmd">forEach()</span>-Schleife, die nur
-            die Elemente der unteren Zeile erwischt, und im Hauptbereich durch
-            Überschreiben des <spann class="cmd">innerHTML</spann>-Attributs,
-            was de facto seinen kompletten Inhalt löscht.
+            die Elemente der unteren Zeile erwischt. Im Hauptbereich wird stattdessen
+            das <spann class="cmd">innerHTML</spann>-Attribut überschrieben, was
+            seinen kompletten Inhalt löscht.
         </li>
         <li>
             Dann wird mit einer <span class="cmd">if</span>-Abfrage gebprüft, ob
@@ -752,10 +751,10 @@
         </li>
         <li>
             Danach wird geprüft, ob ein neuer Inhalt für die Topbar übergeben wurde.
-            Falls ja, wird in einer Schleife über die neuen Topbar-Elemente jedem
-            Element die CSS-Klasse <span class="cmd">bottom</span> hinzugefügt,
-            um sie in die untere Zeile der Topbar zu verfrachten. Gleichzeitig werden
-            die Elemente an den <span class="cmd">&lt;header&gt;</span> der
+            Falls ja, wird in einer Schleife jedem dieser Elemente die CSS-Klasse
+            <span class="cmd">bottom</span> hinzugefügt, um sie in der untere Zeile
+            der Topbar zu verankern. Gleichzeitig werden sie an den
+            <span class="cmd">&lt;header&gt;</span> innerhalb von
             <span class="cmd">&lt;section id="app"&gt;</span> angehängt.
         </li>
         <li>
@@ -766,21 +765,20 @@
     </ol>
 
     <p>
-        Auf diese Weise können wir nun den angezeigten Inhalt der App variieren. Wirklich
-        anwenderfreundlich ist die neue Methode aber noch nicht, da wir ihr, um eine neue
-        Seite anzuzeigen, genau die hierfür notwendigen DOM-Elemente mitgegeben müssen.
-        Besser wäre es jedoch, wenn wir eine bestimmte Seite einfach aufrufen könnten,
-        ohne genau zu wissen, wie die Seite letztlich aufgebaut ist. Wir benötigen daher
-        für jede Seite eine weitere Methode, die genau diesen Zweck erfüllt. Doch hierfür
-        müssen wir uns erst noch überlegen, wie wir den Quellcode der App weiter strukturieren
-        wollen.
+        Mit dieser Methode können wir nun den angezeigten Inhalt der App variieren. Wirklich
+        anwenderfreundlich ist sie aber noch nicht, da wir ihr, um eine neue View anzuzeigen,
+        genau die hierfür notwendigen DOM-Elemente mitgegeben müssen. Besser wäre es jedoch,
+        wenn wir eine bestimmte View einfach aufrufen könnten, ohne genau zu wissen, wie sie
+        letztlich aufgebaut ist. Wir benötigen daher für jede View eine weitere Methode, die
+        genau diesen Zweck erfüllt. Doch hierfür müssen wir uns erst noch überlegen, wie wir
+        den restlichen Quellcode der App weiter strukturieren sollen.
     </p>
 
     <h3>Eine Klasse je Bildschirmseite</h3>
     <p>
         Natürlich könnten wir die komplette Anwendungslogik einfach in der Datei <span class="fn">src/app.js</span>
         und der Klasse <span class="cmd">App</span> ausprogrammieren. Dem Computer wäre das ziemlich gleich.
-        Allerdings wissen wir, dass die beiden Seiten mit der Übersicht und zur Anzeige eines Songtexts nicht
+        Allerdings wissen wir, dass die beiden Views mit der Übersicht und zur Anzeige eines Songtexts nicht
         wirklich viel gemeinsam haben. Alles in eine Klasse zu packen wäre daher ziemlich unübersichtlich.
         Das alte Sprichwort „teile und herrsche” liefert stattdessen viel bessere Ergebnisse, da es uns an die
         <a href="https://t3n.de/news/prinzipien-software-entwicklung-solid-615556/" target="_blank">SOLID-Kriterien</a>
@@ -808,7 +806,7 @@
         </li>
     </ul>
     <p>
-        Das Ergebnis sollte dementsprechend so aussehen:
+        Das Ergebnis sollte dann so aussehen:
     </p>
     <figure>
         <img src="02/navigation/neue-dateien.png" />
@@ -832,7 +830,7 @@
         </code>
     </pre>
     <p>
-        Und in die <span class="fn">src/song-display-edit/song-display-edit.css</span> folgende Zeilen:
+        In die <span class="fn">src/song-display-edit/song-display-edit.css</span> füge folgende Zeilen:
     </p>
     <pre data-gobble>
         <code class="css" data-gobble>
@@ -848,40 +846,41 @@
     </pre>
     <p>
         Bei den beiden Klassen wird es hingegen schon interessanter, da wir uns noch gar
-        keine Gedanken darüber gemacht haben, welche Methoden sie besitzen sollen und zu
-        wann sie aufgerufen werden. Letztlich gibt es auch gar keine universelle Lösung
-        hierfür, in der Praxis hat sich aber ganz unabhängig von der Art der Anwendung oder
+        keine Gedanken darüber gemacht haben, welche Methoden sie besitzen sollen und
+        wann diesie aufgerufen werden. Letztlich gibt es auch gar keine universelle Lösung
+        dafür, in der Praxis hat sich aber ganz unabhängig von der Art der Anwendung oder
         der verwendeten UI-Technologie folgende, grundlegende Struktur bewährt:
     </p>
     <ol>
         <li>
-            Jedes Mal, wenn eine Seite aufgerufen wird, wird ein neues Objekt der dazugehörigen
-            Klasse erzeugt. Das Objekt bleibt dabei so lange aktiv, wie die Seite sichtbar ist.
+            Jedes Mal, wenn eine View aufgerufen wird, wird ein neues Objekt der dazugehörigen
+            Klasse erzeugt. Das Objekt bleibt dabei so lange aktiv, wie die View sichtbar ist.
         </li>
         <li>
-            Wird von einer Seite auf dieselbe Seite nur mit anderen Daten gewechselt (zum Beispiel
+            Wird von einer View auf dieselbe View nur mit anderen Daten gewechselt (zum Beispiel
             von der Detailseite eines Songs zur Detailseite eines anderen Songs), wird hierfür
             ebenfalls ein neues Objekt erzeugt.
         </li>
         <li>
-            Denn dies ermöglicht es, die Klassen einfach zu halten und für die Anzeige benötigte
-            Informationen wie die Song-ID einfach dem Konstruktor zu übergeben.
+            Denn dies ermöglicht es, die Klassen einfach zu halten und die für die Ermittlung der
+            anzuzeigenden Daten benötigten Informationen wie die Song-ID einfach dem Konstruktor
+            zu übergeben.
         </li>
         <li>
-            Bevor eine neue Seite aufgerufen wird, wird die Methode <span class="cmd">onShow()</span>
+            Bevor eine neue View aufgerufen wird, wird die Methode <span class="cmd">onShow()</span>
             des jeweiligen Objekts aufgerufen.
         </li>
         <li>
             Davor wird jedoch erst die Methode <span class="cmd">onLeave()</span> der aktuell sichtbaren
-            Seite aufgerufen, um ihr die Möglichkeit zu geben, Aufräumarbeiten durchzuführen oder den
+            View aufgerufen, um ihr die Möglichkeit zu geben, Aufräumarbeiten durchzuführen oder den
             Seitenwechsel zu unterbinden.
         </li>
         <li>
             Eine Methode mit dem Namen <span class="cmd">getTitle()</span> gibt den Titel der aktuellen
-            Seite zurück, um ihn in der Titelzeile des Browserfensters anzuzeigen.
+            View zurück, um ihn in der Titelzeile des Browserfensters anzuzeigen.
         </li>
         <li>
-            Sobald eine Seite verlassen wurde, kann das dazugehörige Objekt abgeräumt werden.
+            Sobald eine View verlassen wurde, kann das dazugehörige Objekt abgeräumt werden.
         </li>
     </ol>
     <p>
@@ -1087,7 +1086,7 @@
         </code>
     </pre>
     <p>
-        Und damit das Ganze einfach zu verwenden ist, legen wir nun für jede Seite eine
+        Und damit das Ganze einfach zu verwenden ist, legen wir nun für jede View eine
         eigene, für die öffentliche Verwendung freigebene Methode an, mit der sie überall
         in der App aufgerufen werden kann. Die Methode <span class="cmd">start()</span>
         passen wir bei der Gelegenheit dann auch gleich noch an, damit beim Aufruf der App
@@ -1145,11 +1144,11 @@
 
     <h3>Ausprogrammieren der onShow()-Methoden</h3>
     <p>
-        Damit das Ganze nun auch wirklich funktioniert, müssen wir noch die Methode
-        <span class="cmd">onShow()</span> unserer beiden View-Klassen ausprogrammieren.
-        Denn noch übergeben wir dem <span class="cmd">App</span>-Objekt keine DOM-Elemente
-        zum Anzeigen und wir registrieren auch noch keine Event Handler, mit denen der
-        Anwender zwischen den Seiten umherschalten könnte.
+        Eine winzige Kleinigkeit fehlt jetzt aber noch, bevor das Ganze auch wirklich funktioniert:
+        Wir müssen noch die Methode <span class="cmd">onShow()</span> unserer beiden View-Klassen
+        ausprogrammieren. Denn noch übergeben wir dem <span class="cmd">App</span>-Objekt keine
+        DOM-Elemente zum Anzeigen und wir registrieren auch noch keine Event Handler, mit denen
+        der Anwender zwischen den Seiten umherschalten könnte.
     </p>
     <p>
         Öffne daher noch einmal die Datei <span class="fn">src/song-overview/song-overview.js</span>
@@ -1209,8 +1208,8 @@
     </pre>
     <p>
         Beide Methoden sind prinzipiell gleich aufgebaut. Um sie zu verstehen müssen wir allerdings
-        erst einen Bogen zurück zum Anfang des Kapitels machen. Dort haben wir nämlich den HTML-Code
-        der Datei <span class="fn">src/index.html</span> etwas umgeräumt und zwei
+        erst einen Bogen zurück zum Anfang machen. Dort haben wir nämlich den HTML-Code der Datei
+        <span class="fn">src/index.html</span> etwas umgeräumt und zwei
         <span class="cmd">&lt;section&gt;</span>-Elemente für die beiden Unterseiten angelegt.
         Auf diese Elemente greifen wir nun zu, um die anzuzeigenden HTML-Elemente aus dem Document
         Object Model auszulesen. Allerdings erzeugen wir durch Aufruf der Methode
@@ -1249,7 +1248,7 @@
 <section data-title="Integration des Single Page Routers">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/afd89090abf9e432dc6fd9d80b48a8205de387be" target="_blank">afd8909</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/f3c23b477cbe7bed0c182bbcc00526452f9a1f60" target="_blank">f3c23b4</a>
     </p>
 
     <p>
@@ -1348,7 +1347,7 @@
                     "*":                       () =&gt; this.showSongOverview(),
                     "/song/new/":              () =&gt; this.showSongDisplayEdit("", "new"),
                     "/song/display/:id/":  params =&gt; this.showSongDisplayEdit(params.id, "display"),
-                    "/song/edit/:id":      params =&gt; this.showSongDisplayEdit(params.id, "edit"),
+                    "/song/edit/:id/":     params =&gt; this.showSongDisplayEdit(params.id, "edit"),
                 });
 
                 this._router.hooks({
@@ -1375,7 +1374,7 @@
         <span class="cmd">this._router.on({…})</span>, der das Herzstück dieser Anpassung
         darstellt. Alle anderen Zeilen, bis auf die Erzeugung des Router-Objekts selbst
         könnte man auch weglassen. Sie werden nur benötigt, weil wir die Navigation in
-        bestimmten Fällen unterbrechen wollen und Navigo hierfür ein wenig zum Mitspielen
+        bestimmten Fällen unterbrechen wollen und wie Navigo hierfür ein wenig zum Mitspielen
         überreden müssen.
     </p>
     <pre data-gobble>
@@ -1384,13 +1383,13 @@
                 "*":                       () =&gt; this.showSongOverview(),
                 "/song/new/":              () =&gt; this.showSongDisplayEdit("", "new"),
                 "/song/display/:id/":  params =&gt; this.showSongDisplayEdit(params.id, "display"),
-                "/song/edit/:id":      params =&gt; this.showSongDisplayEdit(params.id, "edit"),
+                "/song/edit/:id/":     params =&gt; this.showSongDisplayEdit(params.id, "edit"),
             });
         </code>
     </pre>
     <p>
         Diese Zeilen definieren die URL-Struktur der App, wobei jedes URL-Pattern mit einer
-        anonymen Lambda-Funktion (zu erkennen am <span class="cmd">()=&gt;…</span>)
+        anonymen Lambda-Funktion (zu erkennen am Doppelpfeil <span class="cmd">=&gt;</span>)
         verknüpft ist. Es liegt nahe, dass der Router die entsprechende Lambda-Funktionen
         aufruft, wenn eine URL erkannt wurde, um dadurch den sichtbaren Inhalt zu wechseln.
         Praktischerweise können wir hier unsere Methoden von vorhin direkt weiterverwenden.
@@ -1399,7 +1398,7 @@
         In der <span class="cmd">start()</span>-Methode müssen wir nun nicht mehr explizit
         die Übersichtsseite aufrufen. Stattdessen sagen wir dem Router, dass er nun dafür
         verantwortlich ist, die URL, mit der die gesamte App gestartet wurde, auszuwerten,
-        um somit die erste View zu ermitteln:
+        um die erste View zu ermitteln:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -1444,15 +1443,15 @@
         Im Vergleich zur alten Version setzen wir hier noch ein Kennzeichen, wenn die
         Navigation durch die aktuell sichtbare View unterbunden wird, damit wir im weiter
         oben definieren „After Hook” von Navigo die Adresszeile des Browsers wieder auf
-        die alte URL zurücksetzen können. Außerdem müssen den <span class="cmd">goon</span>-Callback
-        jetzt ein wenig anders implementieren.
+        die alte URL zurücksetzen können. Außerdem müssen wir die Callbackfunktion
+        <span class="cmd">goon()</span> ein wenig anders implementieren.
     </p>
     <p>
         Zu guter Letzt kommen noch zwei weitere Zeilen ganz am Ende der
         <span class="cmd">_switchVisibleContent</span>-Methode hinzu, um
         die in einer View enthaltenen Links auf andere App-Seiten zu aktiveren.
         Die Links werden hierfür am zusätzlichen HTML-Attribut <span class="cmd">data-navigo</span>
-        erkannt (siehe in der <span class="fn">src/index.html</span> weiter unten):
+        erkannt (siehe weiter unten in der <span class="fn">src/index.html</span>):
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -1471,7 +1470,8 @@
         ein klein wenig komplexer geworden, dafür vereinfachen sich aber alle anderen
         Quellcodes. Und wir haben eine ordentliche URL-Struktur, mit der wir jede View der
         App über eine eigene URL direkt aufrufen oder als Lesezeichen im Browser speichern
-        können. Und der Zurück-Button des Browsers tut nun auch das, was er soll.
+        können (sofern der Webserver richtig konfiguriert wurde). Und der Zurück-Button des
+        Browsers tut nun auch das, was er soll.
     </p>
     <p>
         Zunächst einmal wollen wir die <span class="cmd">onShow()</span>-Methode der beiden
@@ -1484,7 +1484,7 @@
             onShow() {
                 let section = document.querySelector("#song-overview").cloneNode(true);
 
-                return content = {
+                return {
                     className: "song-overview",
                     topbar: section.querySelectorAll("header > *"),
                     main: section.querySelectorAll("main > *"),
@@ -1507,7 +1507,7 @@
         </code>
     </pre>
     <p>
-        Wir können tatsächlich die Hälfte des Quellcodes einfach wegschmeißen. Und da wir zum
+        Wir können tatsächlich die Hälfte des Quellcodes einfach wegschmeißen! Und da wir zum
         Umschalten zwischen den Views nun kein explizites JavaScript mehr benötigen, können wir
         die <span class="fn">src/index.html</span> jetzt auch so anpassen, dass hierfür einfache
         Links verwendet werden. Die Definitionen innerhalb der Topbar ändern sich dadurch wie folgt:
@@ -1531,7 +1531,7 @@
     </pre>
     <p>
         Wenn es gut läuft, sollte das Ergebnis nun wie folgt aussehen. Beachte dabei, wie sich
-        die URL in der Adresszeile des Browsers beim Wechseln der Seite ebenfalls ändert:
+        die URL in der Adresszeile des Browsers automatisch ändert:
     </p>
     <figure>
         <img src="02/spa-router/seiten-wechseln.gif" class="border"/>
@@ -1547,7 +1547,9 @@
         In diesem Fall entferne am Besten alle Bestandteile nach der Port-Nummer der URL und lade
         die Seite erneut. Dadurch kannst du Navigo und Parcel wieder in Einklang bringen. In der
         Produktivversion der App kann das nicht passieren, da es hier ein automatisches Neuladen
-        der Seite ja nicht gibt.
+        der Seite ja nicht gibt. Allerdings muss der Webserver dort so konfiguriert werden, dass
+        er immer den Inhalt der Datei <span class="fn">index.html</span> zurückliefert, wenn auf
+        einen unbekannten Pfad zugegriffen wird.
     </p>
 </section>
 
