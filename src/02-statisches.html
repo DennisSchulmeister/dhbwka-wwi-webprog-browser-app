@@ -1553,6 +1553,421 @@
     </p>
 </section>
 
+<!-- ––––––––––––––––––––––––––– -->
+<!-- Definition des Datenmodells -->
+<!-- ––––––––––––––––––––––––––– -->
+<section data-title="Definition des Datenmodells">
+    <p class="git-commit">
+        Git Commit:
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/50d6ceb20b42415f71e8461bf2d59b8681792969" target="_blank">50d6ceb</a>
+    </p>
+
+    <h3>Welche Möglichkeiten kommen in Frage?</h3>
+    <p>
+        Würden wir eine serverseitige Webanwendung anstelle einer Browser App schreiben, wäre die
+        Frage, wie die Daten der Anwendung gespeichert werden sollen, ganz einfach zu beantworten.
+        Sehr wahrscheinlich könnten wir die Daten einfach in einer relationalen Datenbank ablegen,
+        deren Integration das Webframework unserer Wahl für uns regelt. Oder wir könnten auf eine
+        der vielen NoSQL-Datenbanken zugreifen, die als Alternative zu den klassischen SQL-Datenbanken
+        angeboten werden. Innerhalb einer reinen Browser App ohne Backend-Sever haben wir diese
+        Möglichkeiten nicht. Doch auch hier müssen wir auf eine komfortable Datenhaltung nicht
+        verzichten, sondern können zwischen den folgenden Alternativen wählen:
+    </p>
+    <ul>
+        <li>
+            Wir könnten eine Cloud-Datenbank wie
+            <a href="https://firebase.google.com/" target="_blank">Google Firebase</a> nutzen.
+        </li>
+        <li>
+            Wir könnten einen Datenbankserver mit HTTP-Schnittstelle wie
+            <a href="http://couchdb.apache.org/" target="_blank">Apache CouchDB</a>
+            via AJAX aufrufen.
+        </li>
+        <li>
+            Wir könnten mit der
+            <a href="https://www.tutorialspoint.com/html5/html5_indexeddb.htm" target="_blank">IndexDB API</a>
+            von HTML5 die Daten im Browser speichern.
+        </li>
+        <li>
+            Wir könnten eine Bibliothek wie <a href="http://dexie.org" target="_blank">Dexie</a> nutzen,
+            die einfacher als IndexDB funktioniert.
+        </li>
+    </ul>
+    <p>
+        Man kann hier nicht sagen, welche Lösung besser als die andere ist, da sie alle für
+        bestimmte Anwendungen sinnvoll sein können. IndexDB ist dabei jedoch die aufwändigste
+        Lösung, da die API sehr umfangreich und im Vergleich auch umständlicher zu nutzen ist.
+        Die anderen Alternativen sind einfacher zu durchschauen und deshalb auch mit weniger
+        Aufwand verbunden.
+    </p>
+    <p>
+        In unserer Beispielanwendung haben wir uns aufgrund folgender Vorteile für
+        Dexie entschieden:
+    </p>
+    <ul>
+        <li>
+            Die Bibliothek kann rein browserseitig ohne einen Datenbankserver im Hintergrund
+            genutzt werden.
+        </li>
+        <li>
+            Die API ist einfach aufgebaut und auf der Projektwebseite gut dokumentiert.
+        </li>
+        <li>
+            Die API bietet nahezu alle Funktionen, die man von einer SQL-Datenbank
+            gewohnt ist.
+        </li>
+        <li>
+            Das Datenmodell kann versioniert werden, so dass es in späteren Anwendungsversionen
+            ohne Datenverlust weiterentwickelt werden kann.
+        </li>
+    </ul>
+
+    <h3>Installation von Dexie</h3>
+    <p>
+        Wie immer lässt sich Dexie mit <span class="cmd">npm</span> ganz einfach installieren.
+        Allerdings müssen wir dieses Mal noch ein weiteres Paket installieren:
+    </p>
+    <p class="cmd">
+        cd "Projektverzeichnis" <br />
+        npm add --save-dev dexie <br />
+        npm add --save-dev babel-plugin-transform-runtime
+    </p>
+    <figure>
+        <img src="02/db/dexie-installation.png" />
+        <figcaption>
+            Installation von <span class="scr">dexie</span>
+        </figcaption>
+    </figure>
+    <p>
+        Anschließend musst du im Projektverzeichnis der App eine Datei mit dem Namen
+        <span class="fn">.babelrc</span> anlegen. Sie muss folgenden Inhalt besitzen,
+        damit die von Dexie zurückgelieferten, asynchronen
+        <a href="https://scotch.io/tutorials/javascript-promises-for-dummies" target="_blank">Promise-Objekte</a>
+        auch mit Parcel funktionieren:¹
+    </p>
+    <pre data-gobble>
+        <code class="json" data-gobble>
+            {
+                "presets": [
+                    ["env", {
+                        "targets": {
+                            "browsers": ["last 1 Chrome version"]
+                        }
+                    }]
+                ]
+            }
+        </code>
+    </pre>
+    <p>
+        ¹
+        <small>
+            Wir arbeiten dadurch um eine Art Bug in Parcel herum. Dafür wird auch das Paket
+            <span class="scr">babel-plugin-transform-runtime </span> benötigt.
+        </small>
+    </p>
+    <p>
+        Dadurch stehen dir dann folgende Möglichkeiten in JavaScript zur Verfügung:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            // Dexie-Klasse importieren
+            import Dexie from "dexie/dist/dexie.js";
+
+            // Neue Datenbank mit zwei Tabellen definieren
+            // ++id definiert ein automatisch hochgezähltes Schlüsselfeld.
+            // Es müssen nur Felder angegeben werden, für die ein Index benötigt wird.
+            let database = new Dexie("My-Songbook");
+
+            database.version(1).stores({
+                users: "++id, username",
+                songtexts: "++id, artist, title",
+            });
+
+            // Neuen Datensatz anlegen
+            database.songtexts.add({
+                artist: "Queen",
+                title:  "I Want To Break Free",
+                format: "html",
+                data:   "… HTML-String …",
+            });
+
+            // Vorhandenen Datensatz aktualisieren
+            database.songtexts.put({
+                id:     4711,
+                artist: "Joe Cocker",
+                title:  "I Come In Peace",
+                format: "html",
+                data:   "… HTML-String …",
+            });
+
+            // Vorhandenen Datensatz einlesen
+            let song = await database.songtexts.get(815);
+
+            // Vorhandenen Datensatz löschen
+            database.songtexts.delete(721);
+
+            // Alle vorhandenen Datensätze löschen
+            database.songtexts.clear();
+
+            // Vorhandene Einträge anhand einer Filter-Funktion durchsuchen
+            // (als Alternative zu den eingebauten WHERE-Bedinungen von Dexie)
+            // und das Ergebnis als Array zurückliefern
+            let songs = await database.songtexts
+                .filter(entry => entry.artist.toLowerCase().search("queen") >= 0)
+                .toArray();
+        </code>
+    </pre>
+    <p>
+        Darüber hinaus bietet Dexie noch einiges mehr, was wir in der Besipielanwendung
+        allerdings nicht benötigen. Weitere Informationen bietet die
+        <a href="http://dexie.org/docs/API-Reference">API-Beschreibung</a> auf der Webseite.
+    </p>
+
+    <h3>Kapselung der der Datenbankzugriffe</h3>
+    <p>
+        Aus Gründen der Übersichtlichkeit wollen wir auch hier das Single-Responsibility-Prinzip
+        anwenden und alle Datenbankzugriffe in einer eigenen Klasse kapseln, anstatt sie über den
+        gesamten Quellcode zu verteilen. Zwar ist die Dexie-API an und für sich bereits relativ
+        einfach, wir können dadurch den Quellcode aber noch übersichtlicher machen und uns auch
+        ein Stück weit von der API abschirmen, so dass wir sie im Zweifellsfall später relativ
+        einfach ersetzen könnten. Lege daher eine neue Datei mit dem Namen
+        <span class="fn">src/database.js</span> und folgendem Inhalt an:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+        "use strict";
+
+        import Dexie from "dexie/dist/dexie.js";
+
+        // Datenbankdefinition:
+        //
+        //   * ++id = Automatisch Hochgezählter Datenbankschlüssel
+        //   * artist, title = Indexfelder für WHERE-Abfragen und die Sortierung
+        //   * Alle anderen Felder müssen nicht deklariert werden!
+        //   * Vgl. http://dexie.org/docs/API-Reference
+        let database = new Dexie("My-Songbook");
+
+        database.version(1).stores({
+            songtexts: "++id, artist, title",
+        });
+
+        /**
+         * Datenbankzugriffsklasse für Songtexte. Diese Klasse bietet verschiedene
+         * Methoden, um Songtexte zu speichern und wieder auszulesen. Im Hintergrund
+         * wird hierfür Dexie zur lokalen Speicherung im Browser genutzt.
+         */
+        class Songtexts {
+        }
+
+        export default
+            database,
+            Songtexts,
+        };
+        </code>
+    </pre>
+    <p>
+        Diese Klasse wollen wir nun nach und nach um alle benötigten Methoden erweitern.
+        Zunächst um eine Funktion zum Speichern neuer Songtexte:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Einen neuen Songtext speichern oder einen vorhandenen Songtext
+             * aktualisieren. Das Songtext-Objekt sollte hierfür folgenden Aufbau
+             * besitzen:
+             *
+             * {
+             *     artist: "Name des Künstlers",
+             *     title: "Name des Songs",
+             *     format: "html",
+             *     data: "HTML-String",
+             * }
+             *
+             * @param  {Object}  songtext Zu speichernder Songtext
+             * @return {Promise} Asynchrones Promise-Objekt
+             */
+            async saveNew(songtext) {
+                return database.songtexts.add(songtext);
+            }
+        </code>
+    </pre>
+    <p>
+        Dann um eine Funktion zum erneuten Speichern eines vorhandenen Songtexts:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Bereits vorhandenen Songtext aktualisieren.
+             * @param  {Object}  songtext Zu speichernder Songtext
+             * @return {Promise} Asynchrones Promise-Objekt
+             */
+            async update(songtext) {
+                return database.songtexts.put(songtext);
+            }
+        </code>
+    </pre>
+    <p>
+        Dann um zwei Funktionen zum Löschen von Songtexten:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Vorhandenen Songtext anhand seiner ID löschen.
+             * @param  {String}  id ID des zu löschenden Songtexts
+             * @return {Promise} Asynchrones Promise-Objekt
+             */
+            async delete(id) {
+                return database.songtexts.delete(id);
+            }
+
+            /**
+             * Löscht alle Songtexte!
+             * @return {Promise} Asynchrones Promise-Objekt
+             */
+            async clear() {
+                return database.songtexts.clear();
+            }
+        </code>
+    </pre>
+    <p>
+        Sowie eine Funktion, um einen Songtext direkt auszulesen:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Vorhandenen Songtext anhand seiner ID auslesen.
+             * @param  {String}  id ID des zu lesenden Songtexts
+             * @return {Promise} Asynchrones Promise-Objekt mit dem Songtext
+             */
+            async getById(id) {
+                return database.songtexts.get(id);
+            }
+        </code>
+    </pre>
+    <p>
+        Und eine Funktion, die uns entweder alle Songtexte oder alle Texte
+        anhand eines bestimmten Suchbegriffs zurückliefert:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Gibt eine Liste mit allen Songtexten zurück, deren Titel oder Künstler
+             * den gesuchten Wert enthalten.
+             *
+             * @param  {String}  query Gesuchter Titel oder Künstler
+             * @return {Promise} Asynchrones Promise-Objekt mit dem Suchergebnis
+             */
+            async search(query) {
+                if (!query) query = "";
+                query = query.toUpperCase();
+
+                let result = database.songtexts.filter(songtext => {
+                    let artist = songtext.artist.toUpperCase();
+                    let title  = songtext.title.toUpperCase();
+                    return artist.search(query) > -1 || title.search(query) > -1;
+                });
+
+                return result.toArray();
+            }
+        </code>
+    </pre>
+    <p>
+        Die fertige Klasse sollte danach ungefähr so aussehen:
+    </p>
+    <figure>
+        <img src="02/db/database-code.png" />
+        <figcaption>
+            Quellcode der fertigen <span class="cmd">SongtextCollection</span>-Klasse
+        </figcaption>
+    </figure>
+
+    <h3>Ein kleiner Test vorab</h3>
+    <p>
+        Um die Funktionsweise der neuen Klasse zu testen, wollen wir etwas Testcode in die
+        App einbauen, der beim Aufruf der Übersichtsseite ausgeführt wird. Hierfür müssen wir
+        die Datei <span class="fn">src/song-overview/song-overview.js</span> zunächst um
+        folgenden Import erweitern:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+        import Database from "../database.js";
+        </code>
+    </pre>
+    <p>
+        Den Testcode können wir dann einfach in den Konstruktor einbauen. Dabei wollen wir
+        nicht alle Methoden konsequent durchtesten. Wir wollen nur ein paar Testdaten anlegen
+        und in der Konsole beobachten, was dabei passiert. Ändere die Konstruktor daher wie
+        folgt ab. Später werden wir den Testcode wieder entfernen.
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            constructor(app) {
+                this._app = app;
+
+                // Test der Datenbankklasse für Songtexte
+                let test = async () => {
+                    let songtexts = new Database.Songtexts();
+                    await songtexts.clear();
+
+                    let songs = await songtexts.search();
+                    console.log("Alle Songs:", songs);
+
+                    if (songs.length === 0) {
+                        console.log("Bisher noch keine Songs vorhanden, lege deshalb Testdaten an");
+
+                        await Promise.all([
+                            songtexts.saveNew({
+                                artist: "Queen",
+                                title: "I Want To Break Free",
+                                format: "html",
+                                data: "HTML-Code für <b>I Want To Break Free</b> von <b>Queen</b>",
+                            }),
+                            songtexts.saveNew({
+                                artist: "Queen",
+                                title: "Radio Ga Ga",
+                                format: "html",
+                                data: "HTML-Code für <b>Radio Ga Ga</b> von <b>Queen</b>",
+                            }),
+                            songtexts.saveNew({
+                                artist: "Michael Jackson",
+                                title: "Billie Jean",
+                                format: "html",
+                                data: "HTML-Code für <b>Billie Jean</b> von <b>Michael Jackson</b>",
+                            }),
+                        ]);
+
+                        let songs = await songtexts.search();
+                        console.log("Gespeicherte Songs:", songs);
+                    }
+
+                    songs = await songtexts.search("queen");
+                    console.log('Suche nach dem Begriff "queen":', songs);
+                }
+
+                test();
+                // Ende des Testcodes
+            }
+        </code>
+    </pre>
+    <p>
+        Beim Start der Anwendung sollte dann folgendes Ergebnis in der Browserkonsole protokolliert werden:
+    </p>
+    <figure>
+        <img src="02/db/testcode-konsole.png" class="border" />
+        <figcaption>Protokollausgabe des Testcodes. Man sieht schön, wie die gespeicherten Objekte aufgebaut sind.</figcaption>
+    </figure>
+    <p>
+        Wie du anhand des Quellcodes erkennen kannst, kannst du mit <span class="cmd">await</span>
+        das Ergebnis einer Methode abwarten, wenn diese ein Promise-Objekt zurückliefert. Das
+        funktioniert allerdings nur, wenn der Aufruf in einer mit <span class="cmd">async</span>
+        gekennzeichneten Methode stattfindet, da das Schlüsselwort <span class="cmd">await</span>
+        die rufende Methode unterbricht. Willst du auf das Ergebnis nicht warten, weil du es nicht
+        benötigst, kannst du die Methoden auch einfach ohne das <span class="cmd">await</span>
+        davor aufrufen. Willst du hingegen auf mehrere Operationen gleichzeitig warten, kannst du
+        das mit <span class="cmd">await Promise.all([ ... ])</span> machen.
+    </p>
+</section>
+
 <!-- –––––––––––––––––––––––––––– -->
 <!-- Die Übersichtsseite entsteht -->
 <!-- –––––––––––––––––––––––––––– -->
@@ -1564,24 +1979,6 @@
 
     <!--
     Ausprogrammieren der Übersichtsseite mit Dummy-Daten im HTML
-    -->
-</section>
-
-<!-- –––––––––––––––––––––––––––––– -->
-<!-- Lokale Datenhaltung im Browser -->
-<!-- –––––––––––––––––––––––––––––– -->
-<section data-title="Lokale Datenhaltung im Browser">
-    <p class="git-commit">
-        Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/XXX" target="_blank">XXX</a>
-    </p>
-
-    <!--
-    Installation von PouchDB
-    Grundlagen der Nutzung (aus API-Dokumentation)
-    Definition einer Datenbank-Fassaden-Klasse
-    Vorläufige Dummy-Daten erzeugen, wenn die DB leer ist
-    Anpassung der Übersichtsseite (direkte DOM-Manipulation)
     -->
 </section>
 
