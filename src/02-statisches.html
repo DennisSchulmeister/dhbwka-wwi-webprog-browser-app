@@ -158,7 +158,7 @@
     </figure>
     <p>
         Damit das neue Stylesheet wirksam wird, muss es erst noch importiert werden.
-        Ändere deshalb den Import des alten Stylesheets in der <spann class="fn">src/index.js</spann>
+        Ändere deshalb den Import des alten Stylesheets in der <span class="fn">src/index.js</span>
         zu folgenden zwei Zeilen ab. Achte dabei aber darauf, wirklich erst die Datei
         <span class="fn">./index.css</span> und dann die Datei <span class="fn">./theme.css</span>
         zu importieren:
@@ -259,7 +259,7 @@
                     justify-content: center;
                 }
 
-                body > * {
+                body &gt; * {
                     flex: 1;
                 }
             }
@@ -314,7 +314,7 @@
                 color: var(--header-normal-font-color);
             }
 
-            #app header > *,
+            #app header &gt; *,
             #app header input,
             #app header .item {
                 display: block;
@@ -322,25 +322,25 @@
                 width: 100%;
             }
 
-            #app header > .top {
+            #app header &gt; .top {
                 font-size: 80%;
 
                 border: 0px solid var(--header-active-background-color);
                 border-bottom-width: 1px;
             }
 
-            #app header > .top .item,
-            #app header > .top input {
+            #app header &gt; .top .item,
+            #app header &gt; .top input {
                 padding: 0.5rem;
             }
 
-            #app header > .bottom {
+            #app header &gt; .bottom {
                 border: 0px solid var(--header-active-background-color);
                 border-bottom-width: 1px;
             }
 
-            #app header > .bottom .item,
-            #app header > .bottom input {
+            #app header &gt; .bottom .item,
+            #app header &gt; .bottom input {
                 padding: 1rem 0.5rem 1rem 0.5rem;
             }
 
@@ -465,7 +465,7 @@
                     flex-direction: column;
                 }
 
-                #app > main {
+                #app &gt; main {
                     flex: 1;
                     overflow: auto;
                 }
@@ -513,7 +513,7 @@
             &lt;html&gt;
                 &lt;head&gt;
                     &lt;meta charset="utf-8" /&gt;
-                    &lt;title>My Songbook&lt;/title&gt;
+                    &lt;title&gt;My Songbook&lt;/title&gt;
                     &lt;link rel="shortcut icon" href="favicon.svg"&gt;
 
                     &lt;script src="index.js"&gt;&lt;/script&gt;
@@ -546,7 +546,7 @@
     <p>
         Anschließend können wir den Dummy-Inhalt aus dem Grundgerüst wieder entfernen, so dass
         davon nur folgende Zeilen übrig bleiben. Den festen Inhalt der Topbar, der wirklich immer zu
-        sehen sein woll, behalten wir hier natürlich bei. Ebenso alle anderen Zeilen der HTML-Datei.
+        sehen sein soll, behalten wir hier natürlich bei. Ebenso alle anderen Zeilen der HTML-Datei.
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -738,7 +738,7 @@
             Anschließend werden die zuvor sichtbaren Inhalte verworfen. Im Falle der
             Topbar mit einer <span class="cmd">forEach()</span>-Schleife, die nur
             die Elemente der unteren Zeile erwischt. Im Hauptbereich wird stattdessen
-            das <spann class="cmd">innerHTML</spann>-Attribut überschrieben, was
+            das <span class="cmd">innerHTML</span>-Attribut überschrieben, was
             seinen kompletten Inhalt löscht.
         </li>
         <li>
@@ -1278,7 +1278,7 @@
     <p>
         Die Lösung all dieser Probleme hört auf den Namen
         <a href="https://css-tricks.com/using-the-html5-history-api/" target="_blank">HTML5 History API</a>.
-        Doch anstatt jetzt uns jetzt selbst damit herumzuschalgen (die Details richtig hinzubekommen ist
+        Doch anstatt jetzt uns jetzt selbst damit herumzuschlagen (die Details richtig hinzubekommen ist
         tatsächlich nicht ganz einfach), wollen wir auf eine Library zurückgreifen, die das alles viel
         besser kann. Wir wollen einen „Single Page Router” verwenden, der es uns ganz einfach ermöglicht,
         eine URL-Struktur für unsere App zu definieren und dabei festzulegen, was beim Aufruf welcher URL
@@ -1486,8 +1486,8 @@
 
                 return {
                     className: "song-overview",
-                    topbar: section.querySelectorAll("header > *"),
-                    main: section.querySelectorAll("main > *"),
+                    topbar: section.querySelectorAll("header &gt; *"),
+                    main: section.querySelectorAll("main &gt; *"),
                 };
             }
         </code>
@@ -1500,8 +1500,8 @@
 
                 return {
                     className: "song-display-edit",
-                    topbar: section.querySelectorAll("header > *"),
-                    main: section.querySelectorAll("main > *"),
+                    topbar: section.querySelectorAll("header &gt; *"),
+                    main: section.querySelectorAll("main &gt; *"),
                 };
             }
         </code>
@@ -1713,7 +1713,7 @@
             // (als Alternative zu den eingebauten WHERE-Bedinungen von Dexie)
             // und das Ergebnis als Array zurückliefern
             let songs = await database.songtexts
-                .filter(entry => entry.artist.toLowerCase().search("queen") >= 0)
+                .filter(entry =&gt; entry.artist.toLowerCase().search("queen") &gt;= 0)
                 .toArray();
         </code>
     </pre>
@@ -1861,10 +1861,10 @@
                 if (!query) query = "";
                 query = query.toUpperCase();
 
-                let result = database.songtexts.filter(songtext => {
+                let result = database.songtexts.filter(songtext =&gt; {
                     let artist = songtext.artist.toUpperCase();
                     let title  = songtext.title.toUpperCase();
-                    return artist.search(query) > -1 || title.search(query) > -1;
+                    return artist.search(query) &gt; -1 || title.search(query) &gt; -1;
                 });
 
                 return result.toArray();
@@ -1905,7 +1905,7 @@
                 this._app = app;
 
                 // Test der Datenbankklasse für Songtexte
-                let test = async () => {
+                let test = async () =&gt; {
                     let songtexts = new Database.Songtexts();
                     await songtexts.clear();
 
@@ -1920,19 +1920,19 @@
                                 artist: "Queen",
                                 title: "I Want To Break Free",
                                 format: "html",
-                                data: "HTML-Code für <b>I Want To Break Free</b> von <b>Queen</b>",
+                                data: "HTML-Code für &lt;b&gt;I Want To Break Free&lt;/b&gt; von &lt;b&gt;Queen&lt;/b&gt;",
                             }),
                             songtexts.saveNew({
                                 artist: "Queen",
                                 title: "Radio Ga Ga",
                                 format: "html",
-                                data: "HTML-Code für <b>Radio Ga Ga</b> von <b>Queen</b>",
+                                data: "HTML-Code für &lt;b&gt;Radio Ga Ga&lt;/b&gt; von &lt;b&gt;Queen&lt;/b&gt;",
                             }),
                             songtexts.saveNew({
                                 artist: "Michael Jackson",
                                 title: "Billie Jean",
                                 format: "html",
-                                data: "HTML-Code für <b>Billie Jean</b> von <b>Michael Jackson</b>",
+                                data: "HTML-Code für &lt;b&gt;Billie Jean&lt;/b&gt; von 6lt;b&gt;Michael Jackson&lt;/b&gt;",
                             }),
                         ]);
 
@@ -2048,7 +2048,7 @@
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
-            let promise = new Promise((resolve, reject) => {
+            let promise = new Promise((resolve, reject) =&gt; {
                 // Hier musst du dir eine lange Berechnung denken, die möglicherweise
                 // den Browser einfrieren könnte. Sie liefert als Ergebnis die Zahl 42.
                 // Manchmal läuft sie aber auch auf einen Fehler. Zur Sicherheit läuft
@@ -2070,11 +2070,11 @@
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
-            promise.then(ergebnis => {
+            promise.then(ergebnis =&gt; {
                 // Diese Funktion wird im Hauptthread ausgeführt und bekommt
                 // den Wert aus der obigen resolve()-Zeile übergeben.
                 alert(`Das Ergebnis lautet ${ergebnis}.`);
-            }).catch(fehler => {
+            }).catch(fehler =&gt; {
                 // Diese Funktion wird auch im Hauptthread ausgeführt. Sie
                 // bekommt den Wert aus der obigen reject()-Zeile übergeben.
                 alert(fehler);
@@ -2107,7 +2107,7 @@
             let songtexts = new Database.Songtexts();
             let promise = songtexts.search();
 
-            promise.then(songs => {
+            promise.then(songs =&gt; {
                 // Die gesuchten Songs stehen nun zur Verfügung und können
                 // via DOM-Manipulation angezeigt werden
                 songs.forEach(song => {
@@ -2192,7 +2192,7 @@
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
-            let beispiel = async () => {
+            let beispiel = async () =&gt; {
                 // Hier musst du dir eine lange Berechnung denken, die möglicherweise
                 // den Browser einfrieren könnte. Sie liefert als Ergebnis die Zahl 42.
                 // Manchmal läuft sie aber auch auf einen Fehler. Zur Sicherheit läuft
@@ -2214,11 +2214,11 @@
         <code class="javascript" data-gobble>
             let promise = beispiel();
 
-            promise.then(ergebnis => {
+            promise.then(ergebnis =&gt; {
                 // Diese Funktion wird im Hauptthread ausgeführt und bekommt
                 // den Wert aus der obigen resolve()-Zeile übergeben.
                 alert(`Das Ergebnis lautet ${ergebnis}.`);
-            }).catch(fehler => {
+            }).catch(fehler =&gt; {
                 // Diese Funktion wird auch im Hauptthread ausgeführt. Sie
                 // bekommt den Wert aus der obigen reject()-Zeile übergeben.
                 alert(fehler);
@@ -2231,7 +2231,7 @@
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
-            let aufruf_von_beispiel = async () => {
+            let aufruf_von_beispiel = async () =&gt; {
                 try {
                     let ergebnis = await beispiel();
                     alert(`Das Ergebnis lautet ${ergebnis}.`);
@@ -2373,7 +2373,7 @@
 <section data-title="Die Übersichtsseite entsteht">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/b65e39088a072248ecfc4933b5c0661e462ff717" target="_blank">b65e390</a>
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/141d8b1ae7507464fce7fdc2622cd38e70a601a0" target="_blank">141d8b1</a>
     </p>
 
     <h3>Gestaltung der Übersichtsseite</h3>
@@ -2583,7 +2583,7 @@
     <p>
         Das sieht ja schon ganz gut aus. Jetzt soll der Inhalt aber auch aus der Datenbank kommen.
         Der eben noch in die <span class="fn">src/index.html</span> eingefügte HTML-Code reduziert
-        sich deshalb jetzt zu folgenden paar Zeilen. Es kommt alles weg bis auf die Liste selbst
+        sich deshalb nun zu folgenden paar Zeilen. Es kommt alles weg bis auf die Liste selbst
         dargestellt durch das <span class="cmd">&lt;ul&gt;</span>-Element.
     </p>
     <pre data-gobble>
@@ -2642,7 +2642,7 @@
              * @param  {String} sort Sortierung (optional)
              * @return {Array} Liste der gefundenen Songs
              */
-            async searchSongs(query, sort) {
+            async _searchSongs(query, sort) {
                 // Songs suchen
                 let songtexts = new Database.Songtexts();
                 let songs = await songtexts.search(query);
@@ -2676,7 +2676,7 @@
     <p>
         Die Methode zur Ausgabe der gefundenen Songs in der HTML-Oberfläche ist allerdings
         tatsächlich etwas länglich, weil wir hier relativ viele DOM-Objekte erzeugen und
-        aufrufen müssen, um den dynamischen HTML-Code zu generieren. Im den späteren Teilen
+        aufrufen müssen, um den dynamischen HTML-Code zu generieren. In den späteren Teilen
         der Anleitung werden wir diesen Code deshalb nochmal überarbeiten.
     </p>
     <pre data-gobble>
@@ -2697,12 +2697,12 @@
              * @param {String} groupBy Kriterium für die Zwischenüberschriften
              * @param {HTMLNode} parentNode &lt;ul&gt;-Element der Liste
              */
-            renderList(songs, groupBy, parentNode) {
-                parentNode.innerHtml = "";
+            _renderList(songs, groupBy, parentNode) {
+                parentNode.innerHTML = "";
 
                 if (songs.length &lt; 1) {
                     // Hinweistext, wenn noch keine Songs vorhanden sind
-                    parentNode.innerHtml += `
+                    parentNode.innerHTML += `
                         &lt;li&gt;
                             &lt;div class="padding no-data"&gt;
                                 Noch keine Texte vorhanden
@@ -2728,19 +2728,19 @@
                             songGroup1 = song.title.trim()[0].toUpperCase();
                             songGroup2 = songGroup1;
                         } else {
-                            songGroup1 = song.artitst.trim();
+                            songGroup1 = song.artist.trim();
                             songGroup2 = songGroup1.toUpperCase();
                         }
 
                         if (currentGroup != songGroup2) {
-                            currentGroup = songGroup1;
+                            currentGroup = songGroup2;
 
                             let liGroup = document.createElement("li");
-                            liGroup.dataset.sectionTitle = currentGroup;
+                            liGroup.dataset.sectionTitle = songGroup1;
 
                             let divGroup = document.createElement("div");
                             divGroup.classList.add("section-title");
-                            divGroup.textContent = currentGroup;
+                            divGroup.textContent = songGroup1;
 
                             parentNode.appendChild(liGroup);
                             liGroup.appendChild(divGroup);
@@ -2792,8 +2792,8 @@
                 <b>let order = "title";</b>
                 <b>let query = "";</b>
 
-                <b>let songs = await this.searchSongs(query, order);</b>
-                <b>this.renderList(songs, order, section.querySelector("main &gt; ul"));</b>
+                <b>let songs = await this._searchSongs(query, order);</b>
+                <b>this._renderList(songs, order, section.querySelector("main &gt; ul"));</b>
 
                 return {
                     className: "song-overview",
