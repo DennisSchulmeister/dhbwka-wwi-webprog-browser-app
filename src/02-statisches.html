@@ -2833,7 +2833,7 @@
         Bildschirmhöhe verloren geht:
     </p>
     <figure style="max-width: 25em;">
-        <img src="02/songliste/mobile-vorher.png" class="border" />
+        <img src="02/kopfzeile/mobile-vorher.png" class="border" />
         <figcaption>Der Kopfbereich belegt fast den halben Bildschirm</figcaption>
     </figure>
     <p>
@@ -2843,11 +2843,11 @@
         So soll die fertige Lösung daher aussehen:
     </p>
     <figure style="max-width: 25em;">
-        <img src="02/songliste/menue-zugeklappt.png" class="border" />
+        <img src="02/kopfzeile/menue-zugeklappt.png" class="border" />
         <figcaption>Anfangs ist das Menü zugeklappt.</figcaption>
     </figure>
     <figure style="max-width: 25em;">
-        <img src="02/songliste/menue-aufgeklappt.png" class="border" />
+        <img src="02/kopfzeile/menue-aufgeklappt.png" class="border" />
         <figcaption>Bei Klick auf das Symbol erscheint die volle Auswahl.</figcaption>
     </figure>
     <p>
@@ -3068,14 +3068,242 @@
         <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/c8ce106d0d513ab6121867b2d0b5d7ed0f998ba9" target="_blank">c8ce106</a>
     </p>
 
-    <!-- Umsetzung der Sortierfunktion -->
-    <!-- Umsetzung der Suchfunktion -->
+    <p>
+        Aktuell wird die Songliste auf der Übersichtsseite immer nach Titel sortiert
+        angezeigt. Bei vielen Einträgen ist es aber manchmal besser, die Einträge
+        nach Künstler zu sortieren, oder einen gewünschten Song einfach mal schnell
+        suchen zu können. Beides wollen wir deshalb nun ausprogrammieren, wobei wir
+        wie immer mit ein paar kleinen Anpassungen am HTML-Code in
+        <span class="fn">src/index.html</span> beginnen.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            …
+            &lt;section id="song-overview" class="hidden"&gt;
+                &lt;!-- Topbar --&gt;
+                &lt;header&gt;
+                    &lt;div class="left menu-content"&gt;
+                        &lt;div class="item"&gt;
+                            &lt;a href="/song/new/" data-navigo&gt;
+                                Song hinzufügen
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                        <b>&lt;div class="item cmd-sort" data-sort-by="title"&gt;
+                            &lt;a&gt;
+                                Liste nach Titel sortieren
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                        &lt;div class="item cmd-sort" data-sort-by="artist"&gt;
+                            &lt;a&gt;
+                                Liste nach Künstler sortieren
+                            &lt;/a&gt;
+                        &lt;/div&gt;</b>
+                    &lt;/div&gt;
+                    &lt;div class="right"&gt;
+                        &lt;input <b>class="search"</b> placeholder="Suchen" /&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+                …
+            &lt;/section&gt;
+            …
+        </code>
+    </pre>
+    <p>
+        Auf diese Weise haben wir nun zwei Menüpunkte zum Ändern der Sortierung.
+        Mit JavaScript werden wir dann sicherstellen, dass immer nur einer davon
+        angezeigt wird, je nachdem wonach die Liste zuletzt sortiert wurde.
+        Außerdem hat das Suchfeld nun noch eine CSS-Klasse bekommen, durch dies
+        einfacher in JavaScript angesprochen werden kann. Wollen wir die entsprechenden
+        deshalb gleich mal Anpassungen anschauen. Es beginnt mit ein paar Hilfsvariablen
+        im Konstruktor der Klasse <span class="cmd">SongOverview</span> in der
+        Datei <span class="fn">src/song-overview/song-overview.js</span>:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            class SongOverview {
+                …
+                constructor(app) {
+                    this._app = app;
+
+                    // Suche und Sortierung
+                    this._order = "";
+                    this._sort = "";
+                    this._searchTimeout = null;
+
+                    this._sortButtons = null;
+                    this._searchField = null;
+                    this._listElement = null;
+                }
+                …
+            }
+        </code>
+    </pre>
+    <p>
+        In der Methode <span class="cmd">onShow()</span> entfernen wir die vier Zeilen in der Mitte,
+        die sich um den Aufruf der beiden anderen Methoden <span class="cmd">_searchSongs()</span>
+        und <span class="cmd">_renderList</span> kümmern, so dass nur noch die erste Zeile und die
+        <span class="cmd">return</span>-Anweisung am Ende übrig bleiben. Stattdessen fügen wir folgende
+        Zeilen ein:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            async onShow() {
+                let section = document.querySelector("#song-overview").cloneNode(true);
+                <b>
+                this._sortButtons = section.querySelectorAll("header .cmd-sort");
+                this._searchField = section.querySelector("header .search");
+                this._listElement = section.querySelector("main &gt; ul");
+
+                this._searchAndUpdateView("", "title");
+                </b>
+                return {
+                    className: "song-overview",
+                    topbar: section.querySelectorAll("header &gt; *"),
+                    main: section.querySelectorAll("main &gt; *"),
+                };
+            }
+        </code>
+    </pre>
+    <p>
+        Wir rufen also nun die neue Methode <span class="cmd">_searchAndUpdateView()</span>
+        auf, die wie folgt am Ende der Klasse eingefügt werden kann:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            /**
+             * Diese Methode umhüllt die beiden Methoden _searchSongs() und
+             * _renderList(), um die Liste der darzustellenden Songs zu ermitteln
+             * und anzuzeigen. Dabei werden auch die anderen Inhalte der Seite
+             * wie die Toolbar oder das Suchfeld aktualisiert.
+             *
+             * @param  {String} query Suchbegriff
+             * @param  {String} sort Sortierung und Gruppierung
+             */
+            async _searchAndUpdateView(query, sort) {
+                // Songs suchen und anzeigen
+                this._query = query;
+                this._sort = sort;
+
+                let songs = await this._searchSongs(query, sort);
+                this._renderList(songs, sort, this._listElement);
+
+                // Sortierbuttons in der Toolbar umschalten
+                this._sortButtons.forEach(element =&gt; {
+                    if (element.dataset.sortBy === sort) {
+                        element.classList.add("hidden");
+                    } else {
+                        element.classList.remove("hidden");
+                    }
+                });
+
+                // Text im Suchfeld aktualisieren
+                if (!this._searchField.value === query) {
+                    this._searchField.value = query;
+                }
+            }
+        </code>
+    </pre>
+    <p>
+        Funktional hat sich dadurch erst mal nichts verändert. Wir haben jedoch eine
+        wunderbare All-In-One-Methode, die immer dafür sorgt, dass alle UI-Elemente
+        korrekt dargestellt werden, wenn wir die Sortierung ändern oder eine Suche
+        ausführen. Hier werden zum Beispiel die Buttons zum Sortieren der Liste ein-
+        und ausgeblendet, je nachdem, welche Sortierung gerade aktiv ist. Aktuell ist
+        das noch fest-verdrahtet die Sortierung nach Titel. Wir können nun aber ganz
+        einfach einen Event Handler einbauen, um dies zu ändern. Hierzu gehen wir
+        wieder in die Methode <span class="cmd">onShow()</span> zurück und fügen vor
+        den <span class="cmd">return</span>-Anweisung folgende Zeilen hinzu:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            async onShow() {
+                <b>… bisherigen Code bitte stehen lassen …</b>
+
+                // Event Listener zum Sortieren der Liste
+                this._sortButtons.forEach(element =&gt; {
+                    element.addEventListener("click", event =&gt; {
+                        this._searchAndUpdateView(this._query, element.dataset.sortBy);
+                        event.preventDefault();
+                    });
+                });
+
+                return …
+            }
+        </code>
+    </pre>
+    <p>
+        Wir müssen innerhalb des Event Listeners tatsächlich nur die neue Methode
+        <span class="cmd">_searchAndUpdateView()</span> aufrufen und ihr im zweiten
+        Parameter den Namen der Sortierspalte mitgeben. Praktischerweise haben wir
+        diesen in einem <span class="cmd">data</span>-Attribut bereits im HTML-Code
+        hinterlegt, so dass hier nur der Attribut weitergereicht werden muss.
+    </p>
+    <figure>
+        <img src="02/songliste/sortierung-titel.png" class="border" />
+        <figcaption>Kennen wir schon: Die Sortierung nach Titel</figcaption>
+    </figure>
+    <figure>
+        <img src="02/songliste/sortierung-artist.png" class="border" />
+        <figcaption>Es geht aber auch anders: Hier sortiert nach Künstler</figcaption>
+    </figure>
+
+    <p>
+        Die Suche funktioniert jetzt dann genau so einfach. Wir müssen einfach an
+        derselben Stelle wie eben einen weiteren Event Handler einbauen. Diesen
+        programmieren wir so, dass nach jedem Tastendruck spätestens nach einer
+        halben Sekunde die Suche ausgeführt wird, stellen dabei aber sicher, dass
+        die zeitversetzte Suche nur dann vorgemerkt wird, wenn es nicht bereits
+        ohnehin eine Vormerkung gibt. Bei <span class="kbd">Enter</span> wollen
+        wir die Suche außerdem direkt ausführen und eine eventuell bestehende
+        Vormerkung verwerfen. Der JavaScript-Code hierfür sieht so aus:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            async onShow() {
+                <b>… bisherigen Code bitte stehen lassen …</b>
+
+                // Event Listener zum Suchen von Songs
+                this._searchField.addEventListener("keyup", event =&gt; {
+                    if (event.key === "Enter") {
+                        // Bei Enter sofort suchen
+                        this._searchAndUpdateView(this._searchField.value, this._sort);
+
+                        if (this._searchTimeout) {
+                            window.clearTimeout(this._searchTimeout);
+                            this._searchTimeout = null;
+                        }
+                    } else {
+                        // Bei sonstigem Tastendruck nur alle halbe Sekunde suchen
+                        if (!this._searchTimeout) {
+                            this._searchTimeout = window.setTimeout(() =&gt; {
+                                this._searchAndUpdateView(this._searchField.value, this._sort);
+                                this._searchTimeout = null;
+                            }, 500);
+                        }
+                    }
+                });
+
+                return …
+            }
+        </code>
+    </pre>
+    <p>
+        Ohne die automatische Suche nach einer halben Sekunde wäre der Quellcode
+        natürlich etwas kürzer und übersichtlicher. Wirklich kompliziert ist die
+        hier gezeigte Version dann aber doch wieder nicht. Gönnen wir dem Anwender
+        oder der Anwenderin daher den Luxus, auch ohne <span class="kbd">Enter</span>
+        zu drücken suchen zu können.
+    </p>
+    <figure>
+        <img src="02/songliste/suche.png" class="border" />
+        <figcaption>Eine Suche noch besser als die von Google 🤣</figcaption>
+    </figure>
 </section>
 
-<!-- –––––––––––––––––– -->
-<!-- Songtexte anzeigen -->
-<!-- –––––––––––––––––– -->
-<section data-title="Songtexte anzeigen">
+<!-- –––––––––––––––––––––––––––––––– -->
+<!-- Songtexte anzeigen und bearbeiten-->
+<!-- ––––––––––––––––––––––––––––––––– -->
+<section data-title="Songtexte anzeigen und bearbeiten">
     <p class="git-commit">
         Git Commit:
         <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/XXX" target="_blank">XXX</a>
@@ -3083,10 +3311,9 @@
 
     <!--
     Ausprogrammieren der Detailseite zu einem Songtext
-    Bis hierhin nur im Anzeigemodus
+    Bearbeitung über contenteditable ohne WYSIWIG-Formatierung
     Buttons zum Löschen und Bearbeiten bereits vorsehen
     Bei Klick auf "Löschen" direkt löschen und zurück zur Übersicht
-    Navigation zurück zur Übersicht (wenn nicht bereits geklärt)
     -->
 </section>
 
