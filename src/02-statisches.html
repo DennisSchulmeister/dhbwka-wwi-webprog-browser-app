@@ -2815,19 +2815,261 @@
     </figure>
 </section>
 
+<!-- ––––––––––––––––––––––––––––––––––– -->
+<!-- Schlankheitskur für den Kopfbereich -->
+<!-- ––––––––––––––––––––––––––––––––––– -->
+<section data-title="Schlankheitskur für den Kopfbereich">
+    <p class="git-commit">
+        Git Commit:
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/c1ff138153d04bd9d91d405f5aa489f17343a343" target="_blank">c1ff138</a>
+    </p>
+
+    <p>
+        Nachdem die Darstellung der Songliste nun funktioniert, wird es Zeit, die
+        Sortier- und Suchfunktion auszuprogrammieren. Zuvor wollen wir uns aber noch
+        einem kleinen Usability-Problem annehmen. Und zwar dem Kopfbereich, der in der
+        mobilen Ansicht zwar gut zu bedienen ist, dafür aber viel zu viel Platz einnimmt.
+        Im folgenden Screenshot sieht man, dass auf einem Smartphone fast die halbe
+        Bildschirmhöhe verloren geht:
+    </p>
+    <figure style="max-width: 25em;">
+        <img src="02/songliste/mobile-vorher.png" class="border" />
+        <figcaption>Der Kopfbereich belegt fast den halben Bildschirm</figcaption>
+    </figure>
+    <p>
+        Die Lösung des Problems ist im Grunde genommen ganz einfach, erfordert an dieser
+        Stelle aber ein wenig Programmierarbeit: Wir benötigen ein
+        <a href="https://de.wikipedia.org/wiki/Hamburger-Men%C3%BC-Icon" target="_blank">Hamburger-Menü</a>.
+        So soll die fertige Lösung daher aussehen:
+    </p>
+    <figure style="max-width: 25em;">
+        <img src="02/songliste/menue-zugeklappt.png" class="border" />
+        <figcaption>Anfangs ist das Menü zugeklappt.</figcaption>
+    </figure>
+    <figure style="max-width: 25em;">
+        <img src="02/songliste/menue-aufgeklappt.png" class="border" />
+        <figcaption>Bei Klick auf das Symbol erscheint die volle Auswahl.</figcaption>
+    </figure>
+    <p>
+        Zunächst müssen wir das Hamburger-Icon im HTML-Code definieren, was mit folgender
+        kleinen Anpassung in  <span class="fn">src/index.html</span> gelingt. Gleichzeitig
+        fügen wir dem umgebenden <span class="cmd">&lt;div&gt;</span> noch zwei CSS-Klassen
+        hinzu, auf die wir mit JavaScript gleich zugreifen werden.
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;section id="app"&gt;
+                …
+                    &lt;div class="item <b>hamburger-menu menu-closed</b>"&gt;
+                        &lt;b&gt;
+                            <b>&lt;span class="menu-icon"&gt;≡&lt;/span&gt;</b>
+                            Beispiel einer Browser App: My Songbook
+                        &lt;/b&gt;
+                    &lt;/div&gt;
+                …
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        Zusätzlich kennzeichnen wir die auf dem Smartphone zunächst auszublendenden Menüpunkte
+        mit der CSS-Klasse <span class="cmd">menu-content</span>:
+    </p>
+    <pre data-gobble>
+        <code class="html" data-gobble>
+            &lt;section id="app"&gt;
+                …
+                &lt;div class="top right <b>menu-content</b>"&gt;
+                    …
+                &lt;/div&gt;
+                …
+            &lt;/section&gt;
+
+            &lt;section id="song-overview" class="hidden"&gt;
+                …
+                &lt;div class="left <b>menu-content</b>"&gt;
+                    …
+                &lt;/div&gt;
+                …
+            &lt;/section&gt;
+
+            &lt;section id="song-display-edit" class="hidden"&gt;
+                …
+                &lt;div class="left <b>menu-content</b>"&gt;
+                    …
+                &lt;/div&gt;
+                …
+            &lt;/section&gt;
+        </code>
+    </pre>
+    <p>
+        Damit ist der HTML-Code schon auf das neue Menü vorbereitet. Allerdings
+        brauchen wir das Hamburger-Icon nur in der Smartphone-Ansicht, da auf
+        großen Bildschirmen alles beim Alten bleiben soll. Folgende Zeilen in
+        <span class="fn">src/app.css</span> reichen dafür schon aus:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            /*
+             * Anpassung an große Bildschirme, sobald in der index.css das große
+             * Hintergrundbild eingeschaltet wird
+             */
+            @media screen and (min-width: 85em) {
+                …
+                /* Menü-Icon ausblenden */
+                #app header .menu-icon {
+                    display: none;
+                }
+                …
+            }
+        </code>
+    </pre>
+    <p>
+        Die einzelnen Menüpunkte werden wir zur Laufzeit durch Hinzufügen der CSS-Klasse
+        <span class="cmd">hidden</span> ausblenden. Diese ist bereits im Stylesheet
+        <span class="fn">src/index.css</span> definiert, muss aber noch um den Zusatz
+        <span class="cmd">!important</span> ergänzt werden:
+    </p>
+    <pre data-gobble>
+        <code class="css" data-gobble>
+            .hidden {
+                display: none !important;
+            }
+        </code>
+    </pre>
+    <p>
+        Fehlt nur noch das dazugehörige JavaScript. Dieses fügen wir am Ende des
+        Konstruktors der Klasse <span class="cmd">App</span>, also in der Datei
+        <span class="fn">src/app.js</span> ein. Los geht's mit einem Event Handler,
+        der das Menü bei Klick auf die Titelzeile auf- und zuklappt:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            class App {
+                /**
+                 * Konstruktor.
+                 */
+                constructor() {
+                    …
+                    // Hamburger-Menü für kleine Bildschirme ermöglichen
+                    let menuButton = document.querySelector("header .hamburger-menu");
+
+                    menuButton.addEventListener("click", () =&gt; {
+                        // Nur auf kleinen Bildschirmen auf den Klick reagieren
+                        if (menuButton.classList.contains("inactive")) return;
+
+                        // Sichtbarkeit des Menüs umschalten
+                        let menuState = "menu-open";
+                        if (menuButton.classList.contains("menu-open")) menuState = "menu-closed";
+
+                        menuButton.classList.remove("menu-open");
+                        menuButton.classList.remove("menu-closed");
+                        menuButton.classList.add(menuState);
+
+                        // Menüeinträge ein-/ausblenden
+                        document.querySelectorAll("header .menu-content").forEach(element =&gt; {
+                            if (menuState === "menu-open") {
+                                element.classList.remove("hidden");
+                            } else {
+                                element.classList.add("hidden");
+                            }
+                        });
+                    });
+                }
+                …
+            }
+        </code>
+    </pre>
+    <p>
+        In der ersten Zeile holen wir uns das <span class="cmd">&lt;div&gt;</span> mit dem Titel
+        in des Hamburger-Icons. Für dieses wird dann ein Event Listener registriert, der bei jedem
+        Mausklick (bzw. Touchdruck) auf das Event feuert. Innerhalb der Funktion passiert dann
+        folgendes:
+    </p>
+    <ol>
+        <li>
+            Zunächst wird geprüft, ob die Titelzeile die CSS-Klasse <span class="cmd">inactive</span>
+            besitzt. Sie ist bisher noch nicht gesetzt, wird später aber immer dann zugewiesen,
+            wenn die Anwendung in der vollen Ansicht für große Bildschirme dargestellt wird. Ist dies
+            der Fall, kann die Funktion direkt wieder verlassen werden.
+        </li>
+        <li>
+            Anschließend wird geprüft, ob das <span class="cmd">&lt;div&gt;</span> die CSS-Klassen
+            <span class="cmd">menu-open</span> oder <span class="cmd">menu-closed</span> besitzt,
+            je nachdem, ob das Menü aktuell auf- oder zugeklappt ist. Der dabei gefundene Wert wird
+            dann durch den jeweils anderen Wert ersetzt.
+        </li>
+        <li>
+            Zum Schluss werden die einzelnen Menüpunkte in Abhängigkeit des eben ermittelten Wertes
+            ein- oder ausgeblendet. Dies erfolgt durch Zuweisung der CSS-Klasse <span class="cmd">hidden</span>,
+            die in der Datei <span class="fn">src/index.jss</span> definiert ist.
+        </li>
+    </ol>
+    <p>
+        Jetzt muss nur noch der Hovereffekt für die Titelzeile auf großen Bildschirmen
+        unterbinden und sichergestellt werden, dass das Menü in der Smartphone-Ansicht
+        zunächst immer ausgeblendet ist. Außerdem wollen wir das Menü automatisch
+        automatisch aktivieren, wenn sich die Größe des Browserfensters ändert und die
+        gesamte Ansicht auf den Smartphone-Modus wechselt. Direkt nach dem oben gezeigten
+        JavaScript-Code (immer noch im Konstruktor der Klasse <span class="cmd">App</span>)
+        muss daher folgender Code eingefügt werden. Der Quellcode sollte an dieser Stelle
+        ziemlich selbsterklärend sein:
+    </p>
+    <pre data-gobble>
+        <code class="javascript" data-gobble>
+            class App {
+                /**
+                 * Konstruktor.
+                 */
+                constructor() {
+                    <b>… Code von eben …</b>
+
+                    let _initHamburgerMenu = () =&gt; {
+                        // Menübutton auf großen Bildschirmen inaktiv schalten
+                        // Klasse .inactive für das Element mit .hamburger-menu setzen
+                        let menuIcon = document.querySelector("header .menu-icon");
+                        let largeScreen = true;
+
+                        if (getComputedStyle(menuIcon).display === "none") {
+                            menuButton.classList.add("inactive");
+                        } else {
+                            menuButton.classList.remove("inactive");
+                            largeScreen = false;
+                        }
+
+                        //  Menüeinträge auf kleinen Bildschirmen anfangs ausblenden
+                        // und auf großen Bildschirmen immer anzeigen
+                        document.querySelectorAll("header .menu-content").forEach(element =&gt; {
+                            if (largeScreen) {
+                                element.classList.remove("hidden");
+                            } else {
+                                element.classList.add("hidden");
+                            }
+                        });
+                    };
+
+                    window.addEventListener("resize", () =&gt; {
+                        _initHamburgerMenu();
+                    });
+
+                    _initHamburgerMenu();
+                }
+                …
+            }
+        </code>
+    </pre>
+</section>
+
 <!-- –––––––––––––––––––– -->
 <!-- Sortierung und Suche -->
 <!-- –––––––––––––––––––– -->
 <section data-title="Sortierung und Suche">
     <p class="git-commit">
         Git Commit:
-        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/XXX" target="_blank">XXX</a>
-
-        <!-- Sortierung und Suche in der URL speichern -->
-        <!-- Die Titelzeile wird responsive -->
-        <!-- Umsetzung der Sortierfunktion -->
-        <!-- Umsetzung der Suchfunktion -->
+        <a href="https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook/tree/c8ce106d0d513ab6121867b2d0b5d7ed0f998ba9" target="_blank">c8ce106</a>
     </p>
+
+    <!-- Umsetzung der Sortierfunktion -->
+    <!-- Umsetzung der Suchfunktion -->
 </section>
 
 <!-- –––––––––––––––––– -->
