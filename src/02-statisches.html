@@ -2837,8 +2837,8 @@
         <figcaption>Der Kopfbereich belegt fast den halben Bildschirm</figcaption>
     </figure>
     <p>
-        Die Lösung des Problems ist im Grunde genommen ganz einfach, erfordert an dieser
-        Stelle aber ein wenig Programmierarbeit: Wir benötigen ein
+        Die Lösung des Problems ist im Grunde genommen ganz einfach, erfordert
+        aber ein wenig Programmierarbeit: Wir benötigen ein
         <a href="https://de.wikipedia.org/wiki/Hamburger-Men%C3%BC-Icon" target="_blank">Hamburger-Menü</a>.
         So soll die fertige Lösung daher aussehen:
     </p>
@@ -2854,7 +2854,7 @@
         Zunächst müssen wir das Hamburger-Icon im HTML-Code definieren, was mit folgender
         kleinen Anpassung in  <span class="fn">src/index.html</span> gelingt. Gleichzeitig
         fügen wir dem umgebenden <span class="cmd">&lt;div&gt;</span> noch zwei CSS-Klassen
-        hinzu, auf die wir mit JavaScript gleich zugreifen werden.
+        hinzu, auf die wir mit JavaScript zugreifen können.
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -2871,7 +2871,7 @@
         </code>
     </pre>
     <p>
-        Zusätzlich kennzeichnen wir die auf dem Smartphone zunächst auszublendenden Menüpunkte
+        Zusätzlich kennzeichnen wir die auf dem Smartphone zunächst unsichtbaren Menüpunkte
         mit der CSS-Klasse <span class="cmd">menu-content</span>:
     </p>
     <pre data-gobble>
@@ -2905,7 +2905,7 @@
         Damit ist der HTML-Code schon auf das neue Menü vorbereitet. Allerdings
         brauchen wir das Hamburger-Icon nur in der Smartphone-Ansicht, da auf
         großen Bildschirmen alles beim Alten bleiben soll. Folgende Zeilen in
-        <span class="fn">src/app.css</span> reichen dafür schon aus:
+        <span class="fn">src/app.css</span> helfen uns dabei:
     </p>
     <pre data-gobble>
         <code class="css" data-gobble>
@@ -2937,10 +2937,10 @@
         </code>
     </pre>
     <p>
-        Fehlt nur noch das dazugehörige JavaScript. Dieses fügen wir am Ende des
-        Konstruktors der Klasse <span class="cmd">App</span>, also in der Datei
-        <span class="fn">src/app.js</span> ein. Los geht's mit einem Event Handler,
-        der das Menü bei Klick auf die Titelzeile auf- und zuklappt:
+        Fehlt nur noch das JavaScript. Dieses fügen wir am Ende des Konstruktors
+        in der Klasse <span class="cmd">App</span>, also in der Datei
+        <span class="fn">src/app.js</span>, ein. Los geht's mit einem Event Handler,
+        der das Menü bei Klick auf- und zuklappt:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -2980,39 +2980,40 @@
         </code>
     </pre>
     <p>
-        In der ersten Zeile holen wir uns das <span class="cmd">&lt;div&gt;</span> mit dem Titel
-        in des Hamburger-Icons. Für dieses wird dann ein Event Listener registriert, der bei jedem
-        Mausklick (bzw. Touchdruck) auf das Event feuert. Innerhalb der Funktion passiert dann
-        folgendes:
+        In der ersten Zeile holen wir uns das <span class="cmd">&lt;div&gt;</span>, in dem der
+        Programmname und das Hamburger-Icon stehen. Für dieses wird dann ein Event Listener
+        registriert, der bei jedem Mausklick (bzw. Touchdruck) die an derselben Stelle übergebene
+        Funktion mit folgendem Inhalt aufruft:
     </p>
     <ol>
         <li>
-            Zunächst wird geprüft, ob die Titelzeile die CSS-Klasse <span class="cmd">inactive</span>
-            besitzt. Sie ist bisher noch nicht gesetzt, wird später aber immer dann zugewiesen,
-            wenn die Anwendung in der vollen Ansicht für große Bildschirme dargestellt wird. Ist dies
-            der Fall, kann die Funktion direkt wieder verlassen werden.
+            Zunächst wird in der Funktion geprüft, ob die Titelzeile die CSS-Klasse
+            <span class="cmd">inactive</span> besitzt. Sie ist bisher noch nicht gesetzt,
+            wird später aber immer dann zugewiesen, wenn die Anwendung in der vollen Ansicht
+            für große Bildschirme dargestellt wird. Ist dies der Fall, kann die Funktion
+            direkt wieder verlassen werden.
         </li>
         <li>
-            Anschließend wird geprüft, ob das <span class="cmd">&lt;div&gt;</span> die CSS-Klassen
+            Anschließend wird geprüft, ob das <span class="cmd">&lt;div&gt;</span> die CSS-Klasse
             <span class="cmd">menu-open</span> oder <span class="cmd">menu-closed</span> besitzt,
-            je nachdem, ob das Menü aktuell auf- oder zugeklappt ist. Der dabei gefundene Wert wird
-            dann durch den jeweils anderen Wert ersetzt.
+            je nachdem, ob das Menü aktuell auf- oder zugeklappt ist. Der gefundene Wert wird
+            dann durch den jeweils anderen ersetzt.
         </li>
         <li>
             Zum Schluss werden die einzelnen Menüpunkte in Abhängigkeit des eben ermittelten Wertes
             ein- oder ausgeblendet. Dies erfolgt durch Zuweisung der CSS-Klasse <span class="cmd">hidden</span>,
-            die in der Datei <span class="fn">src/index.jss</span> definiert ist.
+            die wir hierfür eben schon angepasst haben.
         </li>
     </ol>
     <p>
         Jetzt muss nur noch der Hovereffekt für die Titelzeile auf großen Bildschirmen
-        unterbinden und sichergestellt werden, dass das Menü in der Smartphone-Ansicht
-        zunächst immer ausgeblendet ist. Außerdem wollen wir das Menü automatisch
-        automatisch aktivieren, wenn sich die Größe des Browserfensters ändert und die
-        gesamte Ansicht auf den Smartphone-Modus wechselt. Direkt nach dem oben gezeigten
-        JavaScript-Code (immer noch im Konstruktor der Klasse <span class="cmd">App</span>)
-        muss daher folgender Code eingefügt werden. Der Quellcode sollte an dieser Stelle
-        ziemlich selbsterklärend sein:
+        unterbunden und sichergestellt werden, dass das Menü in der Smartphone-Ansicht
+        zunächst immer ausgeblendet ist. Außerdem wollen wir erkennen, wenn sich die
+        Größe des Browserfensters ändert, und die Anwendung somit zwischen der großen
+        und der Smartphone-Ansicht wechselt, um dann im richtigen Augenblick das Menü
+        ein- oder auszuschalten. Direkt nach dem oben gezeigten JavaScript-Code (immer
+        noch im Konstruktor der Klasse <span class="cmd">App</span>) muss daher folgender
+        Code eingefügt werden:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -3057,6 +3058,14 @@
             }
         </code>
     </pre>
+    <p>
+        An und für sich sollte der Code ziemlich selbsterklärend sein. Einzig gewöhnungsbedürftig
+        ist vielleicht die Funktion <span class="cmd">getComputedStyle(menuIcon)</span>, mit der
+        wir auf das CSS-Attribut <span class="cmd">display</span> des <span class="cmd">&lt;span&gt;</span>
+        mit dem Hamburger-Icon zugreifen. Denn ganz am Anfang haben wir durch ein Media Query dafür
+        gesorgt, dass das Icon nur auf großen Bildschirmen sichtbar ist und mit diesem Aufruf fragen
+        wir diese Eigenschaft nun ab. Ziemlich clever, nicht?
+    </p>
 </section>
 
 <!-- –––––––––––––––––––– -->
@@ -3069,12 +3078,12 @@
     </p>
 
     <p>
-        Aktuell wird die Songliste auf der Übersichtsseite immer nach Titel sortiert
-        angezeigt. Bei vielen Einträgen ist es aber manchmal besser, die Einträge
-        nach Künstler zu sortieren, oder einen gewünschten Song einfach mal schnell
-        suchen zu können. Beides wollen wir deshalb nun ausprogrammieren, wobei wir
-        wie immer mit ein paar kleinen Anpassungen am HTML-Code in
-        <span class="fn">src/index.html</span> beginnen.
+        Aktuell wird die Songliste auf der Übersichtsseite immer nach Titel sortiert.
+        Bei vielen Einträgen ist es aber manchmal besser, die Einträge nach Künstler
+        zu sortieren, oder einen gewünschten Song einfach mal schnell suchen zu können.
+        Beides wollen wir deshalb nun ausprogrammieren, wobei wir wie immer mit ein
+        paar kleinen Anpassungen am HTML-Code in <span class="fn">src/index.html</span>
+        beginnen.
     </p>
     <pre data-gobble>
         <code class="html" data-gobble>
@@ -3110,11 +3119,11 @@
     </pre>
     <p>
         Auf diese Weise haben wir nun zwei Menüpunkte zum Ändern der Sortierung.
-        Mit JavaScript werden wir dann sicherstellen, dass immer nur einer davon
+        Mit JavaScript werden wir gleich sicherstellen, dass immer nur einer davon
         angezeigt wird, je nachdem wonach die Liste zuletzt sortiert wurde.
-        Außerdem hat das Suchfeld nun noch eine CSS-Klasse bekommen, durch dies
-        einfacher in JavaScript angesprochen werden kann. Wollen wir die entsprechenden
-        deshalb gleich mal Anpassungen anschauen. Es beginnt mit ein paar Hilfsvariablen
+        Außerdem hat das Suchfeld nun noch eine CSS-Klasse bekommen, durch die es
+        einfacher in JavaScript angesprochen werden kann. Wollen wir uns die entsprechenden
+        Anpassungen deshalb gleich mal anschauen. Es beginnt mit ein paar Hilfsvariablen
         im Konstruktor der Klasse <span class="cmd">SongOverview</span> in der
         Datei <span class="fn">src/song-overview/song-overview.js</span>:
     </p>
@@ -3166,7 +3175,7 @@
     </pre>
     <p>
         Wir rufen also nun die neue Methode <span class="cmd">_searchAndUpdateView()</span>
-        auf, die wie folgt am Ende der Klasse eingefügt werden kann:
+        auf, die wie folgt irgendwo in der Klasse eingefügt werden muss:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -3207,12 +3216,13 @@
         Funktional hat sich dadurch erst mal nichts verändert. Wir haben jedoch eine
         wunderbare All-In-One-Methode, die immer dafür sorgt, dass alle UI-Elemente
         korrekt dargestellt werden, wenn wir die Sortierung ändern oder eine Suche
-        ausführen. Hier werden zum Beispiel die Buttons zum Sortieren der Liste ein-
-        und ausgeblendet, je nachdem, welche Sortierung gerade aktiv ist. Aktuell ist
-        das noch fest-verdrahtet die Sortierung nach Titel. Wir können nun aber ganz
-        einfach einen Event Handler einbauen, um dies zu ändern. Hierzu gehen wir
-        wieder in die Methode <span class="cmd">onShow()</span> zurück und fügen vor
-        den <span class="cmd">return</span>-Anweisung folgende Zeilen hinzu:
+        ausführen. Hier werden zum Beispiel auch die Sortierbuttons je nach Art der
+        aktuellen Sortierung passend ein- und ausgeblendet. Aktuell ist dies immer
+        die Sortierung nach Titel, so dass dieser Button ein- und der andere Button
+        zum Sortieren nach Künstler ausgeblendet wird. Durch einen kleinen Event Handler
+        können wir die Sortierung nun aber ganz einfach wechseln. Hierfür müssen nur
+        in der Methode <span class="cmd">onShow()</span> kurz vor dem <span class="cmd">return</span>
+        folgende Zeilen eingebaut werden:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -3236,7 +3246,7 @@
         <span class="cmd">_searchAndUpdateView()</span> aufrufen und ihr im zweiten
         Parameter den Namen der Sortierspalte mitgeben. Praktischerweise haben wir
         diesen in einem <span class="cmd">data</span>-Attribut bereits im HTML-Code
-        hinterlegt, so dass hier nur der Attribut weitergereicht werden muss.
+        hinterlegt, so dass hier nur der Attributwert weitergereicht werden muss.
     </p>
     <figure>
         <img src="02/songliste/sortierung-titel.png" class="border" />
@@ -3248,14 +3258,14 @@
     </figure>
 
     <p>
-        Die Suche funktioniert jetzt dann genau so einfach. Wir müssen einfach an
-        derselben Stelle wie eben einen weiteren Event Handler einbauen. Diesen
-        programmieren wir so, dass nach jedem Tastendruck spätestens nach einer
-        halben Sekunde die Suche ausgeführt wird, stellen dabei aber sicher, dass
-        die zeitversetzte Suche nur dann vorgemerkt wird, wenn es nicht bereits
-        ohnehin eine Vormerkung gibt. Bei <span class="kbd">Enter</span> wollen
-        wir die Suche außerdem direkt ausführen und eine eventuell bestehende
-        Vormerkung verwerfen. Der JavaScript-Code hierfür sieht so aus:
+        Die Suche funktioniert dann genau so einfach. Wir müssen einfach an derselben
+        Stelle einen weiteren Event Handler einbauen. Diesen programmieren wir so, dass
+        spätestens eine halbe Sekunde nach einem Tastendruck die Suche ausgeführt wird.
+        Dafür merken wir beim ersten Tastendruck einen entsprechenden Methodenaufruf
+        vor, verwerfen die Vormerkung aber wieder, sobald die Suche einmal ausgeführt
+        wurde. Zusätzlich kann die Suche mit <span class="kbd">Enter</span> auch sofort
+        ausgeführt werden, wodurch sich eine eventuell bestehende Vormerkung ebenfalls
+        erledigt. Der JavaScript-Code hierfür sieht so aus:
     </p>
     <pre data-gobble>
         <code class="javascript" data-gobble>
@@ -3292,7 +3302,7 @@
         natürlich etwas kürzer und übersichtlicher. Wirklich kompliziert ist die
         hier gezeigte Version dann aber doch wieder nicht. Gönnen wir dem Anwender
         oder der Anwenderin daher den Luxus, auch ohne <span class="kbd">Enter</span>
-        zu drücken suchen zu können.
+        zu drücken, suchen zu können.
     </p>
     <figure>
         <img src="02/songliste/suche.png" class="border" />
