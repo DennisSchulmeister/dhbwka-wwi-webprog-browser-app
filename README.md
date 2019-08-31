@@ -9,8 +9,9 @@ Browser Apps mit Hilfe von HTML, CSS und JavaScript. Die entwickelte App
 orientiert sich an der Beispielanwendung „My Songbook”, die an folgender
 Stelle eingesehen werden kann:
 
- * [Quellcode auf Github](https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook)
- * [Start der Anwendung](https://www.wpvs.de/repo/webprog/browser-app/)
+ * [Onlineansicht der Anleitung](https://www.wpvs.de/repo/webprog/browser-app/)
+ * [Start der Anwendung](https://www.wpvs.de/repo/webprog/my-songbook/)
+ * [Quellcode der Anwendung](https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-my-songbook)
 
 Bei der App handelt es sich um eine Single Page App. Es wird dabei der
 komplette Weg vom Anlegen des leeren Projektverzeichnisses bis zur
