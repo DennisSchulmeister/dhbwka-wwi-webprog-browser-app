@@ -31,6 +31,6 @@
         "highlight.js": "^9.12.0",
         "mini-tutorial.js": "^1.0.7",
         "parcel-bundler": "^1.9.7",
-        "shelljs": "^0.7.8"
+        "shelljs": "^0.8.5"
     }
 }
