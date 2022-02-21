@@ -9,6 +9,7 @@
         "url": "https://github.com/DennisSchulmeister/dhbwka-wwi-webprog-browser-app/issues"
     },
     "main": "index.js",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/DennisSchulmeister/dhbwka-wwi-webprog-browser-app.git"
@@ -21,16 +22,22 @@
     ],
     "scripts": {
         "clean": "node scripts/clean.js",
-        "build": "npm run clean; parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
-        "watch": "npm run clean; parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
-        "start": "parcel src/*.html"
+        "build": "npm run clean; node scripts/build-static.js; node scripts/esbuild-bundle.js",
+        "start": "node scripts/esbuild-serve.js"
+    },
+    "config": {
+        "src_dir": "src",
+        "static_dir": "static",
+        "build_dir": "build",
+        "public_url": "",
+        "replace_variables_extensions": ".htm; .html"
     },
     "devDependencies": {
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-runtime": "^6.26.0",
-        "highlight.js": "^9.12.0",
-        "mini-tutorial.js": "^1.0.7",
-        "parcel-bundler": "^1.9.7",
-        "shelljs": "^0.7.8"
-    }
+        "@dschulmeis/ls-plugin-highlight.js": "^2.0.0",
+        "@dschulmeis/mini-tutorial.js": "^2.0.0",
+        "esbuild": "^0.14.21",
+        "esbuild-plugin-less": "^1.1.6",
+        "shelljs": "^0.8.5"
+    },
+    "dependencies": {}
 }

@@ -458,13 +458,11 @@
         sinnvoll, diese Dateien mit git zu verwalten. Bevor du also irgendetwas weiteres mit npm und git unternimmst,
         lege erst eine Datei namens <span class="fn">.gitignore</span> mit folgendem Inhalt im Projektverzeichnis an:
     </p>
-    <pre data-gobble>
-        <code data-gobble class="html">
-            .cache/**
-            /dist/**
-            /node_modules/**
-        </code>
-    </pre>
+    <source-code language="plaintext">
+        .cache/**
+        /dist/**
+        /node_modules/**
+    </source-code>
     <p>
         Anschließend führe einen neuen Add-Commit-Push-Zyklus aus, um deine Änderungen zu versionieren:
     </p>
@@ -654,20 +652,18 @@
     <p>
         Für den Anfang genügt uns dabei eine einfache „Hallo, Welt”-Seite:
     </p>
-    <pre data-gobble>
-        <code class="html" data-gobble>
-            &lt;!DOCTYPE html&gt;
-            &lt;html&gt;
-                &lt;head&gt;
-                    &lt;meta charset="utf-8" /&gt;
-                    &lt;title&gt;My Songbook&lt;/title&gt;
-                &lt;/head&gt;
-                &lt;body&gt;
-                    &lt;h1&gt;Hallo, Welt!&lt;/h1&gt;
-                &lt;/body&gt;
-            &lt;/html&gt;
-        </code>
-    </pre>
+    <source-code language="html">
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+            &lt;head&gt;
+                &lt;meta charset="utf-8" /&gt;
+                &lt;title&gt;My Songbook&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;h1&gt;Hallo, Welt!&lt;/h1&gt;
+            &lt;/body&gt;
+        &lt;/html&gt;
+    </source-code>
 
     <h3>npm-Skripte zum Aufruf von Parcel definieren</h3>
     <p>
@@ -678,26 +674,22 @@
         Möglichkeit geben, mehrere Befehle hintereinander auszuführen. Öffne daher die
         <span class="fn">package.json</span> in Atom und entferne folgende Zeilen daraus:
     </p>
-    <pre data-gobble>
-        <code class="json" data-gobble>
-            "scripts": {
-              "test": "echo \"Error: no test specified\" && exit 1"
-            },
-        </code>
-    </pre>
+    <source-code language="json">
+        "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1"
+        },
+    </source-code>
     <p>
         Stattdessen füge an der gleichen Stelle folgende, neue Zeilen ein:
     </p>
-    <pre data-gobble>
-        <code class="json" data-gobble>
-            "scripts": {
-              "clean": "node scripts/clean.js",
-              "build": "npm run clean && parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
-              "watch": "npm run clean && parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
-              "start": "parcel src/index.html --open"
-            },
-        </code>
-    </pre>
+    <source-code language="json">
+        "scripts": {
+            "clean": "node scripts/clean.js",
+            "build": "npm run clean && parcel build src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+            "watch": "npm run clean && parcel watch src/*.html --public-url . --detailed-report --experimental-scope-hoisting",
+            "start": "parcel src/index.html --open"
+        },
+    </source-code>
     <p>
         Anschließend lege ein neues Unterverzeichnis mit dem Namen <span class="fn">scripts</span>
         an und lege dort die Datei <span class="fn">clean.js</span> ab, die du dir aus dem
@@ -836,15 +828,13 @@
         In einer normalen Webseite – ohne Unterstützung für JavaScript-Module – müssten wir hierfür
         den <span class="cmd">&lt;head&gt;</span> wie folgt erweitern:
     </p>
-    <pre data-gobble>
-        <code class="html" data-gobble>
-            &lt;head&gt;
-                …
-                &lt;script src="index.js"&gt;&lt;/script&gt;
-                &lt;script src="app.js"&gt;&lt;/script&gt;
-            &lt;/head&gt;
-        </code>
-    </pre>
+    <source-code language="html">
+        &lt;head&gt;
+            …
+            &lt;script src="index.js"&gt;&lt;/script&gt;
+            &lt;script src="app.js"&gt;&lt;/script&gt;
+        &lt;/head&gt;
+    </source-code>
     <p>
         Dadurch könnten an jeder beliebigen Stelle in jeder beliebigen HTML- oder JavaScript-Datei die in diesen
         beiden Dateien definierten Klassen, Funktionen und globalen Variablen verwenden. Da wir jetzt aber einen
@@ -853,59 +843,53 @@
         <span class="cmd">import</span> zu verwenden. Wir wollen daher die <span class="fn">src/app.js</span>
         wieder aus dem HTML ausbauen, so dass nur noch folgendes übrig bleibt:
     </p>
-    <pre data-gobble>
-        <code class="html" data-gobble>
-            &lt;head&gt;
-                …
-                &lt;script src="index.js"&gt;&lt;/script&gt;
-            &lt;/head&gt;
-        </code>
-    </pre>
+    <source-code language="html">
+        &lt;head&gt;
+            …
+            &lt;script src="index.js"&gt;&lt;/script&gt;
+        &lt;/head&gt;
+    </source-code>
     <p>
         Anschließend legen wir in der <span class="fn">src/app.js</span> unsere neue Hauptklasse an. An dieser
         Stelle noch ohne viel Logik, dafür aber von Anfang an mit ordentlichen Kommentaren:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            "use strict";
+    <source-code language="javascript">
+        "use strict";
+
+        /**
+         * Hauptklasse der Anwendung. Kümmert sich darum, die Anwendung auszuführen
+         * und die angeforderten Bildschirmseiten anzuzeigen.
+         */
+        class App {
+            /**
+             * Konstruktor.
+             */
+            constructor() {
+            }
 
             /**
-             * Hauptklasse der Anwendung. Kümmert sich darum, die Anwendung auszuführen
-             * und die angeforderten Bildschirmseiten anzuzeigen.
+             * Ab hier beginnt die Anwendung zu laufen.
              */
-            class App {
-                /**
-                 * Konstruktor.
-                 */
-                constructor() {
-                }
-
-                /**
-                 * Ab hier beginnt die Anwendung zu laufen.
-                 */
-                start() {
-                    console.log("Die Klasse App sagt Hallo!");
-                }
+            start() {
+                console.log("Die Klasse App sagt Hallo!");
             }
-        </code>
-    </pre>
+        }
+    </source-code>
     <p>
         In der <span class="fn">src/index.js</span> wollen wir, sobald das Document Object Model
         zur Verfügung steht, ein Objekt von der Klasse erzeugen und ihre <code>start()</code>-Methode
         ausführen. Unser erster Versuch schlägt jedoch fehl:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            "use strict";
+    <source-code language="javascript">
+        "use strict";
 
-            // Erst loslaufen, wenn das Document Object Modul bereit ist
-            window.addEventListener("load", () => {
-                // Anwendung starten
-                let app = new App();
-                app.start();
-            });
-        </code>
-    </pre>
+        // Erst loslaufen, wenn das Document Object Modul bereit ist
+        window.addEventListener("load", () => {
+            // Anwendung starten
+            let app = new App();
+            app.start();
+        });
+    </source-code>
     <p>
         Um dies zu sehen, musst du zunächst mit folgendem Befehl den Entwicklungsserver
         starten:
@@ -934,23 +918,19 @@
         <span class="fn">src/app.js</span> exportieren, indem wir ganz am Ende
         folgende Zeile hinzufügen:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            export default App;
-        </code>
-    </pre>
+    <source-code language="javascript">
+        export default App;
+    </source-code>
     <p>
         In der Datei <span class="fn">src/index.js</span> können wir sie dann wie
         folgt importieren:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            "use strict";
+    <source-code language="javascript">
+        "use strict";
 
-            import App from "./app.js";
-            …
-        </code>
-    </pre>
+        import App from "./app.js";
+        …
+    </source-code>
     <p>
         Und schon funktioniert alles, wie es soll.
     </p>
@@ -964,49 +944,45 @@
         Hier zur Sicherheit nochmal beide Dateien in Gänze. Zunächst die
         Datei <span class="fn">src/app.js</span>:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            "use strict";
+    <source-code language="javascript">
+        "use strict";
 
+        /**
+         * Hauptklasse der Anwendung. Kümmert sich darum, die Anwendung auszuführen
+         * und die angeforderten Bildschirmseiten anzuzeigen.
+         */
+        class App {
             /**
-             * Hauptklasse der Anwendung. Kümmert sich darum, die Anwendung auszuführen
-             * und die angeforderten Bildschirmseiten anzuzeigen.
+             * Konstruktor.
              */
-            class App {
-                /**
-                 * Konstruktor.
-                 */
-                constructor() {
-                }
-
-                /**
-                 * Ab hier beginnt die Anwendung zu laufen.
-                 */
-                start() {
-                    console.log("Die Klasse App sagt Hallo!");
-                }
+            constructor() {
             }
 
-            export default App;
-        </code>
-    </pre>
+            /**
+             * Ab hier beginnt die Anwendung zu laufen.
+             */
+            start() {
+                console.log("Die Klasse App sagt Hallo!");
+            }
+        }
+
+        export default App;
+    </source-code>
     <p>
         Und hier die Datei <span class="fn">src/index.js</span>:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            "use strict";
+    <source-code language="javascript">
+        "use strict";
 
-            import App from "./app.js";
+        import App from "./app.js";
 
-            // Erst loslaufen, wenn das Document Object Modul bereit ist
-            window.addEventListener("load", () => {
-                // Anwendung starten
-                let app = new App();
-                app.start();
-            });
-        </code>
-    </pre>
+        // Erst loslaufen, wenn das Document Object Modul bereit ist
+        window.addEventListener("load", () => {
+            // Anwendung starten
+            let app = new App();
+            app.start();
+        });
+    </source-code>
 </section>
 
 <!-- ––––––––––––––––––––––– -->
@@ -1035,44 +1011,40 @@
         Für den Anfang sollen sie folgenden Inhalt haben. Hier die Datei
         <span class="fn">src/index.css</span>:
     </p>
-    <pre data-gobble>
-        <code class="css" data-gobble>
-            /*
-             * Dieses Stylesheet enthält nur allgemeine Anweisungen, die sich auf die
-             * gesamte App auswirken. Hier dürfen keine Änderungen vorgenommen werden,
-             * die sich nur auf bestimmte Bereiche der Anwendung auswirken sollen.
-             *
-             * Damit @import funktioniert, muss die Anweisung vor allen anderen
-             * CSS-Anweisungen stehen. Dieses Stylesheet muss daher auch vor allen
-             * anderen importiert werden.
-             */
-            @import url('https://fonts.googleapis.com/css?family=Roboto');
+    <source-code language="css">
+        /*
+         * Dieses Stylesheet enthält nur allgemeine Anweisungen, die sich auf die
+         * gesamte App auswirken. Hier dürfen keine Änderungen vorgenommen werden,
+         * die sich nur auf bestimmte Bereiche der Anwendung auswirken sollen.
+         *
+         * Damit @import funktioniert, muss die Anweisung vor allen anderen
+         * CSS-Anweisungen stehen. Dieses Stylesheet muss daher auch vor allen
+         * anderen importiert werden.
+         */
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-            html, body {
-                margin: 0;
-            }
+        html, body {
+            margin: 0;
+        }
 
-            body {
-                font-family: 'Roboto', sans-serif;
-                font-size: 12pt;
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 12pt;
 
-                background-color: rgb(212, 227, 237);
-            }
-        </code>
-    </pre>
+            background-color: rgb(212, 227, 237);
+        }
+    </source-code>
     <p>
         Und dann die Datei <span class="fn">src/app.css</span>:
     </p>
-    <pre data-gobble>
-        <code class="css" data-gobble>
-            /*
-             * Dieses Stylesheet darf nur Selektoren beinhalten, die mit #app beginnen.
-             * Denn wir wollen nicht, dass hier Eigenschaften aus anderen Bereichen der
-             * Anwendung überschrieben werden.
-             */
-            #app {}
-        </code>
-    </pre>
+    <source-code language="css">
+        /*
+         * Dieses Stylesheet darf nur Selektoren beinhalten, die mit #app beginnen.
+         * Denn wir wollen nicht, dass hier Eigenschaften aus anderen Bereichen der
+         * Anwendung überschrieben werden.
+         */
+        #app {}
+    </source-code>
     <p>
         Wie du siehst, haben die beiden Stylesheets eine genau definierte
         Aufgabe. Und wie du siehst, binden wir hier eine Schriftart von
@@ -1080,15 +1052,13 @@
         ein. Doch wie bauen wir sie in die App ein? Normalerweise – ohne
         einen Bundler – durch folgende Änderung am HTML-Code:
     </p>
-    <pre data-gobble>
-        <code class="html" data-gobble>
-            &lt;head&gt;
-                …
-                &lt;link rel="stylesheet" href="index.css" /&gt;
-                &lt;link rel="stylesheet" href="app.css" /&gt;
-            &lt;/head&gt;
-        </code>
-    </pre>
+    <source-code language="html">
+        &lt;head&gt;
+            …
+            &lt;link rel="stylesheet" href="index.css" /&gt;
+            &lt;link rel="stylesheet" href="app.css" /&gt;
+        &lt;/head&gt;
+    </source-code>
     <p>
         Überraschenderweise ist das in Zusammenhang mit einem Bundler jedoch kein
         gutes Vorgehen. Zwar kommt Parcel damit genauso gut wie mit der nachfolgenden
@@ -1098,11 +1068,9 @@
         selbst JavaScript-Dateien, wie zum Beispiel hier In der Datei
         <span class="fn">src/index.js</span>:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            import stylesheet from "./index.css";
-        </code>
-    </pre>
+    <source-code language="javascript">
+        import stylesheet from "./index.css";
+    </source-code>
     <p>
         Der Bezeichner <span class="cmd">stylesheet</span> spielt hierbei übrigens
         keine Rolle. Wir brauchen ihn nur, da wir bei jedem Import einen Bezeichner
@@ -1111,11 +1079,9 @@
         muss. In der Datei <span class="fn">src/app.js</span> sieht derselbe Import
         deshalb so aus:
     </p>
-    <pre data-gobble>
-        <code class="javascript" data-gobble>
-            import stylesheet from "./app.css";
-        </code>
-    </pre>
+    <source-code language="javascript">
+        import stylesheet from "./app.css";
+    </source-code>
     <figure>
         <img src="01/umdenken/import-style-index.png" />
         <figcaption>
