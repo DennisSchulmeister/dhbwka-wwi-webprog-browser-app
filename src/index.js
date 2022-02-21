@@ -1,7 +1,7 @@
-import MiniTutorial from "mini-tutorial.js";
-import "mini-tutorial.js/themes/white.css";
-import "mini-tutorial.js/themes/book.css";
-import "mini-tutorial.js/themes/common.css";
+import MiniTutorial from "@dschulmeis/mini-tutorial.js";
+import "@dschulmeis/mini-tutorial.js/themes/white.css";
+import "@dschulmeis/mini-tutorial.js/themes/book.css";
+import "@dschulmeis/mini-tutorial.js/themes/common.css";
 
 import LS_Plugin_HighlightJS from "@dschulmeis/ls-plugin-highlight.js";
 import HLJS_Language_XML from 'highlight.js/lib/languages/xml';
