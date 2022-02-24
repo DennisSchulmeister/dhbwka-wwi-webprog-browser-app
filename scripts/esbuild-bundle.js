@@ -17,9 +17,12 @@ build({
     plugins: [lessLoader()],
     loader: {
         ".svg": "text",
-        ".ttf": "binary",
-        ".woff": "binary",
-        ".woff2": "binary",
-        ".eot": "binary",
+        ".ttf": "dataurl",
+        ".woff": "dataurl",
+        ".woff2": "dataurl",
+        ".eot": "dataurl",
+        ".jpg": "dataurl",
+        ".png": "dataurl",
+        ".gif": "dataurl",
     },
 });
