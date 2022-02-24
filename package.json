@@ -33,8 +33,8 @@
         "replace_variables_extensions": ".htm; .html"
     },
     "devDependencies": {
-        "@dschulmeis/ls-plugin-highlight.js": "^2.0.0",
-        "@dschulmeis/mini-tutorial.js": "^2.0.0",
+        "@dschulmeis/ls-plugin-highlight.js": "^2.0.3",
+        "@dschulmeis/mini-tutorial.js": "^2.1.0",
         "esbuild": "^0.14.21",
         "esbuild-plugin-less": "^1.1.6",
         "shelljs": "^0.8.5"
